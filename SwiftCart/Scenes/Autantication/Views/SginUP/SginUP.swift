@@ -7,8 +7,12 @@
 
 import UIKit
 
-class SginUP: UIViewController {
+class SginUP: NibViewController {
 
+    @IBOutlet weak var viewName: UIView!
+
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
