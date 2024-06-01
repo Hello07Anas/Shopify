@@ -7,7 +7,12 @@
 
 import UIKit
 
-class LoginVC: UIViewController {
+class LoginVC: NibViewController {
+    
+    @IBOutlet weak var nameTF: UITextField!
+    @IBOutlet weak var emailTF: UITextField!
+    @IBOutlet weak var passwordTF: UITextField!
+    @IBOutlet weak var rePasswordTF: UITextField!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -16,7 +21,17 @@ class LoginVC: UIViewController {
     }
     
     
+    @IBAction func backBtn(_ sender: Any) { }
 
+    @IBAction func skipBtn(_ sender: Any) { }
+    
+    @IBAction func alleadyHaveAcc(_ sender: Any) { }
+
+    @IBAction func sginUp(_ sender: Any) { }
+
+    @IBAction func sginUpWithGoogle(_ sender: Any) { }
+
+    @IBAction func sginUpWithX(_ sender: Any) { }
 
     
     /*

@@ -11,6 +11,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LoginVC" customModule="SwiftCart" customModuleProvider="target">
             <connections>
+                <outlet property="emailTF" destination="HRZ-tv-uaV" id="xu2-PN-jhb"/>
+                <outlet property="nameTF" destination="FZV-Gk-T2w" id="HfM-uh-5I5"/>
+                <outlet property="passwordTF" destination="KKY-Ga-XT1" id="tlJ-o0-XIn"/>
+                <outlet property="rePasswordTF" destination="29x-XA-jeb" id="WbE-O1-gaU"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -24,13 +28,21 @@
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gse-5b-zSa">
                             <rect key="frame" x="0.0" y="0.0" width="39.666666666666664" height="38.333333333333336"/>
+                            <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="plain" image="chevron.backward" catalog="system"/>
+                            <connections>
+                                <action selector="backBtn:" destination="-1" eventType="touchUpInside" id="NsJ-JH-3tj"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wr1-vh-GpT">
                             <rect key="frame" x="341" y="0.0" width="57" height="38.333333333333336"/>
+                            <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="filled" title="Skip"/>
+                            <connections>
+                                <action selector="skipBtn:" destination="-1" eventType="touchUpInside" id="4Og-VR-AJE"/>
+                            </connections>
                         </button>
                     </subviews>
                 </stackView>
@@ -75,8 +87,12 @@
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GOs-dU-13f">
                             <rect key="frame" x="179" y="0.0" width="219" height="38.333333333333336"/>
+                            <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="plain" title="Already have an account?"/>
+                            <connections>
+                                <action selector="alleadyHaveAcc:" destination="-1" eventType="touchUpInside" id="fnp-PT-Pfj"/>
+                            </connections>
                         </button>
                     </subviews>
                 </stackView>
@@ -91,10 +107,14 @@
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q3g-a8-b2w">
                             <rect key="frame" x="16" y="8" width="366" height="42"/>
+                            <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="filled" title="Sgin Up">
                                 <fontDescription key="titleFontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="24"/>
                             </buttonConfiguration>
+                            <connections>
+                                <action selector="sginUp:" destination="-1" eventType="touchUpInside" id="xJx-xs-zgf"/>
+                            </connections>
                         </button>
                     </subviews>
                     <constraints>
@@ -110,15 +130,21 @@
                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="97" translatesAutoresizingMaskIntoConstraints="NO" id="O3m-ov-Fg6" userLabel="SginUPWith">
                     <rect key="frame" x="16" y="653.66666666666663" width="398" height="64"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OTX-ov-p0b">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OTX-ov-p0b" userLabel="Google">
                             <rect key="frame" x="0.0" y="0.0" width="150.66666666666666" height="64"/>
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="plain" image="google-icon"/>
+                            <connections>
+                                <action selector="sginUpWithGoogle:" destination="-1" eventType="touchUpInside" id="Tir-4R-IO7"/>
+                            </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wAn-u6-fd8">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wAn-u6-fd8" userLabel="X">
                             <rect key="frame" x="247.66666666666669" y="0.0" width="150.33333333333331" height="64"/>
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="plain" image="x-icon"/>
+                            <connections>
+                                <action selector="sginUpWithX:" destination="-1" eventType="touchUpInside" id="Uyc-a5-VgZ"/>
+                            </connections>
                         </button>
                     </subviews>
                 </stackView>
@@ -146,7 +172,7 @@
                 <constraint firstItem="upd-7q-qLO" firstAttribute="top" secondItem="9Xh-d5-Yue" secondAttribute="bottom" constant="8" id="pNY-Fq-3ps"/>
                 <constraint firstItem="XuT-Tl-vnA" firstAttribute="top" secondItem="upd-7q-qLO" secondAttribute="bottom" constant="16" id="ztl-eC-GHL"/>
             </constraints>
-            <point key="canvasLocation" x="130.53435114503816" y="-11.267605633802818"/>
+            <point key="canvasLocation" x="-272" y="-3"/>
         </view>
     </objects>
     <resources>
