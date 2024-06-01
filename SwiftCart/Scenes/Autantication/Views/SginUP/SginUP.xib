@@ -11,6 +11,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SginUP" customModule="SwiftCart" customModuleProvider="target">
             <connections>
+                <outlet property="emailTF" destination="GSD-hM-8Bn" id="e5c-K5-hhg"/>
+                <outlet property="passwordTF" destination="cX7-eM-VRs" id="7Gm-AZ-sqK"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -27,6 +29,9 @@
                             <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="plain" image="chevron.backward" catalog="system"/>
+                            <connections>
+                                <action selector="backBtn:" destination="-1" eventType="touchUpInside" id="qvM-iw-AVg"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I5v-b4-JYl">
                             <rect key="frame" x="340.33333333333331" y="0.0" width="57.666666666666686" height="34.333333333333336"/>
@@ -35,6 +40,9 @@
                             <buttonConfiguration key="configuration" style="filled" title="Skip">
                                 <fontDescription key="titleFontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="16"/>
                             </buttonConfiguration>
+                            <connections>
+                                <action selector="skipBtn:" destination="-1" eventType="touchUpInside" id="3Hp-gk-Fzh"/>
+                            </connections>
                         </button>
                     </subviews>
                 </stackView>
@@ -74,6 +82,9 @@
                             <buttonConfiguration key="configuration" style="filled" title="Login">
                                 <fontDescription key="titleFontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="24"/>
                             </buttonConfiguration>
+                            <connections>
+                                <action selector="loginBtn:" destination="-1" eventType="touchUpInside" id="sEB-DV-Lh8"/>
+                            </connections>
                         </button>
                     </subviews>
                     <constraints>
@@ -91,6 +102,9 @@
                             <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="plain" title="Dont have acc?"/>
+                            <connections>
+                                <action selector="dontHaveAcc:" destination="-1" eventType="touchUpInside" id="7yh-po-Wvt"/>
+                            </connections>
                         </button>
                     </subviews>
                 </stackView>
