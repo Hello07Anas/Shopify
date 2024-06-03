@@ -9,15 +9,14 @@ import UIKit
 
 class ViewController: UIViewController {
 
+     var viewModel : HomeViewModel?
     override func viewDidLoad() {
         super.viewDidLoad()
         print("ViewController: ViewDidLoad")
-        //_ = ViewModel()
+        viewModel = HomeViewModel(network: NetworkManager.shared)
+        viewModel?.loadData()
         // Do any additional setup after loading the view.
     }
-    override func viewDidAppear(_ animated: Bool) {
-       _ = HomeViewModel()
-    }
-
+   
 }
 
