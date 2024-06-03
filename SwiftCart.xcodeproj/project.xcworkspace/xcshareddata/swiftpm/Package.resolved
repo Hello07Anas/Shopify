@@ -1,5 +1,5 @@
 {
-  "originHash" : "028de56c355d1f55aa42416039eb5d275050835f36db2e0ee7096b26ef3f37e3",
+  "originHash" : "1d9ff4d702b44794df61a4f16c792ae9df5ed9ab38bf952b8a4213d04a5db708",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -20,12 +20,39 @@
       }
     },
     {
+      "identity" : "ohhttpstubs",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/AliSoftware/OHHTTPStubs.git",
+      "state" : {
+        "revision" : "12f19662426d0434d6c330c6974d53e2eb10ecd9",
+        "version" : "9.1.0"
+      }
+    },
+    {
       "identity" : "reachability.swift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ashleymills/Reachability.swift",
       "state" : {
         "branch" : "master",
         "revision" : "7cbd73f46a7dfaeca079e18df7324c6de6d1834a"
+      }
+    },
+    {
+      "identity" : "rxalamofire",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/RxSwiftCommunity/RxAlamofire.git",
+      "state" : {
+        "revision" : "16858a7955ff8bc3caa51212fd7624f168586773",
+        "version" : "5.7.1"
+      }
+    },
+    {
+      "identity" : "rxswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ReactiveX/RxSwift.git",
+      "state" : {
+        "revision" : "cec68169a048a079f461ba203fe85636548d7a89",
+        "version" : "5.1.3"
       }
     }
   ],
