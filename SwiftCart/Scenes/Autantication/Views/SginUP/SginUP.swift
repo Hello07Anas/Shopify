@@ -7,10 +7,10 @@
 
 import UIKit
 
-class SginUP: NibViewController {
+class SginUP: UIViewController {
 
-    @IBOutlet weak var viewName: UIView!
-
+    @IBOutlet weak var passwordTF: UITextField!
+    @IBOutlet weak var emailTF: UITextField!
     
     
     override func viewDidLoad() {
@@ -20,6 +20,14 @@ class SginUP: NibViewController {
     }
 
 
+    @IBAction func backBtn(_ sender: Any) { }
+
+    @IBAction func skipBtn(_ sender: Any) { }
+    
+    @IBAction func dontHaveAcc(_ sender: Any) { }
+
+    @IBAction func loginBtn(_ sender: Any) { }
+    
     /*
     // MARK: - Navigation
 
