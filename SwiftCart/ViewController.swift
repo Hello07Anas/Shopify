@@ -13,8 +13,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         print("ViewController: ViewDidLoad")
-        viewModel = HomeViewModel(network: NetworkManager.shared)
-        viewModel?.loadData()
+       // viewModel = HomeViewModel(network: NetworkManager.shared)
+        //viewModel?.loadData()
         // Do any additional setup after loading the view.
     }
    

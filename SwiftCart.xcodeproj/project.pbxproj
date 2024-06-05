@@ -26,6 +26,8 @@
 		4C9C39B52C0A2C03003F0769 /* NibViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9C39B42C0A2C03003F0769 /* NibViewController.swift */; };
 		4CC00E812C09FE5900DD2758 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CC00E7F2C09FE5900DD2758 /* LoginVC.swift */; };
 		4CC00E822C09FE5900DD2758 /* LoginVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4CC00E802C09FE5900DD2758 /* LoginVC.xib */; };
+		B91DC0852C0E87BF003AE4CC /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = B91DC0842C0E87BF003AE4CC /* SDWebImage */; };
+		B91DC0872C0E87BF003AE4CC /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = B91DC0862C0E87BF003AE4CC /* SDWebImageMapKit */; };
 		B972D5E42C0CA131007E0329 /* HomeStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B972D5E32C0CA131007E0329 /* HomeStoryboard.storyboard */; };
 		B972D5E62C0CA166007E0329 /* HomeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B972D5E52C0CA166007E0329 /* HomeCollectionViewCell.swift */; };
 		B972D5E82C0CA19D007E0329 /* BrandCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B972D5E72C0CA19D007E0329 /* BrandCollectionViewCell.swift */; };
@@ -83,7 +85,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B91DC0852C0E87BF003AE4CC /* SDWebImage in Frameworks */,
 				B9A4BB842C0E0A2600DB16E5 /* Cosmos in Frameworks */,
+				B91DC0872C0E87BF003AE4CC /* SDWebImageMapKit in Frameworks */,
 				B9A4BB812C0E0A1100DB16E5 /* RxAlamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -389,6 +393,8 @@
 			packageProductDependencies = (
 				B9A4BB802C0E0A1100DB16E5 /* RxAlamofire */,
 				B9A4BB832C0E0A2600DB16E5 /* Cosmos */,
+				B91DC0842C0E87BF003AE4CC /* SDWebImage */,
+				B91DC0862C0E87BF003AE4CC /* SDWebImageMapKit */,
 			);
 			productName = SwiftCart;
 			productReference = 04715A5D2C08F1D100D8DC3B /* SwiftCart.app */;
@@ -421,6 +427,7 @@
 			packageReferences = (
 				B9A4BB7F2C0E0A1100DB16E5 /* XCRemoteSwiftPackageReference "RxAlamofire" */,
 				B9A4BB822C0E0A2600DB16E5 /* XCRemoteSwiftPackageReference "Cosmos" */,
+				B91DC0832C0E87BF003AE4CC /* XCRemoteSwiftPackageReference "SDWebImage" */,
 			);
 			productRefGroup = 04715A5E2C08F1D100D8DC3B /* Products */;
 			projectDirPath = "";
@@ -699,6 +706,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		B91DC0832C0E87BF003AE4CC /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.19.3;
+			};
+		};
 		B9A4BB7F2C0E0A1100DB16E5 /* XCRemoteSwiftPackageReference "RxAlamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/RxSwiftCommunity/RxAlamofire.git";
@@ -718,6 +733,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		B91DC0842C0E87BF003AE4CC /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B91DC0832C0E87BF003AE4CC /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
+		};
+		B91DC0862C0E87BF003AE4CC /* SDWebImageMapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B91DC0832C0E87BF003AE4CC /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImageMapKit;
+		};
 		B9A4BB802C0E0A1100DB16E5 /* RxAlamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = B9A4BB7F2C0E0A1100DB16E5 /* XCRemoteSwiftPackageReference "RxAlamofire" */;

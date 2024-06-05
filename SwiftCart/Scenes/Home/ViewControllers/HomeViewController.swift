@@ -1,15 +1,9 @@
-//
-//  HomeViewController.swift
-//  SwiftCart
-//
-//  Created by Elham on 02/06/2024.
-//
-
 import UIKit
+import SDWebImage
 
 class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
-  //  @IBOutlet weak var pageControl: UIPageControl!
+    var viewModel = HomeViewModel(network: NetworkManager.shared)
     @IBOutlet weak var collectionView: UICollectionView!
     var currentCellIndex = 0
     var timer: Timer?
@@ -17,37 +11,52 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     override func viewDidLoad() {
         super.viewDidLoad()
       
+        
+        self.viewModel.loadData()
+        
         guard let collectionView = collectionView else {
             fatalError("collectionView is nil")
         }
         
-       // pageControl.numberOfPages = 8
         collectionView.dataSource = self
         collectionView.delegate = self
-        
-    
+      
         startTimer()
         setupCollectionViewLayout()
+      
+      
+         
+       
+            self.collectionView.reloadData()
+        
     }
+    
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 2
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 8
+        if section == 0 {
+            return 8
+        } else {
+            let count = viewModel.getBrandsCount()
+                   print("Brands count in home : \(count)")
+                   return count
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.section == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "homeCell", for: indexPath) as! HomeCollectionViewCell
             cell.img.image = UIImage(named: "\(indexPath.row)")
-          
             return cell
         } else {
-            let brandcell = collectionView.dequeueReusableCell(withReuseIdentifier: "brandcell", for: indexPath) as! BrandCollectionViewCell
-            brandcell.img.image = UIImage(named: "9")
-            return brandcell
+            let brandCell = collectionView.dequeueReusableCell(withReuseIdentifier: "brandcell", for: indexPath) as! BrandCollectionViewCell
+            if  let imageUrl = URL(string: viewModel.getBrands()[indexPath.row].image?.src ?? "https://cdn.shopify.com/s/files/1/0624/0239/6207/collections/97a3b1227876bf099d279fd38290e567.jpg?v=1716812402") {
+                brandCell.img.sd_setImage(with: imageUrl, placeholderImage: UIImage(named: "9"))
+            }
+            return brandCell
         }
     }
     
@@ -73,13 +82,12 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     func startTimer() {
-        timer = Timer.scheduledTimer(timeInterval: 2.5, target: self, selector: #selector(movieToNext), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 2.5, target: self, selector: #selector(moveToNext), userInfo: nil, repeats: true)
     }
 
-    @objc func movieToNext() {
+    @objc func moveToNext() {
         currentCellIndex = (currentCellIndex + 1) % 8
         collectionView.scrollToItem(at: IndexPath(item: currentCellIndex, section: 0), at: .centeredHorizontally, animated: true)
-       // pageControl.currentPage = currentCellIndex
     }
     
     func createDiscountSectionLayout() -> NSCollectionLayoutSection {
@@ -93,7 +101,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         section.orthogonalScrollingBehavior = .continuous
         let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(10))
         let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerFooterSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-         section.boundarySupplementaryItems = [sectionHeader]
+        section.boundarySupplementaryItems = [sectionHeader]
         
         section.visibleItemsInvalidationHandler = { (items, offset, environment) in
             items.forEach { item in
@@ -106,44 +114,29 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
         return section
     }
-
     
     func createBrandSectionLayout() -> NSCollectionLayoutSection {
-        // Define the size of a single item
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5),
-                                              heightDimension: .absolute(100))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .absolute(100))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
         
-        // Define the size of a horizontal group that contains two items
-        let horizontalGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                                         heightDimension: .absolute(100))
-        let horizontalGroup = NSCollectionLayoutGroup.horizontal(layoutSize: horizontalGroupSize,
-                                                                 subitems: [item])
+        let horizontalGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(100))
+        let horizontalGroup = NSCollectionLayoutGroup.horizontal(layoutSize: horizontalGroupSize, subitems: [item])
         
-        // Create a vertical group containing multiple horizontal groups
-        let verticalGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                                       heightDimension: .estimated(100)) // Use estimated height
-        let verticalGroup = NSCollectionLayoutGroup.vertical(layoutSize: verticalGroupSize,
-                                                             subitems: [horizontalGroup])
+        let verticalGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(100))
+        let verticalGroup = NSCollectionLayoutGroup.vertical(layoutSize: verticalGroupSize, subitems: [horizontalGroup])
         
-        // Create a section with the vertical group
         let section = NSCollectionLayoutSection(group: verticalGroup)
         section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 4, bottom: 2, trailing: 4)
         section.interGroupSpacing = 10
         
-        // Add a section header
-        let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                                      heightDimension: .estimated(50))
-        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerFooterSize,
-                                                                        elementKind: UICollectionView.elementKindSectionHeader,
-                                                                        alignment: .top)
+        let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(50))
+        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerFooterSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
         section.boundarySupplementaryItems = [sectionHeader]
         
         return section
     }
 
-    
     func setupCollectionViewLayout() {
         let layout = UICollectionViewCompositionalLayout { sectionIndex, _ in
             switch sectionIndex {
