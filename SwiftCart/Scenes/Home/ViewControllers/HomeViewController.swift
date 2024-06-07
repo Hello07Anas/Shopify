@@ -11,6 +11,8 @@ import RxSwift
 
 class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
+    weak var coordinator: AppCoordinator? // TODO: Dont touch it
+    
     var viewModel = HomeViewModel(network: NetworkManager.shared)
     @IBOutlet weak var collectionView: UICollectionView!
     var currentCellIndex = 0
@@ -20,6 +22,10 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.navigationController?.navigationBar.isHidden = false
+        //self.navigationItem.hidesBackButton = true // TODO: Un coomit this line now for testing
+        self.navigationItem.title = "Home"
         
         guard let collectionView = collectionView else {
             fatalError("collectionView is nil")
