@@ -12,7 +12,7 @@
         <!--Home View Controller-->
         <scene sceneID="PDg-cf-trl">
             <objects>
-                <viewController modalPresentationStyle="fullScreen" id="BdA-9V-VlW" customClass="HomeViewController" customModule="SwiftCart" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HomeViewController" modalPresentationStyle="fullScreen" id="BdA-9V-VlW" customClass="HomeViewController" customModule="SwiftCart" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="70Z-GH-Yfe">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

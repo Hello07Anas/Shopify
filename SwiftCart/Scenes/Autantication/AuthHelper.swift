@@ -9,14 +9,7 @@ import Foundation
 import UIKit
 
 struct AuthHelper {
-
-    static func showAlert(title: String, message: String, from viewController: UIViewController) {
-        let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(defaultAction)
-        viewController.present(alert, animated: true, completion: nil)
-    }
-
+    
     static func isValidEmail(_ email: String) -> Bool {
         let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
         let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)

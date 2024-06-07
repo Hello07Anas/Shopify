@@ -9,13 +9,17 @@ import Foundation
 
 // MARK: This for all string in project pleas dont user strings in project
 
-struct K {
+public enum K {
     
-    struct Auth {
+    enum Auth {
         static let sginUpNibName = "SginUp"
         static let loginNibName = "Login"
     }
     
+    enum Home {
+        static let homeStoryboardName = "HomeStoryboard"
+        static let homeViewName = "HomeViewController"
+    }
+    
     //MARK: Add any Constants u need in a staruct pleas
-
 }

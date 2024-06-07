@@ -13,60 +13,55 @@ class Login: UIViewController {
     @IBOutlet weak var passwordTF: UITextField!
     @IBOutlet weak var emailTF: UITextField!
     
+    weak var coordinator: AppCoordinator?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        // TODO: hide back btn of navigation 
+
+        self.navigationController?.navigationBar.isHidden = true
+
+        // TODO: hide back btn of navigation
     }
 
     @IBAction func backBtn(_ sender: Any) {
-        print("Test")
+        coordinator?.finish()
         // TODO: pop from stack "self"
-        
     }
 
     @IBAction func skipBtn(_ sender: Any) { 
-        print("Test")
-        // TODO: This will nav to home as gust
-
+        coordinator?.gotoHome()
     }
     
     @IBAction func dontHaveAcc(_ sender: Any) {
-        if let signUpViewController = navigationController?.viewControllers.first(where: { $0 is SginUp }) {
-            navigationController?.popToViewController(signUpViewController, animated: true)
-        } else {
-            let signUp = SginUp(nibName: K.Auth.sginUpNibName, bundle: nil)
-            navigationController?.pushViewController(signUp, animated: true)
-            print("Nav Clicked")
-        }
+        coordinator?.gotoSignUp(pushToStack: false)
     }
 
     @IBAction func loginBtn(_ sender: Any) {
         guard let email = emailTF.text, !email.isEmpty,
-              let password = passwordTF.text, !password.isEmpty else {
-            let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            let password = passwordTF.text, !password.isEmpty else {
 
-            AlertManager.showAlert(title: "Error!", message: "Pleas enter both email and password", preferredStyle: .alert, actions: [defaultAction], from: self)
+            Utils.showAlert(title: "Error!", message: "Pleas enter both email and password", preferredStyle: .alert, from: self)
             print("Error")
             return
         }
 
         guard AuthHelper.isValidEmail(email) else {
-            AuthHelper.showAlert(title: "Invalid email", message: "Please enter a valid email address.", from: self)
+            Utils.showAlert(title: "Invalid email", message: "Please enter a valid email address.", preferredStyle: .alert, from: self)
             return
         }
         
         guard AuthHelper.isValidPassword(password: password) else {
-            AuthHelper.showAlert(title: "Invalid password", message: "Password must contain one at least uppercase letter, one lowercase letter, one digit, one special character, and be at least 8 characters long.", from: self)
+            Utils.showAlert(title: "Invalid password", message: "Password must contain one at least uppercase letter, one lowercase letter, one digit, one special character, and be at least 8 characters long.", preferredStyle: .alert, from: self)
             return
         }
         
         Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
             if let error = error {
-                AuthHelper.showAlert(title: "Faild to Login", message: error.localizedDescription, from: self)
+                Utils.showAlert(title: "Faild to Login", message: error.localizedDescription, preferredStyle: .alert, from: self)
             } else {
                 print("Login Successful")
+                self.coordinator?.gotoHome()
                 // TODO: Navigate to Home
             }
         }

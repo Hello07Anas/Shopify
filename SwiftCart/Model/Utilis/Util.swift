@@ -1,30 +1,49 @@
 //
-//  AlertManager.swift
+//  Utilites.swift
 //  SwiftCart
 //
-//  Created by Anas Salah on 07/06/2024.
+//  Created by Elham on 03/06/2024.
 //
-
-import Foundation
+  
 import UIKit
-
-struct AlertManager {
+    
+public struct Utils {
+    
+    static func convertTo<T: Decodable>(from data: Data)-> T?{
+        
+        do {
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .iso8601
+            let result = try decoder.decode(T.self, from: data)
+            return result
+            
+        } catch let error{
+            print(error)
+            return nil
+        }
+    }
     
     static func showAlert(title: String?,
                           message: String?,
                           preferredStyle: UIAlertController.Style,
-                          actions: [UIAlertAction],
-                          from viewController: UIViewController) {
+                          from viewController: UIViewController,
+                          actions: [UIAlertAction]? = nil)
+                          {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
-        
-        for action in actions {
-            alertController.addAction(action)
+                              
+        if let actions {
+            for action in actions {
+                alertController.addAction(action)
+            }
+        } else { // تحية وتقدير لعثمان
+            let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alertController.addAction(defaultAction)
         }
-        
+
         viewController.present(alertController, animated: true, completion: nil)
     }
 }
-    // MARK: here how to use it
+    // MARK: here how to use showAlert
 /*
     func showMyAlert() {
         // Define actions
