@@ -11,6 +11,7 @@ class CategoryViewController: UIViewController, UICollectionViewDelegate, UIColl
 
     @IBOutlet weak var collectionView: UICollectionView!
     
+    weak var coordinator : AppCoordinator?
     override func viewDidLoad() {
         super.viewDidLoad()
 
