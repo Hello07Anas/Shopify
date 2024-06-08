@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="D5K-hA-mnE">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BdA-9V-VlW">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
@@ -29,7 +29,7 @@
                                 </connections>
                             </searchBar>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="wVp-9J-Zl3">
-                                <rect key="frame" x="8" y="152" width="377" height="680"/>
+                                <rect key="frame" x="8" y="152" width="377" height="729"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="WGd-4O-ibo">
                                     <size key="itemSize" width="376" height="128"/>
@@ -86,7 +86,6 @@
                                         <size key="customSize" width="218" height="128"/>
                                         <connections>
                                             <outlet property="img" destination="TMs-Aw-ouo" id="Hxx-Ke-zKS"/>
-                                            <segue destination="9TB-JC-d02" kind="show" id="QGH-pQ-DGT"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -143,27 +142,27 @@
         <!--Product View Controller-->
         <scene sceneID="Nsz-yM-dzS">
             <objects>
-                <viewController modalPresentationStyle="fullScreen" id="9TB-JC-d02" customClass="ProductViewController" customModule="SwiftCart" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ProductViewController" modalPresentationStyle="fullScreen" id="9TB-JC-d02" customClass="ProductViewController" customModule="SwiftCart" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Frc-Tu-WmB">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="eEk-qb-nlH">
-                                <rect key="frame" x="0.0" y="111" width="331" height="56"/>
+                                <rect key="frame" x="0.0" y="67" width="331" height="56"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <outlet property="delegate" destination="9TB-JC-d02" id="LTy-gN-7TU"/>
                                 </connections>
                             </searchBar>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jht-fb-ekd">
-                                <rect key="frame" x="339" y="120" width="54" height="35"/>
+                                <rect key="frame" x="339" y="76" width="54" height="35"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="cart" catalog="system">
                                     <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </buttonConfiguration>
                             </button>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="r6T-qA-GeN">
-                                <rect key="frame" x="8" y="171" width="377" height="598"/>
+                                <rect key="frame" x="8" y="127" width="377" height="691"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Mlt-FN-DwM">
                                     <size key="itemSize" width="167" height="132"/>
@@ -248,32 +247,10 @@
             </objects>
             <point key="canvasLocation" x="-37.404580152671755" y="2109.8591549295775"/>
         </scene>
-        <!--Category-->
-        <scene sceneID="6vd-NU-MFh">
-            <objects>
-                <tabBarController title="Category" automaticallyAdjustsScrollViewInsets="NO" modalPresentationStyle="fullScreen" id="D5K-hA-mnE" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="ZRl-2v-jkV">
-                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <color key="selectedImageTintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </tabBar>
-                    <connections>
-                        <segue destination="JPu-ch-CiW" kind="relationship" relationship="viewControllers" id="zmL-nE-s2q"/>
-                        <segue destination="rKa-a6-Plk" kind="relationship" relationship="viewControllers" id="Vt9-LK-KZ6"/>
-                    </connections>
-                </tabBarController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="KgF-Vt-GYq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="54.198473282442748" y="-34.507042253521128"/>
-        </scene>
         <!--Category View Controller-->
         <scene sceneID="V0f-7x-ilS">
             <objects>
-                <viewController modalPresentationStyle="fullScreen" id="vGW-Ch-lQ4" customClass="CategoryViewController" customModule="SwiftCart" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CategoryViewController" modalPresentationStyle="fullScreen" id="vGW-Ch-lQ4" customClass="CategoryViewController" customModule="SwiftCart" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="TEa-WM-RcT">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -326,7 +303,6 @@
                                         <connections>
                                             <outlet property="categoryName" destination="fzi-d9-4im" id="ib8-Xe-aJ0"/>
                                             <outlet property="img" destination="P6r-Xa-Lcg" id="qgI-Cr-rgL"/>
-                                            <segue destination="9TB-JC-d02" kind="show" id="dYU-ql-6P3"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -358,55 +334,10 @@
             </objects>
             <point key="canvasLocation" x="-509.16030534351142" y="1409.8591549295775"/>
         </scene>
-        <!--Home-->
-        <scene sceneID="bv0-aT-ubb">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="JPu-ch-CiW" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Home" image="house.fill" catalog="system" id="WiU-AU-Sbe">
-                        <color key="badgeColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </tabBarItem>
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="hrJ-ZJ-6fh">
-                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="BdA-9V-VlW" kind="relationship" relationship="rootViewController" id="Ptf-8p-x0p"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ZS8-1a-oPt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="517" y="701"/>
-        </scene>
-        <!--Category-->
-        <scene sceneID="nrw-ev-Lne">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="rKa-a6-Plk" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Category" image="rectangle.3.group" catalog="system" id="ahC-qF-Wfr"/>
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="kUw-nk-JrC">
-                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="vGW-Ch-lQ4" kind="relationship" relationship="rootViewController" id="rji-SA-VZM"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="VjI-fa-TZh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-509" y="692"/>
-        </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="QGH-pQ-DGT"/>
-    </inferredMetricsTieBreakers>
     <resources>
         <image name="cart" catalog="system" width="128" height="102"/>
         <image name="cart.circle.fill" catalog="system" width="128" height="123"/>
-        <image name="house.fill" catalog="system" width="128" height="104"/>
-        <image name="rectangle.3.group" catalog="system" width="128" height="80"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

@@ -49,11 +49,24 @@ class AppCoordinator: Coordinator {
     
     
     func gotoHome() {
+        
         let storyboard = UIStoryboard(name: K.Home.homeStoryboardName, bundle: Bundle.main)
-        let vc = storyboard.instantiateViewController(withIdentifier: K.Home.homeViewName) as! HomeViewController
-        vc.coordinator = self
-        navigationController.pushViewController(vc, animated: true)
+        let homeVc = storyboard.instantiateViewController(withIdentifier: K.Home.homeViewName) as! HomeViewController
+        let categoryVc = storyboard.instantiateViewController(withIdentifier: K.Home.categoryViewName) as! CategoryViewController
+        homeVc.coordinator = self
+        categoryVc.coordinator = self
+        
+        homeVc.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 0)
+           categoryVc.tabBarItem = UITabBarItem(title: "Categories", image: UIImage(systemName: "list.bullet"), tag: 1)
+           
+           let tabBar = UITabBarController()
+           tabBar.viewControllers = [homeVc, categoryVc]
+        tabBar.tabBar.backgroundColor = .white
+        
+        navigationController.pushViewController(tabBar, animated: true)
     }
+    
+    
     
     func finish() {
         navigationController.popViewController(animated: true)

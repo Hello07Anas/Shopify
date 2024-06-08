@@ -19,7 +19,10 @@ public enum K {
     enum Home {
         static let homeStoryboardName = "HomeStoryboard"
         static let homeViewName = "HomeViewController"
+        static let categoryViewName = "CategoryViewController"
+        static let productViewName = "ProductViewController"
     }
     
-    //MARK: Add any Constants u need in a staruct pleas
+    
+    //MARK: Add any Const ants u need in a staruct pleas
 }
