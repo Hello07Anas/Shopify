@@ -7,6 +7,7 @@
 
 import UIKit
 import FirebaseAuth
+import FirebaseFirestore
 
 class SginUp: UIViewController { // TODO: fix routation in Sgin UP
     
@@ -19,7 +20,6 @@ class SginUp: UIViewController { // TODO: fix routation in Sgin UP
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("SginUp is loaded ")
         
         self.navigationController?.navigationBar.isHidden = true
     }
@@ -66,15 +66,41 @@ class SginUp: UIViewController { // TODO: fix routation in Sgin UP
             return
         }
         
+//        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+//            if let error = error {
+//                Utils.showAlert(title: "Error creating user",
+//                                message: error.localizedDescription, preferredStyle: .alert,
+//                                     from: self)
+//            } else {
+//                print("User created successfully")
+//                self.coordinator?.gotoHome()
+//                // Navigate to the next screen, the home screen
+//            }
+//        }
         Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
-            if let error = error {
-                Utils.showAlert(title: "Error creating user",
-                                message: error.localizedDescription, preferredStyle: .alert,
-                                     from: self)
-            } else {
-                print("User created successfully")
-                self.coordinator?.gotoHome()
-                // Navigate to the next screen, the home screen
+            DispatchQueue.main.async {
+                if let error = error {
+                    Utils.showAlert(title: "Error creating user", message: error.localizedDescription, preferredStyle: .alert, from: self)
+                    return
+                } else {
+                    print("User created successfully in Firebase")
+                    guard let uid = authResult?.user.uid else { return }
+                    
+                    ShopifyAPIHelper.shared.createCustomer(email: email, firstName: name, lastName: "") { result in
+                        switch result {
+                        case .success(let shopifyCustomerID):
+                            DispatchQueue.main.async {
+                                self.storeUserData(uid: uid, shopifyCustomerID: shopifyCustomerID, email: email, name: name) {
+                                    self.coordinator?.gotoHome()
+                                }
+                            }
+                        case .failure(let error):
+                            DispatchQueue.main.async {
+                                Utils.showAlert(title: "Error", message: "Failed to create Shopify customer: \(error.localizedDescription)", preferredStyle: .alert, from: self)
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -83,15 +109,74 @@ class SginUp: UIViewController { // TODO: fix routation in Sgin UP
 
     @IBAction func sginUpWithX(_ sender: Any) {}
 
+    // Helper Methods:
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func storeUserData(uid: String, shopifyCustomerID: String, email: String, name: String, completion: @escaping () -> Void) {
+        let db = Firestore.firestore()
+        let userData: [String: Any] = [
+            "uid": uid,
+            "shopifyCustomerID": shopifyCustomerID,
+            "email": email,
+            "name": name
+        ]
+        
+        db.collection("users").document(uid).setData(userData) { error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    print("Error writing document: \(error.localizedDescription)")
+                    Utils.showAlert(title: "Error", message: "Failed to store user data: \(error.localizedDescription)", preferredStyle: .alert, from: self)
+                } else {
+                    print("Document successfully written!")
+                    UserDefaults.standard.set(email, forKey: "userEmail")
+                    UserDefaults.standard.set(name, forKey: "userName")
+                    UserDefaults.standard.set(uid, forKey: "userUID")
+                    UserDefaults.standard.set(shopifyCustomerID, forKey: "shopifyCustomerID")
+                    completion()
+                }
+            }
+        }
     }
-    */
-
 }
+
+/*
+ "customers": [
+         {
+             "id": 6978897346607,
+             "email": "anas.shopify07@gmail.com",
+             "created_at": "2024-06-09T14:54:45-04:00",
+             "updated_at": "2024-06-09T14:54:45-04:00",
+             "first_name": "anas",
+             "last_name": "",
+             "orders_count": 0,
+             "state": "disabled",
+             "total_spent": "0.00",
+             "last_order_id": null,
+             "note": null,
+             "verified_email": true,
+             "multipass_identifier": null,
+             "tax_exempt": false,
+             "tags": "",
+             "last_order_name": null,
+             "currency": "EGP",
+             "phone": null,
+             "addresses": [],
+             "tax_exemptions": [],
+             "email_marketing_consent": {
+                 "state": "not_subscribed",
+                 "opt_in_level": "single_opt_in",
+                 "consent_updated_at": null
+             },
+             "sms_marketing_consent": null,
+             "admin_graphql_api_id": "gid://shopify/Customer/6978897346607"
+         }
+ */
+
+/*
+// MARK: - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    // Get the new view controller using segue.destination.
+    // Pass the selected object to the new view controller.
+}
+*/

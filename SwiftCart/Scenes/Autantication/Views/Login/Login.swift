@@ -7,6 +7,7 @@
 
 import UIKit
 import FirebaseAuth
+import FirebaseFirestore
 
 class Login: UIViewController {
 
@@ -56,23 +57,85 @@ class Login: UIViewController {
             return
         }
         
-        Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
+//        Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
+//            if let error = error {
+//                Utils.showAlert(title: "Faild to Login", message: error.localizedDescription, preferredStyle: .alert, from: self)
+//            } else {
+//                print("Login Successful")
+//                self.coordinator?.gotoHome()
+//                // TODO: Navigate to Home
+//            }
+//        }
+        Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
+            guard let self = self else { return }
+            
             if let error = error {
-                Utils.showAlert(title: "Faild to Login", message: error.localizedDescription, preferredStyle: .alert, from: self)
+                Utils.showAlert(title: "Failed to Login", message: error.localizedDescription, preferredStyle: .alert, from: self)
             } else {
                 print("Login Successful")
-                self.coordinator?.gotoHome()
-                // TODO: Navigate to Home
+                
+                self.fetchUserDataFromFirestore(email: email) { userData in
+                    if let userData = userData {
+                        self.saveUserDataToUserDefaults(userData)
+                        
+                        self.coordinator?.gotoHome()
+                        
+                        self.printUserDefaults()
+                    } else {
+                        Utils.showAlert(title: "Account Not Fully Set Up", message: "Your account is not fully set up. Please contact support.", preferredStyle: .alert, from: self)
+                    }
+                }
             }
         }
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    
+    // Helper methods
+    
+    private func fetchUserDataFromFirestore(email: String, completion: @escaping ([String: Any]?) -> Void) {
+        let db = Firestore.firestore()
+        
+        db.collection("users").whereField("email", isEqualTo: email).getDocuments { snapshot, error in
+            if let error = error {
+                print("Error fetching user data from Firestore: \(error.localizedDescription)")
+                completion(nil)
+                return
+            }
+            
+            guard let documents = snapshot?.documents, let userData = documents.first?.data() else {
+                print("No user data found for email: \(email)")
+                completion(nil)
+                return
+            }
+            
+            completion(userData)
+        }
     }
-    */
+    
+    private func saveUserDataToUserDefaults(_ userData: [String: Any]) {
+        UserDefaults.standard.set(userData["email"], forKey: "userEmail")
+        UserDefaults.standard.set(userData["name"], forKey: "userName")
+        UserDefaults.standard.set(userData["uid"], forKey: "userUID")
+        UserDefaults.standard.set(userData["shopifyCustomerID"], forKey: "shopifyCustomerID")
+        
+        UserDefaults.standard.synchronize()
+    }
+    
+    private func printUserDefaults() {
+        let userEmail = UserDefaults.standard.string(forKey: "userEmail") ?? "N/A"
+        let userName = UserDefaults.standard.string(forKey: "userName") ?? "N/A"
+        let userUID = UserDefaults.standard.string(forKey: "userUID") ?? "N/A"
+        let shopifyCustomerID = UserDefaults.standard.string(forKey: "shopifyCustomerID") ?? "N/A"
+        
+        print("UserDefaults - Email: \(userEmail), Name: \(userName), UID: \(userUID), ShopifyCustomerID: \(shopifyCustomerID)")
+    }
 }
+
+/*
+// MARK: - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    // Get the new view controller using segue.destination.
+    // Pass the selected object to the new view controller.
+}
+*/
