@@ -57,10 +57,10 @@ class AppCoordinator: Coordinator {
         categoryVc.coordinator = self
         
         homeVc.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 0)
-           categoryVc.tabBarItem = UITabBarItem(title: "Categories", image: UIImage(systemName: "list.bullet"), tag: 1)
-           
-           let tabBar = UITabBarController()
-           tabBar.viewControllers = [homeVc, categoryVc]
+        categoryVc.tabBarItem = UITabBarItem(title: "Categories", image: UIImage(systemName: "list.bullet"), tag: 1)
+        
+        let tabBar = UITabBarController()
+        tabBar.viewControllers = [homeVc, categoryVc]
         tabBar.tabBar.backgroundColor = .white
         
         navigationController.pushViewController(tabBar, animated: true)

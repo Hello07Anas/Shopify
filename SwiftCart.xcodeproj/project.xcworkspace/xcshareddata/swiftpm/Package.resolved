@@ -1,5 +1,4 @@
 {
-  "originHash" : "e129da19d73c0afaf052f3eea4b9b7e78aa3fa078fd90f0daac8fbe6c6762c45",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -119,15 +118,6 @@
       }
     },
     {
-      "identity" : "ohhttpstubs",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/AliSoftware/OHHTTPStubs.git",
-      "state" : {
-        "revision" : "12f19662426d0434d6c330c6974d53e2eb10ecd9",
-        "version" : "9.1.0"
-      }
-    },
-    {
       "identity" : "promises",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/promises.git",
@@ -141,8 +131,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/RxSwiftCommunity/RxAlamofire.git",
       "state" : {
-        "revision" : "16858a7955ff8bc3caa51212fd7624f168586773",
-        "version" : "5.7.1"
+        "revision" : "522138d122d26e42ed6bd492f8ae22c1527bfb77",
+        "version" : "5.2.0"
       }
     },
     {
@@ -173,5 +163,5 @@
       }
     }
   ],
-  "version" : 3
+  "version" : 2
 }
