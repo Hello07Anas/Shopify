@@ -66,6 +66,27 @@ class Login: UIViewController {
 //                // TODO: Navigate to Home
 //            }
 //        }
+//        Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
+//            guard let self = self else { return }
+//            
+//            if let error = error {
+//                Utils.showAlert(title: "Failed to Login", message: error.localizedDescription, preferredStyle: .alert, from: self)
+//            } else {
+//                print("Login Successful")
+//                
+//                self.fetchUserDataFromFirestore(email: email) { userData in
+//                    if let userData = userData {
+//                        self.saveUserDataToUserDefaults(userData)
+//                        
+//                        self.coordinator?.gotoHome()
+//                        
+//                        self.printUserDefaults()
+//                    } else {
+//                        Utils.showAlert(title: "Account Not Fully Set Up", message: "Your account is not fully set up. Please contact support.", preferredStyle: .alert, from: self)
+//                    }
+//                }
+//            }
+//        }
         Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
             guard let self = self else { return }
             
@@ -76,11 +97,11 @@ class Login: UIViewController {
                 
                 self.fetchUserDataFromFirestore(email: email) { userData in
                     if let userData = userData {
-                        self.saveUserDataToUserDefaults(userData)
+                        UserDefaultsHelper.shared.saveUserData(email: email, name: userData["name"] as? String ?? "", uid: userData["uid"] as? String ?? "", shopifyCustomerID: userData["shopifyCustomerID"] as? String ?? "")
                         
                         self.coordinator?.gotoHome()
                         
-                        self.printUserDefaults()
+                        UserDefaultsHelper.shared.printUserDefaults()
                     } else {
                         Utils.showAlert(title: "Account Not Fully Set Up", message: "Your account is not fully set up. Please contact support.", preferredStyle: .alert, from: self)
                     }
@@ -111,23 +132,23 @@ class Login: UIViewController {
         }
     }
     
-    private func saveUserDataToUserDefaults(_ userData: [String: Any]) {
-        UserDefaults.standard.set(userData["email"], forKey: "userEmail")
-        UserDefaults.standard.set(userData["name"], forKey: "userName")
-        UserDefaults.standard.set(userData["uid"], forKey: "userUID")
-        UserDefaults.standard.set(userData["shopifyCustomerID"], forKey: "shopifyCustomerID")
-        
-        UserDefaults.standard.synchronize()
-    }
+//    private func saveUserDataToUserDefaults(_ userData: [String: Any]) {
+//        UserDefaults.standard.set(userData["email"], forKey: "userEmail")
+//        UserDefaults.standard.set(userData["name"], forKey: "userName")
+//        UserDefaults.standard.set(userData["uid"], forKey: "userUID")
+//        UserDefaults.standard.set(userData["shopifyCustomerID"], forKey: "shopifyCustomerID")
+//        
+//        UserDefaults.standard.synchronize()
+//    }
     
-    private func printUserDefaults() {
-        let userEmail = UserDefaults.standard.string(forKey: "userEmail") ?? "N/A"
-        let userName = UserDefaults.standard.string(forKey: "userName") ?? "N/A"
-        let userUID = UserDefaults.standard.string(forKey: "userUID") ?? "N/A"
-        let shopifyCustomerID = UserDefaults.standard.string(forKey: "shopifyCustomerID") ?? "N/A"
-        
-        print("UserDefaults - Email: \(userEmail), Name: \(userName), UID: \(userUID), ShopifyCustomerID: \(shopifyCustomerID)")
-    }
+//    private func printUserDefaults() {
+//        let userEmail = UserDefaults.standard.string(forKey: "userEmail") ?? "N/A"
+//        let userName = UserDefaults.standard.string(forKey: "userName") ?? "N/A"
+//        let userUID = UserDefaults.standard.string(forKey: "userUID") ?? "N/A"
+//        let shopifyCustomerID = UserDefaults.standard.string(forKey: "shopifyCustomerID") ?? "N/A"
+//        
+//        print("UserDefaults - Email: \(userEmail), Name: \(userName), UID: \(userUID), ShopifyCustomerID: \(shopifyCustomerID)")
+//    }
 }
 
 /*

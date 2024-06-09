@@ -24,6 +24,7 @@
 		4C3110182C13904F00B88AC5 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3110172C13904F00B88AC5 /* AppCoordinator.swift */; };
 		4C31101A2C13909D00B88AC5 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3110192C13909D00B88AC5 /* Coordinator.swift */; };
 		4C6E01D52C163BE50092E4E0 /* ShopifyAPIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C6E01D42C163BE50092E4E0 /* ShopifyAPIHelper.swift */; };
+		4C6E01D72C1660BB0092E4E0 /* UserDefaultsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C6E01D62C1660BA0092E4E0 /* UserDefaultsHelper.swift */; };
 		4C806C8C2C13626700413E54 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C806C8B2C13626700413E54 /* Constants.swift */; };
 		4C806C8E2C13628900413E54 /* AuthHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C806C8D2C13628900413E54 /* AuthHelper.swift */; };
 		4C806C942C13635A00413E54 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4C806C932C13635A00413E54 /* GoogleService-Info.plist */; };
@@ -72,6 +73,7 @@
 		4C3110172C13904F00B88AC5 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		4C3110192C13909D00B88AC5 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		4C6E01D42C163BE50092E4E0 /* ShopifyAPIHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopifyAPIHelper.swift; sourceTree = "<group>"; };
+		4C6E01D62C1660BA0092E4E0 /* UserDefaultsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsHelper.swift; sourceTree = "<group>"; };
 		4C806C8B2C13626700413E54 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		4C806C8D2C13628900413E54 /* AuthHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthHelper.swift; sourceTree = "<group>"; };
 		4C806C932C13635A00413E54 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -336,6 +338,7 @@
 				4CC00E7D2C09FE2700DD2758 /* Views */,
 				4C806C8D2C13628900413E54 /* AuthHelper.swift */,
 				4C6E01D42C163BE50092E4E0 /* ShopifyAPIHelper.swift */,
+				4C6E01D62C1660BA0092E4E0 /* UserDefaultsHelper.swift */,
 			);
 			path = Autantication;
 			sourceTree = "<group>";
@@ -518,6 +521,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C6E01D72C1660BB0092E4E0 /* UserDefaultsHelper.swift in Sources */,
 				4C9C39B52C0A2C03003F0769 /* NibViewController.swift in Sources */,
 				04715A842C08FCD000D8DC3B /* ViewData.swift in Sources */,
 				04715A8E2C08FD7D00D8DC3B /* Local.swift in Sources */,

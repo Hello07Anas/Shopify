@@ -103,6 +103,32 @@ class SginUp: UIViewController { // TODO: fix routation in Sgin UP
                 }
             }
         }
+//        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+//            DispatchQueue.main.async {
+//                if let error = error {
+//                    Utils.showAlert(title: "Error creating user", message: error.localizedDescription, preferredStyle: .alert, from: self)
+//                    return
+//                } else {
+//                    print("User created successfully in Firebase")
+//                    guard let uid = authResult?.user.uid else { return }
+//                    
+//                    ShopifyAPIHelper.shared.createCustomer(email: email, firstName: name, lastName: "") { result in
+//                        switch result {
+//                        case .success(let shopifyCustomerID):
+//                            DispatchQueue.main.async {
+//                                self.storeUserData(uid: uid, shopifyCustomerID: shopifyCustomerID, email: email, name: name) {
+//                                    self.coordinator?.gotoHome()
+//                                }
+//                            }
+//                        case .failure(let error):
+//                            DispatchQueue.main.async {
+//                                Utils.showAlert(title: "Error", message: "Failed to create Shopify customer: \(error.localizedDescription)", preferredStyle: .alert, from: self)
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
     }
 
     @IBAction func sginUpWithGoogle(_ sender: Any) { }
@@ -111,7 +137,7 @@ class SginUp: UIViewController { // TODO: fix routation in Sgin UP
 
     // Helper Methods:
     
-    func storeUserData(uid: String, shopifyCustomerID: String, email: String, name: String, completion: @escaping () -> Void) {
+    private func storeUserData(uid: String, shopifyCustomerID: String, email: String, name: String, completion: @escaping () -> Void) {
         let db = Firestore.firestore()
         let userData: [String: Any] = [
             "uid": uid,
@@ -127,15 +153,37 @@ class SginUp: UIViewController { // TODO: fix routation in Sgin UP
                     Utils.showAlert(title: "Error", message: "Failed to store user data: \(error.localizedDescription)", preferredStyle: .alert, from: self)
                 } else {
                     print("Document successfully written!")
-                    UserDefaults.standard.set(email, forKey: "userEmail")
-                    UserDefaults.standard.set(name, forKey: "userName")
-                    UserDefaults.standard.set(uid, forKey: "userUID")
-                    UserDefaults.standard.set(shopifyCustomerID, forKey: "shopifyCustomerID")
+                    UserDefaultsHelper.shared.saveUserData(email: email, name: name, uid: uid, shopifyCustomerID: shopifyCustomerID)
                     completion()
                 }
             }
         }
     }
+//    func storeUserData(uid: String, shopifyCustomerID: String, email: String, name: String, completion: @escaping () -> Void) {
+//        let db = Firestore.firestore()
+//        let userData: [String: Any] = [
+//            "uid": uid,
+//            "shopifyCustomerID": shopifyCustomerID,
+//            "email": email,
+//            "name": name
+//        ]
+//        
+//        db.collection("users").document(uid).setData(userData) { error in
+//            DispatchQueue.main.async {
+//                if let error = error {
+//                    print("Error writing document: \(error.localizedDescription)")
+//                    Utils.showAlert(title: "Error", message: "Failed to store user data: \(error.localizedDescription)", preferredStyle: .alert, from: self)
+//                } else {
+//                    print("Document successfully written!")
+//                    UserDefaults.standard.set(email, forKey: "userEmail")
+//                    UserDefaults.standard.set(name, forKey: "userName")
+//                    UserDefaults.standard.set(uid, forKey: "userUID")
+//                    UserDefaults.standard.set(shopifyCustomerID, forKey: "shopifyCustomerID")
+//                    completion()
+//                }
+//            }
+//        }
+//    }
 }
 
 /*
