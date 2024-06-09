@@ -12,17 +12,30 @@ import Foundation
 public enum K {
     
     enum Auth {
-        static let sginUpNibName = "SginUp"
-        static let loginNibName = "Login"
+        static let SginUp_Nib_Name = "SginUp"
+        static let Login_Nib_Name = "Login"
     }
     
     enum Home {
-        static let homeStoryboardName = "HomeStoryboard"
-        static let homeViewName = "HomeViewController"
-        static let categoryViewName = "CategoryViewController"
-        static let productViewName = "ProductViewController"
+        static let Home_Storyboard_Name = "HomeStoryboard"
+        static let Home_View_Name = "HomeViewController"
+        static let Category_View_Name = "CategoryViewController"
+        static let Product_View_Name = "ProductViewController"
     }
     
+    enum Shopify {
+        static let Shopify_API_Key = "236f00d0acd3538f6713fd3a323150b6"
+        static let Shopify_API_Secret = "f7e30cfe8bb4caedc97901323c1a2d67"
+        static let Shopify_Shop_Name = "mad44-sv-iost1"
+        static let Access_Token = "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"
+        static let Base_URL = "https://mad44-sv-iost1.myshopify.com/admin/api/2023-01/"
+    }
     
+    enum HTTPMethod {
+        static let GET = "GET"
+        static let POST = "POST"
+        static let PUT = "PUT"
+        static let DELETE = "DELETE"
+    }
     //MARK: Add any Const ants u need in a staruct pleas
 }

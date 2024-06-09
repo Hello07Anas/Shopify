@@ -35,7 +35,7 @@ public struct Utils {
             for action in actions {
                 alertController.addAction(action)
             }
-        } else { // تحية وتقدير لعثمان
+        } else {
             let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
             alertController.addAction(defaultAction)
         }
