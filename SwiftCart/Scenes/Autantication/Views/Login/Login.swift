@@ -7,6 +7,7 @@
 
 import UIKit
 import FirebaseAuth
+import FirebaseFirestore
 
 class Login: UIViewController {
 
@@ -21,7 +22,6 @@ class Login: UIViewController {
 
         self.navigationController?.navigationBar.isHidden = true
 
-        // TODO: hide back btn of navigation
     }
 
     @IBAction func backBtn(_ sender: Any) {
@@ -56,23 +56,57 @@ class Login: UIViewController {
             return
         }
         
-        Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
+        Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
+            guard let self = self else { return }
+            
             if let error = error {
-                Utils.showAlert(title: "Faild to Login", message: error.localizedDescription, preferredStyle: .alert, from: self)
+                Utils.showAlert(title: "Failed to Login", message: error.localizedDescription, preferredStyle: .alert, from: self)
             } else {
                 print("Login Successful")
-                self.coordinator?.gotoHome()
-                // TODO: Navigate to Home
+                
+                self.fetchUserDataFromFirestore(email: email) { userData in
+                    if let userData = userData {
+                        UserDefaultsHelper.shared.saveUserData(email: email, name: userData["name"] as? String ?? "", uid: userData["uid"] as? String ?? "", shopifyCustomerID: userData["shopifyCustomerID"] as? String ?? "")
+                        
+                        self.coordinator?.gotoHome()
+                        
+                        UserDefaultsHelper.shared.printUserDefaults()
+                    } else {
+                        Utils.showAlert(title: "Account Not Fully Set Up", message: "Your account is not fully set up. Please contact support.", preferredStyle: .alert, from: self)
+                    }
+                }
             }
         }
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    
+    // Helper methods
+    
+    private func fetchUserDataFromFirestore(email: String, completion: @escaping ([String: Any]?) -> Void) {
+        let db = Firestore.firestore()
+        
+        db.collection("users").whereField("email", isEqualTo: email).getDocuments { snapshot, error in
+            if let error = error {
+                print("Error fetching user data from Firestore: \(error.localizedDescription)")
+                completion(nil)
+                return
+            }
+            
+            guard let documents = snapshot?.documents, let userData = documents.first?.data() else {
+                print("No user data found for email: \(email)")
+                completion(nil)
+                return
+            }
+            completion(userData)
+        }
     }
-    */
 }
+
+/*
+// MARK: - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    // Get the new view controller using segue.destination.
+    // Pass the selected object to the new view controller.
+}
+*/

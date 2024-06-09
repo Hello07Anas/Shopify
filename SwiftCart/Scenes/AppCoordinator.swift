@@ -30,7 +30,7 @@ class AppCoordinator: Coordinator {
         if let loginViewController = navigationController.viewControllers.last(where: { $0 is Login }), !pushToStack {
             navigationController.popToViewController(loginViewController, animated: true)
         } else {
-            let login = Login(nibName: K.Auth.loginNibName, bundle: nil)
+            let login = Login(nibName: K.Auth.Login_Nib_Name, bundle: nil)
             login.coordinator = self
             navigationController.pushViewController(login, animated: true)
         }
@@ -41,7 +41,7 @@ class AppCoordinator: Coordinator {
         if let sginUpViewController = navigationController.viewControllers.last(where: { $0 is SginUp }), !pushToStack {
             navigationController.popToViewController(sginUpViewController, animated: true)
         } else {
-            let sginUp = SginUp(nibName: K.Auth.sginUpNibName, bundle: nil)
+            let sginUp = SginUp(nibName: K.Auth.SginUp_Nib_Name, bundle: nil)
             sginUp.coordinator = self
             navigationController.pushViewController(sginUp, animated: true)
         }
@@ -50,9 +50,9 @@ class AppCoordinator: Coordinator {
     
     func gotoHome() {
         
-        let storyboard = UIStoryboard(name: K.Home.homeStoryboardName, bundle: Bundle.main)
-        let homeVc = storyboard.instantiateViewController(withIdentifier: K.Home.homeViewName) as! HomeViewController
-        let categoryVc = storyboard.instantiateViewController(withIdentifier: K.Home.categoryViewName) as! CategoryViewController
+        let storyboard = UIStoryboard(name: K.Home.Home_Storyboard_Name, bundle: Bundle.main)
+        let homeVc = storyboard.instantiateViewController(withIdentifier: K.Home.Home_View_Name) as! HomeViewController
+        let categoryVc = storyboard.instantiateViewController(withIdentifier: K.Home.Category_View_Name) as! CategoryViewController
         homeVc.coordinator = self
         categoryVc.coordinator = self
         
