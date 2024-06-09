@@ -41,10 +41,10 @@ struct UserDefaultsHelper {
     }
     
     func printUserDefaults() {
-        let userEmail = UserDefaults.standard.string(forKey: "userEmail") ?? "N/A"
-        let userName = UserDefaults.standard.string(forKey: "userName") ?? "N/A"
-        let userUID = UserDefaults.standard.string(forKey: "userUID") ?? "N/A"
-        let shopifyCustomerID = UserDefaults.standard.string(forKey: "shopifyCustomerID") ?? "N/A"
+        let userEmail = UserDefaults.standard.string(forKey: "userEmail") ?? "No Data"
+        let userName = UserDefaults.standard.string(forKey: "userName") ?? "No Data"
+        let userUID = UserDefaults.standard.string(forKey: "userUID") ?? "No Data"
+        let shopifyCustomerID = UserDefaults.standard.string(forKey: "shopifyCustomerID") ?? "No Data"
         
         print("UserDefaults - Email: \(userEmail), Name: \(userName), UID: \(userUID), ShopifyCustomerID: \(shopifyCustomerID)")
     }

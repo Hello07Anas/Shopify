@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ShopifyAPIHelper {
+struct ShopifyAPIHelper {
     
     static let shared = ShopifyAPIHelper()
     
@@ -18,17 +18,17 @@ class ShopifyAPIHelper {
         var request = URLRequest(url: url)
         request.httpMethod = method
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue(K.Shopify.Access_Token, forHTTPHeaderField: "X-Shopify-Access-Token") // Correct header
+        request.setValue(K.Shopify.Access_Token, forHTTPHeaderField: "X-Shopify-Access-Token")
         
         if let body = body {
             request.httpBody = try? JSONSerialization.data(withJSONObject: body)
         }
         
-        print("Request URL: \(url)")
-        print("Request Headers: \(request.allHTTPHeaderFields ?? [:])")
-        if let body = body {
-            print("Request Body: \(String(data: request.httpBody ?? Data(), encoding: .utf8) ?? "No Body")")
-        }
+//        print("Request URL: \(url)")
+//        print("Request Headers: \(request.allHTTPHeaderFields ?? [:])")
+//        if let body = body {
+//            print("Request Body: \(String(data: request.httpBody ?? Data(), encoding: .utf8) ?? "No Body")")
+//        }
         
         return request
     }
