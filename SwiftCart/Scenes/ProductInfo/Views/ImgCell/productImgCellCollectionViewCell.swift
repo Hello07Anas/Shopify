@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class productImgCellCollectionViewCell: UICollectionViewCell {
 
@@ -16,4 +17,7 @@ class productImgCellCollectionViewCell: UICollectionViewCell {
         // Initialization code
     }
 
+    func configure(with url: URL) {
+        productImg.sd_setImage(with: url, completed: nil)
+    }
 }

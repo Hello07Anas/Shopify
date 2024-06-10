@@ -104,7 +104,7 @@ class ProductViewController: UIViewController, UICollectionViewDelegate, UIColle
         
               let selectedProduct = viewModel.getProducts()[indexPath.row]
               coordinator?.goToProductInfo(product: selectedProduct)
-         
+            print("Item Selected")
       }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

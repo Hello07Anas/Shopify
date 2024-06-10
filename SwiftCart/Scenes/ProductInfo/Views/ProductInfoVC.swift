@@ -12,7 +12,7 @@ class ProductInfoVC: UIViewController{
     
     weak var coordinator: AppCoordinator?
     
-    var productInfoVM: ProductInfoVM! // get data
+    var productInfoVM: ProductInfoVM!
     
     @IBOutlet weak var productImageCollectionView: UICollectionView!
     @IBOutlet weak var productReviesCollectionView: UICollectionView!
@@ -20,16 +20,16 @@ class ProductInfoVC: UIViewController{
     @IBOutlet weak var productName: UILabel!
     @IBOutlet weak var productPrice: UILabel! // e.g "820.25 EGP"
     @IBOutlet weak var productDescription: UITextView!
-    // TODO: Add Cosmos in descriprion View
     @IBOutlet weak var descriptionView: UIView!
-    // TODO: Add Cosmos in descriprion View
     @IBOutlet weak var pageControl: UIPageControl!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupProductImageCollectionView()
         setupProductReviesCollectionView()
         
+        setDataOfProduct()
     }
 
     @IBAction func addToFavBtn(_ sender: Any) {
@@ -83,6 +83,18 @@ class ProductInfoVC: UIViewController{
         }
     }
     
+    func setDataOfProduct() {
+        if let product = productInfoVM.getProduct() as? SwiftCart.Product {
+            productName.text = product.title
+            productPrice.text = "\(product.variants.first?.price ?? "0.00") EGP"
+            productDescription.text = product.bodyHTML
+
+            pageControl.numberOfPages = product.images.count
+        }
+        
+        productImageCollectionView.reloadData()
+    }
+    
     
 
 }
@@ -92,7 +104,7 @@ class ProductInfoVC: UIViewController{
 extension ProductInfoVC: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == productImageCollectionView {
-            return 10
+            return (productInfoVM.getProduct() as? SwiftCart.Product)?.images.count ?? 0
         } else if collectionView == productReviesCollectionView {
             return 25
         }
@@ -100,8 +112,18 @@ extension ProductInfoVC: UICollectionViewDataSource, UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        if collectionView == productImageCollectionView {
+//            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "productImgCellCollectionViewCell", for: indexPath) as! productImgCellCollectionViewCell
+//            return cell
         if collectionView == productImageCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "productImgCellCollectionViewCell", for: indexPath) as! productImgCellCollectionViewCell
+            
+            if let product = productInfoVM.getProduct() as? SwiftCart.Product {
+                let imageURLString = product.images[indexPath.item].src
+                if let url = URL(string: imageURLString) {
+                    cell.configure(with: url)
+                }
+            }
             return cell
         } else if collectionView == productReviesCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "productReviewCell", for: indexPath) as! productReviewCell
