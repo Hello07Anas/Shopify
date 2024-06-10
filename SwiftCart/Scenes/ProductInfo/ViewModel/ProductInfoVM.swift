@@ -9,23 +9,10 @@ import Foundation
 
 class ProductInfoVM {
     
-    typealias Product = Any
     private var product: Product
     
     init(product: Product) {
         self.product = product
-//        print("-------------------")
-//        print("-------------------")
-//        print("-------------------")
-//        print("-------------------")
-//        print("-------------------")
-//        print("-------------------")
-//        print("-------------------")
-//        print("-------------------")
-//        print("-------------------")
-//        print("-------------------")
-//        print("-------------------")
-//        print("-------------------")
 //        print("-------------------")
 //        print(product)
     }
