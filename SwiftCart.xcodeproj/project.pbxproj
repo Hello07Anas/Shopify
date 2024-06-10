@@ -25,6 +25,8 @@
 		4C31101A2C13909D00B88AC5 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3110192C13909D00B88AC5 /* Coordinator.swift */; };
 		4C6E01D52C163BE50092E4E0 /* ShopifyAPIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C6E01D42C163BE50092E4E0 /* ShopifyAPIHelper.swift */; };
 		4C6E01D72C1660BB0092E4E0 /* UserDefaultsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C6E01D62C1660BA0092E4E0 /* UserDefaultsHelper.swift */; };
+		4C6E01DC2C166EA70092E4E0 /* ProductInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C6E01DA2C166EA70092E4E0 /* ProductInfoVC.swift */; };
+		4C6E01DD2C166EA70092E4E0 /* ProductInfoVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C6E01DB2C166EA70092E4E0 /* ProductInfoVC.xib */; };
 		4C806C8C2C13626700413E54 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C806C8B2C13626700413E54 /* Constants.swift */; };
 		4C806C8E2C13628900413E54 /* AuthHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C806C8D2C13628900413E54 /* AuthHelper.swift */; };
 		4C806C942C13635A00413E54 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4C806C932C13635A00413E54 /* GoogleService-Info.plist */; };
@@ -74,6 +76,8 @@
 		4C3110192C13909D00B88AC5 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		4C6E01D42C163BE50092E4E0 /* ShopifyAPIHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopifyAPIHelper.swift; sourceTree = "<group>"; };
 		4C6E01D62C1660BA0092E4E0 /* UserDefaultsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsHelper.swift; sourceTree = "<group>"; };
+		4C6E01DA2C166EA70092E4E0 /* ProductInfoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductInfoVC.swift; sourceTree = "<group>"; };
+		4C6E01DB2C166EA70092E4E0 /* ProductInfoVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProductInfoVC.xib; sourceTree = "<group>"; };
 		4C806C8B2C13626700413E54 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		4C806C8D2C13628900413E54 /* AuthHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthHelper.swift; sourceTree = "<group>"; };
 		4C806C932C13635A00413E54 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -154,6 +158,7 @@
 				B972D5E02C0CA0D2007E0329 /* HomeScene */,
 				4C9C39AE2C0A25CE003F0769 /* NibAssestant */,
 				4CC00E7C2C09FD9500DD2758 /* Autantication */,
+				4C6E01D82C166E5B0092E4E0 /* ProductInfo */,
 				04715A762C08FBA300D8DC3B /* Temp */,
 			);
 			path = Scenes;
@@ -304,6 +309,23 @@
 				B9A4BB8F2C0E143D00DB16E5 /* Util.swift */,
 			);
 			path = Utilis;
+			sourceTree = "<group>";
+		};
+		4C6E01D82C166E5B0092E4E0 /* ProductInfo */ = {
+			isa = PBXGroup;
+			children = (
+				4C6E01D92C166E7A0092E4E0 /* Views */,
+			);
+			path = ProductInfo;
+			sourceTree = "<group>";
+		};
+		4C6E01D92C166E7A0092E4E0 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				4C6E01DA2C166EA70092E4E0 /* ProductInfoVC.swift */,
+				4C6E01DB2C166EA70092E4E0 /* ProductInfoVC.xib */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		4C806C9A2C13682800413E54 /* SginUo */ = {
@@ -503,6 +525,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C6E01DD2C166EA70092E4E0 /* ProductInfoVC.xib in Resources */,
 				0E88FE952C112AAF004E3FA6 /* SettingsStoryboard.storyboard in Resources */,
 				B9ACD23E2C1481D500229018 /* SginUp.xib in Resources */,
 				4C806CA22C1368A300413E54 /* Login.xib in Resources */,
@@ -543,6 +566,7 @@
 				B972D5EE2C0CA25D007E0329 /* SectionHeaderViewCollectionReusableView.swift in Sources */,
 				4C6E01D52C163BE50092E4E0 /* ShopifyAPIHelper.swift in Sources */,
 				4C806C9D2C13683900413E54 /* SginUp.swift in Sources */,
+				4C6E01DC2C166EA70092E4E0 /* ProductInfoVC.swift in Sources */,
 				4C3110182C13904F00B88AC5 /* AppCoordinator.swift in Sources */,
 				B9A4BB8C2C0E0AE700DB16E5 /* HomeViewModel.swift in Sources */,
 				B9A4BB902C0E143D00DB16E5 /* Util.swift in Sources */,
