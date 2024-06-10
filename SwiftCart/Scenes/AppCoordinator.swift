@@ -77,26 +77,24 @@ class AppCoordinator: Coordinator {
         navigationController.pushViewController(productVc, animated: true)
     }
     
-    func goToProductInfo(product:Product) {
+    func goToProductInfo(product:Any) {
+        let productInfoVC = ProductInfoVC(nibName: "ProductInfoVC", bundle: Bundle.main)
+        productInfoVC.coordinator = self
+        productInfoVC.productInfoVM = ProductInfoVM(product: product as! Product)
+        navigationController.pushViewController(productInfoVC, animated: false)
         
-        let storyboard = UIStoryboard(name: K.Home.Home_Storyboard_Name, bundle: Bundle.main)
-        print("Data of product if -> \(product) /n ----------------------------------- ----------------------------------- ")
-        // let productInfoVc = storyboard.instantiateViewController(withIdentifier: K.Home.Product_View_Name) as! ProductInfoViewController
-        
-        //productInfoVc.coordinator = self
-        //  productInfoVc.product = product
-        
-        //  navigationController.pushViewController(productInfoVc, animated: true)
+        //print("=== GO TO Product Info ===")
     }
-    
-//    func gotoProductInfo(product: Any) {
-//        let productInfoVC = ProductInfoVC(nibName: "ProductInfoVC", bundle: Bundle.main)
-//        productInfoVC.coordinator = self
-//        productInfoVC.productInfoVM = ProductInfoVM(product: product)
-//        navigationController.pushViewController(productInfoVC, animated: false)
-//    }
-    
+        
     func finish() {
         navigationController.popViewController(animated: true)
     }
 }
+
+
+//    func gotoProductInfo(product: Any) {
+//    let productInfoVC = ProductInfoVC(nibName: "ProductInfoVC", bundle: Bundle.main)
+//    productInfoVC.coordinator = self
+//    productInfoVC.productInfoVM = ProductInfoVM(product: product)
+//    navigationController.pushViewController(productInfoVC, animated: false)
+//    }

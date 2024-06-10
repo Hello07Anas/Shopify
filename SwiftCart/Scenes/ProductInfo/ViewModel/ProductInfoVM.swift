@@ -9,15 +9,15 @@ import Foundation
 
 class ProductInfoVM {
     
-    typealias Product = Any
-    private var product: Product // TODO: resive data from elham here
+    private var product: Product
     
     init(product: Product) {
         self.product = product
+//        print("-------------------")
+//        print(product)
     }
     
     func getProduct() -> Product {
-        
         return product
     }
 }

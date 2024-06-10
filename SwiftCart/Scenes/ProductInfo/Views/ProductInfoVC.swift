@@ -12,7 +12,7 @@ class ProductInfoVC: UIViewController{
     
     weak var coordinator: AppCoordinator?
     
-    var productInfoVM: ProductInfoVM! // get data
+    var productInfoVM: ProductInfoVM!
     
     @IBOutlet weak var productImageCollectionView: UICollectionView!
     @IBOutlet weak var productReviesCollectionView: UICollectionView!
@@ -20,25 +20,38 @@ class ProductInfoVC: UIViewController{
     @IBOutlet weak var productName: UILabel!
     @IBOutlet weak var productPrice: UILabel! // e.g "820.25 EGP"
     @IBOutlet weak var productDescription: UITextView!
-    // TODO: Add Cosmos in descriprion View
     @IBOutlet weak var descriptionView: UIView!
-    // TODO: Add Cosmos in descriprion View
     @IBOutlet weak var pageControl: UIPageControl!
+    @IBOutlet weak var cosmos: CosmosView!
+    @IBOutlet weak var addToFavBtn: UIButton!
+    
+    var isFavorited = false
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupProductImageCollectionView()
         setupProductReviesCollectionView()
         
+        setDataOfProduct()
+        
+        cosmos.rating = getRandomRating()
     }
 
     @IBAction func addToFavBtn(_ sender: Any) {
-        // TOOD: Add to FAV
+        isFavorited.toggle()
+        setButtonImage(isFavorited: isFavorited)
     }
     
 
     @IBAction func addToCartBtn(_ sender: Any) {
         // TOOD: Add to Cart
+    }
+    
+    
+    @IBAction func btnBack(_ sender: Any) {
+        coordinator?.finish()
     }
     
     // helper Methods
@@ -83,7 +96,28 @@ class ProductInfoVC: UIViewController{
         }
     }
     
+    func setDataOfProduct() {
+        if let product = productInfoVM.getProduct() as? SwiftCart.Product {
+            productName.text = product.title
+            productPrice.text = "\(product.variants.first?.price ?? "90.00") EGP"
+            productDescription.text = product.bodyHTML
+
+            pageControl.numberOfPages = product.images.count
+        }
+        
+        productImageCollectionView.reloadData()
+    }
     
+    func getRandomRating() -> Double {
+        let randomRating = Double.random(in: 3.0...5.0)
+        return (randomRating * 10).rounded() / 10.0
+    }
+    
+    func setButtonImage(isFavorited: Bool) {
+        let imageName = isFavorited ? "heart.fill" : "heart"
+        let image = UIImage(systemName: imageName)
+        addToFavBtn.setImage(image, for: .normal)
+    }
 
 }
 
@@ -92,7 +126,7 @@ class ProductInfoVC: UIViewController{
 extension ProductInfoVC: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == productImageCollectionView {
-            return 10
+            return (productInfoVM.getProduct() as? SwiftCart.Product)?.images.count ?? 0
         } else if collectionView == productReviesCollectionView {
             return 25
         }
@@ -100,8 +134,18 @@ extension ProductInfoVC: UICollectionViewDataSource, UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        if collectionView == productImageCollectionView {
+//            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "productImgCellCollectionViewCell", for: indexPath) as! productImgCellCollectionViewCell
+//            return cell
         if collectionView == productImageCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "productImgCellCollectionViewCell", for: indexPath) as! productImgCellCollectionViewCell
+            
+            if let product = productInfoVM.getProduct() as? SwiftCart.Product {
+                let imageURLString = product.images[indexPath.item].src
+                if let url = URL(string: imageURLString) {
+                    cell.configure(with: url)
+                }
+            }
             return cell
         } else if collectionView == productReviesCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "productReviewCell", for: indexPath) as! productReviewCell
