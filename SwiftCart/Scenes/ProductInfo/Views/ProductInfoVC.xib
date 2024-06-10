@@ -11,6 +11,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ProductInfoVC" customModule="SwiftCart" customModuleProvider="target">
             <connections>
+                <outlet property="descriptionView" destination="FFI-Kg-Ooh" id="cNQ-f8-t8m"/>
+                <outlet property="productDescription" destination="Q9f-Jt-AGR" id="dCF-aW-9xd"/>
+                <outlet property="productImage" destination="8dB-Z2-6Or" id="qtT-Vf-xqK"/>
+                <outlet property="productName" destination="7ay-ji-xTF" id="5M0-WS-hJj"/>
+                <outlet property="productPrice" destination="J9O-el-gQZ" id="oXn-9k-qQ6"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -50,17 +55,24 @@
                     <rect key="frame" x="16" y="822" width="398" height="60"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fYT-YM-O4Q">
-                            <rect key="frame" x="0.0" y="9" width="93" height="42"/>
+                            <rect key="frame" x="0.0" y="13" width="94" height="34.333333333333336"/>
+                            <color key="tintColor" name="AccentColor"/>
                             <state key="normal" title="Button"/>
-                            <buttonConfiguration key="configuration" style="plain" image="Heart"/>
+                            <buttonConfiguration key="configuration" style="plain" image="heart" catalog="system"/>
+                            <connections>
+                                <action selector="addToFavBtn:" destination="-1" eventType="touchUpInside" id="1Ug-47-enj"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LgX-oC-d9e">
-                            <rect key="frame" x="101" y="8.6666666666666288" width="297" height="42.666666666666664"/>
+                            <rect key="frame" x="102" y="8.6666666666666288" width="296" height="42.666666666666664"/>
                             <color key="tintColor" name="AccentColor"/>
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="filled" title="Add to Cart">
                                 <fontDescription key="titleFontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="24"/>
                             </buttonConfiguration>
+                            <connections>
+                                <action selector="addToCartBtn:" destination="-1" eventType="touchUpInside" id="E5b-kE-jGj"/>
+                            </connections>
                         </button>
                     </subviews>
                     <constraints>
@@ -73,7 +85,7 @@
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Q9f-Jt-AGR">
                             <rect key="frame" x="0.0" y="36.666666666666629" width="398" height="270.66666666666669"/>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                            <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                            <mutableString key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</mutableString>
                             <color key="textColor" systemColor="labelColor"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -120,7 +132,7 @@
         </view>
     </objects>
     <resources>
-        <image name="Heart" width="26" height="28"/>
+        <image name="heart" catalog="system" width="128" height="107"/>
         <namedColor name="AccentColor">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
