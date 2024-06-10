@@ -22,6 +22,11 @@ class ProductInfoVC: UIViewController{
     @IBOutlet weak var productDescription: UITextView!
     @IBOutlet weak var descriptionView: UIView!
     @IBOutlet weak var pageControl: UIPageControl!
+    @IBOutlet weak var cosmos: CosmosView!
+    @IBOutlet weak var addToFavBtn: UIButton!
+    
+    var isFavorited = false
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,15 +35,23 @@ class ProductInfoVC: UIViewController{
         setupProductReviesCollectionView()
         
         setDataOfProduct()
+        
+        cosmos.rating = getRandomRating()
     }
 
     @IBAction func addToFavBtn(_ sender: Any) {
-        // TOOD: Add to FAV
+        isFavorited.toggle()
+        setButtonImage(isFavorited: isFavorited)
     }
     
 
     @IBAction func addToCartBtn(_ sender: Any) {
         // TOOD: Add to Cart
+    }
+    
+    
+    @IBAction func btnBack(_ sender: Any) {
+        coordinator?.finish()
     }
     
     // helper Methods
@@ -86,7 +99,7 @@ class ProductInfoVC: UIViewController{
     func setDataOfProduct() {
         if let product = productInfoVM.getProduct() as? SwiftCart.Product {
             productName.text = product.title
-            productPrice.text = "\(product.variants.first?.price ?? "0.00") EGP"
+            productPrice.text = "\(product.variants.first?.price ?? "90.00") EGP"
             productDescription.text = product.bodyHTML
 
             pageControl.numberOfPages = product.images.count
@@ -95,7 +108,16 @@ class ProductInfoVC: UIViewController{
         productImageCollectionView.reloadData()
     }
     
+    func getRandomRating() -> Double {
+        let randomRating = Double.random(in: 3.0...5.0)
+        return (randomRating * 10).rounded() / 10.0
+    }
     
+    func setButtonImage(isFavorited: Bool) {
+        let imageName = isFavorited ? "heart.fill" : "heart"
+        let image = UIImage(systemName: imageName)
+        addToFavBtn.setImage(image, for: .normal)
+    }
 
 }
 

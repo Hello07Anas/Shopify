@@ -10,6 +10,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ProductInfoVC" customModule="SwiftCart" customModuleProvider="target">
             <connections>
+                <outlet property="addToFavBtn" destination="fYT-YM-O4Q" id="OEI-BR-6NO"/>
+                <outlet property="cosmos" destination="Rzh-K8-cfP" id="mAu-Lk-DhA"/>
                 <outlet property="descriptionView" destination="FFI-Kg-Ooh" id="cNQ-f8-t8m"/>
                 <outlet property="pageControl" destination="xsC-fc-JXw" id="Hpz-u4-xIW"/>
                 <outlet property="productDescription" destination="Q9f-Jt-AGR" id="dCF-aW-9xd"/>
@@ -28,14 +30,14 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hRj-Rc-mtQ" userLabel="NamePriceRating">
                     <rect key="frame" x="0.0" y="366.66666666666669" width="430" height="80"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Product Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7ay-ji-xTF">
-                            <rect key="frame" x="16.000000000000007" y="15.999999999999998" width="109.66666666666669" height="20.333333333333329"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Product Name" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7ay-ji-xTF">
+                            <rect key="frame" x="16" y="16" width="96" height="17"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="14"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="871.10 EGP" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J9O-el-gQZ">
-                            <rect key="frame" x="16" y="52.333333333333314" width="85.333333333333329" height="20.333333333333329"/>
+                            <rect key="frame" x="16" y="49" width="85.333333333333329" height="20.333333333333329"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
@@ -178,6 +180,15 @@
                 <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="xsC-fc-JXw">
                     <rect key="frame" x="157.33333333333334" y="325" width="115.66666666666666" height="25.666666666666686"/>
                 </pageControl>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9hg-Bl-3Pe">
+                    <rect key="frame" x="15.999999999999996" y="67" width="39.666666666666657" height="34.333333333333343"/>
+                    <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="plain" image="chevron.backward" catalog="system"/>
+                    <connections>
+                        <action selector="btnBack:" destination="-1" eventType="touchUpInside" id="hWP-uq-8CO"/>
+                    </connections>
+                </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -192,6 +203,7 @@
                 <constraint firstItem="FFI-Kg-Ooh" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" id="EwR-ko-ZVo"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="dsB-ZJ-w8k" secondAttribute="trailing" constant="8" id="FAu-rc-3BN"/>
                 <constraint firstItem="FFI-Kg-Ooh" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="HE5-eG-Ri6"/>
+                <constraint firstItem="9hg-Bl-3Pe" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="NoT-L6-FBi"/>
                 <constraint firstItem="hRj-Rc-mtQ" firstAttribute="top" secondItem="55P-FH-aNu" secondAttribute="bottom" id="VBh-Oh-vqN"/>
                 <constraint firstItem="55P-FH-aNu" firstAttribute="height" secondItem="i5M-Pr-FkT" secondAttribute="height" multiplier="0.33" id="Yqf-RD-coW"/>
                 <constraint firstItem="hRj-Rc-mtQ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="ZVT-2c-MqH"/>
@@ -201,6 +213,7 @@
                 <constraint firstItem="55P-FH-aNu" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" id="nkf-go-IxN"/>
                 <constraint firstItem="FFI-Kg-Ooh" firstAttribute="top" secondItem="hRj-Rc-mtQ" secondAttribute="bottom" constant="8" id="od9-Ha-zj6"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="FFI-Kg-Ooh" secondAttribute="trailing" id="ojJ-hg-5qO"/>
+                <constraint firstItem="9hg-Bl-3Pe" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="8" id="q1S-yA-I1W"/>
                 <constraint firstItem="dsB-ZJ-w8k" firstAttribute="top" secondItem="FFI-Kg-Ooh" secondAttribute="bottom" constant="8" id="tgS-jz-75J"/>
                 <constraint firstItem="xsC-fc-JXw" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="vmE-nM-fNY"/>
                 <constraint firstItem="55P-FH-aNu" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="yhZ-eK-9b7"/>
@@ -209,6 +222,7 @@
         </view>
     </objects>
     <resources>
+        <image name="chevron.backward" catalog="system" width="97" height="128"/>
         <image name="heart" catalog="system" width="128" height="107"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

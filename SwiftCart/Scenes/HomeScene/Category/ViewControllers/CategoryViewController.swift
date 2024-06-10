@@ -128,4 +128,11 @@ class CategoryViewController: UIViewController, UICollectionViewDelegate, UIColl
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         10
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let selectedProduct = viewModel.getProducts()[indexPath.row]
+        coordinator?.goToProductInfo(product: selectedProduct)
+        //print("Item Selected")
+    }
 }
