@@ -17,8 +17,8 @@ class AppCoordinator: Coordinator {
     }
     
     func start() {
-//        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-//        let vc = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as! AuthViewController
+       // let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+       // let vc = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as! AuthViewController
         
         let mainViewController = Login(nibName: "Login", bundle: Bundle.main)
         mainViewController.coordinator = self
@@ -81,13 +81,20 @@ class AppCoordinator: Coordinator {
         
         let storyboard = UIStoryboard(name: K.Home.Home_Storyboard_Name, bundle: Bundle.main)
         print("Data of product if -> \(product) /n ----------------------------------- ----------------------------------- ")
-       // let productInfoVc = storyboard.instantiateViewController(withIdentifier: K.Home.Product_View_Name) as! ProductInfoViewController
+        // let productInfoVc = storyboard.instantiateViewController(withIdentifier: K.Home.Product_View_Name) as! ProductInfoViewController
         
         //productInfoVc.coordinator = self
-      //  productInfoVc.product = product
+        //  productInfoVc.product = product
         
-      //  navigationController.pushViewController(productInfoVc, animated: true)
+        //  navigationController.pushViewController(productInfoVc, animated: true)
     }
+    
+//    func gotoProductInfo(product: Any) {
+//        let productInfoVC = ProductInfoVC(nibName: "ProductInfoVC", bundle: Bundle.main)
+//        productInfoVC.coordinator = self
+//        productInfoVC.productInfoVM = ProductInfoVM(product: product)
+//        navigationController.pushViewController(productInfoVC, animated: false)
+//    }
     
     func finish() {
         navigationController.popViewController(animated: true)
