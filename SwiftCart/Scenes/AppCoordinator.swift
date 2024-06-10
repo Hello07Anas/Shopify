@@ -17,17 +17,10 @@ class AppCoordinator: Coordinator {
     }
     
     func start() {
-//        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-//        let vc = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as! AuthViewController
+       // let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+       // let vc = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as! AuthViewController
         
-//        let mainViewController = Login(nibName: "Login", bundle: Bundle.main)
-//        mainViewController.coordinator = self
-//        
-//        navigationController.pushViewController(mainViewController, animated: false)
-        
-        
-        // TODO: un commit line 23 - 26 and delete line 28 - 31
-        let mainViewController = ProductInfoVC(nibName: "ProductInfoVC", bundle: Bundle.main)
+        let mainViewController = Login(nibName: "Login", bundle: Bundle.main)
         mainViewController.coordinator = self
         
         navigationController.pushViewController(mainViewController, animated: false)
