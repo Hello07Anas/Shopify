@@ -20,7 +20,14 @@ class AppCoordinator: Coordinator {
 //        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
 //        let vc = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as! AuthViewController
         
-        let mainViewController = Login(nibName: "Login", bundle: Bundle.main)
+//        let mainViewController = Login(nibName: "Login", bundle: Bundle.main)
+//        mainViewController.coordinator = self
+//        
+//        navigationController.pushViewController(mainViewController, animated: false)
+        
+        
+        // TODO: un commit line 23 - 26 and delete line 28 - 31
+        let mainViewController = ProductInfoVC(nibName: "ProductInfoVC", bundle: Bundle.main)
         mainViewController.coordinator = self
         
         navigationController.pushViewController(mainViewController, animated: false)
@@ -66,7 +73,12 @@ class AppCoordinator: Coordinator {
         navigationController.pushViewController(tabBar, animated: true)
     }
     
-    
+    func gotoProductInfo(product: Any) {
+        let productInfoVC = ProductInfoVC(nibName: "ProductInfoVC", bundle: Bundle.main)
+        productInfoVC.coordinator = self
+        productInfoVC.productInfoVM = ProductInfoVM(product: product)
+        navigationController.pushViewController(productInfoVC, animated: false)
+    }
     
     func finish() {
         navigationController.popViewController(animated: true)
