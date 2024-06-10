@@ -66,7 +66,28 @@ class AppCoordinator: Coordinator {
         navigationController.pushViewController(tabBar, animated: true)
     }
     
+    func goToProducts(brandID:Int) {
+        
+        let storyboard = UIStoryboard(name: K.Home.Home_Storyboard_Name, bundle: Bundle.main)
+        let productVc = storyboard.instantiateViewController(withIdentifier: K.Home.Product_View_Name) as! ProductViewController
+        
+        productVc.coordinator = self
+        productVc.brandID = brandID
+        
+        navigationController.pushViewController(productVc, animated: true)
+    }
     
+    func goToProductInfo(product:Product) {
+        
+        let storyboard = UIStoryboard(name: K.Home.Home_Storyboard_Name, bundle: Bundle.main)
+        print("Data of product if -> \(product) /n ----------------------------------- ----------------------------------- ")
+       // let productInfoVc = storyboard.instantiateViewController(withIdentifier: K.Home.Product_View_Name) as! ProductInfoViewController
+        
+        //productInfoVc.coordinator = self
+      //  productInfoVc.product = product
+        
+      //  navigationController.pushViewController(productInfoVc, animated: true)
+    }
     
     func finish() {
         navigationController.popViewController(animated: true)

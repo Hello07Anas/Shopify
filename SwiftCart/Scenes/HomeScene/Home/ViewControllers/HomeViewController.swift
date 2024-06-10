@@ -11,7 +11,7 @@ import RxSwift
 
 class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
-    weak var coordinator: AppCoordinator? // TODO: Dont touch it
+    weak var coordinator: AppCoordinator?
     
     var viewModel = HomeViewModel(network: NetworkManager.shared)
     @IBOutlet weak var collectionView: UICollectionView!
@@ -76,6 +76,15 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+          if indexPath.section == 0 {
+              // Handle navigation for the first section if needed
+          } else {
+             
+              let selectedBrand = viewModel.getBrands()[indexPath.row]
+              coordinator?.goToProducts(brandID: selectedBrand.id ?? 0)
+          }
+      }
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if kind == UICollectionView.elementKindSectionHeader {
             let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "SectionHeaderView", for: indexPath) as! SectionHeaderViewCollectionReusableView
