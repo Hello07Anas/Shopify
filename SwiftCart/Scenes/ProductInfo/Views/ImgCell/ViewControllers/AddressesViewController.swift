@@ -14,18 +14,18 @@ class AddressesViewController: UIViewController {
     @IBOutlet weak var AddressesTable: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel = AddressesViewModel(network: NetworkManager.shared)
+        viewModel = AddressesViewModel()
         AddressesTable.dataSource = self
         AddressesTable.delegate = self
-        viewModel?.bindAddresses = {
-            self.AddressesTable.reloadData()
+        viewModel?.bindAddresses = { [weak self] in
+            self?.AddressesTable.reloadData()
         }
         viewModel?.getAddressesList()
     }
     
 
     @IBAction func addNewAddress(_ sender: Any) {
-        coordinator?.goToAddressDetails()
+        coordinator?.goToAddAddress()
     }
     
     @IBAction func backBtn(_ sender: Any) {
@@ -39,6 +39,13 @@ class AddressesViewController: UIViewController {
 extension AddressesViewController : UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel?.getAddresesCount() ?? 0
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+          guard let selectedAddress = viewModel?.getAddressByIndex(index: indexPath.row) else {
+              return
+          }
+        coordinator?.goToAddressDetails(address: selectedAddress)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

@@ -36,10 +36,19 @@ class SettingsCoordinator: Coordinator {
         navigationController.pushViewController(addressesVC, animated: true)
     }
 
-    func goToAddressDetails() {
+    func goToAddAddress() {
         let storyboard = UIStoryboard(name: K.Settings.Settings_Storyboard_Name, bundle: nil)
         let addressDetailsVC = storyboard.instantiateViewController(withIdentifier: K.Settings.Address_Details_View_Name) as! AddressDetailsViewController
         addressDetailsVC.coordinator = self
+        navigationController.pushViewController(addressDetailsVC, animated: true)
+    } 
+    func goToAddressDetails(address : Address) {
+        
+        print("Address details")
+        let storyboard = UIStoryboard(name: K.Settings.Settings_Storyboard_Name, bundle: nil)
+        let addressDetailsVC = storyboard.instantiateViewController(withIdentifier: K.Settings.Address_Details_View_Name) as! AddressDetailsViewController
+        addressDetailsVC.coordinator = self
+        addressDetailsVC.viewModel = AddressDetailsVM(addressDetails: address, isUpdate: true)
         navigationController.pushViewController(addressDetailsVC, animated: true)
     }
 

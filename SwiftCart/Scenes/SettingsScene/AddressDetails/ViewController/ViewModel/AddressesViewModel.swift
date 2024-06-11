@@ -16,12 +16,7 @@ class AddressesViewModel{
     }
     private let disposeBag = DisposeBag()
     var addressesList : [Address]?
-    var network : NetworkManager?
     var bindAddresses : (()-> Void) = {}
-        
-    init(network: NetworkManager) {
-        self.network = network
-    }
     
     func getAddresses() -> [Address] {
         return addressesList ?? []
@@ -39,7 +34,7 @@ class AddressesViewModel{
         
         let customerID = K.Shopify.userID
         let endpoint = K.endPoints.getOrPostAddress.rawValue.replacingOccurrences(of: "{customer_id}", with: customerID)
-        network?.get(endpoint: endpoint)
+        NetworkManager.shared.get(endpoint: endpoint)
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] (response: userAddress) in
                 self?.addressesList = response.addresses

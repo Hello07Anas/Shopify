@@ -168,7 +168,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="rlt-cG-ge3">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="rlt-cG-ge3">
                                 <rect key="frame" x="0.0" y="163.66666666666669" width="393" height="638.33333333333326"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
@@ -400,7 +400,14 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="address" destination="2VE-Aw-UWI" id="mzV-jr-aaG"/>
                         <outlet property="addressVCTitle" destination="GUS-rA-hGM" id="GCc-6P-emB"/>
+                        <outlet property="city" destination="wZb-xC-4HZ" id="kHV-1T-2y1"/>
+                        <outlet property="country" destination="Ga2-MT-VfP" id="XuT-5K-ZOH"/>
+                        <outlet property="defaultSwitch" destination="g72-Rq-Fid" id="Slp-dV-RKD"/>
+                        <outlet property="firstName" destination="axk-k8-bR8" id="MJs-BP-ILD"/>
+                        <outlet property="lastName" destination="lP9-zy-1vX" id="gBj-5M-mzx"/>
+                        <outlet property="phone" destination="iTe-qs-a9n" id="RtI-VR-wEM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PsY-w0-kOC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
