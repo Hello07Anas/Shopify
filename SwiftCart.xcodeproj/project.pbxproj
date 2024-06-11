@@ -40,6 +40,8 @@
 		4C6E01D52C163BE50092E4E0 /* ShopifyAPIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C6E01D42C163BE50092E4E0 /* ShopifyAPIHelper.swift */; };
 		4C6E01D72C1660BB0092E4E0 /* UserDefaultsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C6E01D62C1660BA0092E4E0 /* UserDefaultsHelper.swift */; };
 		4C6E01DC2C166EA70092E4E0 /* ProductInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C6E01DA2C166EA70092E4E0 /* ProductInfoVC.swift */; };
+		4C8022EA2C187A7000C7BEBF /* FavVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8022E82C187A7000C7BEBF /* FavVC.swift */; };
+		4C8022EB2C187A7000C7BEBF /* FavVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C8022E92C187A7000C7BEBF /* FavVC.xib */; };
 		4C806C8C2C13626700413E54 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C806C8B2C13626700413E54 /* Constants.swift */; };
 		4C806C8E2C13628900413E54 /* AuthHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C806C8D2C13628900413E54 /* AuthHelper.swift */; };
 		4C806C942C13635A00413E54 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4C806C932C13635A00413E54 /* GoogleService-Info.plist */; };
@@ -106,6 +108,8 @@
 		4C6E01D42C163BE50092E4E0 /* ShopifyAPIHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopifyAPIHelper.swift; sourceTree = "<group>"; };
 		4C6E01D62C1660BA0092E4E0 /* UserDefaultsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsHelper.swift; sourceTree = "<group>"; };
 		4C6E01DA2C166EA70092E4E0 /* ProductInfoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductInfoVC.swift; sourceTree = "<group>"; };
+		4C8022E82C187A7000C7BEBF /* FavVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavVC.swift; sourceTree = "<group>"; };
+		4C8022E92C187A7000C7BEBF /* FavVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FavVC.xib; sourceTree = "<group>"; };
 		4C806C8B2C13626700413E54 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		4C806C8D2C13628900413E54 /* AuthHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthHelper.swift; sourceTree = "<group>"; };
 		4C806C932C13635A00413E54 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -184,6 +188,7 @@
 				04715A6B2C08F1D500D8DC3B /* LaunchScreen.storyboard */,
 				4C3110192C13909D00B88AC5 /* Coordinator.swift */,
 				4C3110172C13904F00B88AC5 /* AppCoordinator.swift */,
+				4C8022E32C18774100C7BEBF /* Fav */,
 				0E88FE922C112A8C004E3FA6 /* SettingsScene */,
 				B972D5E02C0CA0D2007E0329 /* HomeScene */,
 				4CC00E7C2C09FD9500DD2758 /* Autantication */,
@@ -455,6 +460,15 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		4C8022E32C18774100C7BEBF /* Fav */ = {
+			isa = PBXGroup;
+			children = (
+				4C8022E82C187A7000C7BEBF /* FavVC.swift */,
+				4C8022E92C187A7000C7BEBF /* FavVC.xib */,
+			);
+			path = Fav;
+			sourceTree = "<group>";
+		};
 		4C806C9A2C13682800413E54 /* SginUo */ = {
 			isa = PBXGroup;
 			children = (
@@ -673,6 +687,7 @@
 				B9ACD23E2C1481D500229018 /* SginUp.xib in Resources */,
 				B9F634B82C1754B30073C04D /* ProductCollectionCell.xib in Resources */,
 				4C1795752C1750A90045E497 /* ProductInfoVC.xib in Resources */,
+				4C8022EB2C187A7000C7BEBF /* FavVC.xib in Resources */,
 				4C806CA22C1368A300413E54 /* Login.xib in Resources */,
 				4C1795682C17268C0045E497 /* productImgCellCollectionViewCell.xib in Resources */,
 				4C806C942C13635A00413E54 /* GoogleService-Info.plist in Resources */,
@@ -693,6 +708,7 @@
 			files = (
 				4C6E01D72C1660BB0092E4E0 /* UserDefaultsHelper.swift in Sources */,
 				4C9C39B52C0A2C03003F0769 /* NibViewController.swift in Sources */,
+				4C8022EA2C187A7000C7BEBF /* FavVC.swift in Sources */,
 				04715A842C08FCD000D8DC3B /* ViewData.swift in Sources */,
 				04715A8E2C08FD7D00D8DC3B /* Local.swift in Sources */,
 				B972D5EC2C0CA212007E0329 /* HomeViewController.swift in Sources */,

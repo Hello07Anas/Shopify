@@ -41,6 +41,13 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         viewModel.loadData()
     }
     
+    
+    @IBAction func favBtn(_ sender: Any) {
+        coordinator?.goToFav()
+    }
+    
+    
+    
     private func bindViewModel() {
         viewModel.brandsObservable
             .observeOn(MainScheduler.instance)

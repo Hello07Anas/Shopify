@@ -93,6 +93,12 @@ class AppCoordinator: Coordinator {
         
         //print("=== GO TO Product Info ===")
     }
+    
+    func goToFav() {
+        let fav = FavVC(nibName: "FavVC", bundle: nil)
+        fav.coordinator = self
+        navigationController.pushViewController(fav, animated: true)
+    }
         
     func finish() {
         navigationController.popViewController(animated: true)
