@@ -20,7 +20,7 @@ class AppCoordinator: Coordinator {
 //        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
 //        let vc = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as! AuthViewController
         
-        let mainViewController = Login(nibName: "Login", bundle: Bundle.main)
+       let mainViewController = Login(nibName: "Login", bundle: Bundle.main)
         mainViewController.coordinator = self
         
         navigationController.pushViewController(mainViewController, animated: false)
@@ -67,7 +67,13 @@ class AppCoordinator: Coordinator {
     }
     
     
-    
+    func goToSettings() {
+           let settingsCoordinator = SettingsCoordinator(navigationController: navigationController)
+           childCoordinators.append(settingsCoordinator)
+           settingsCoordinator.start()
+       }
+ 
+
     func finish() {
         navigationController.popViewController(animated: true)
     }
