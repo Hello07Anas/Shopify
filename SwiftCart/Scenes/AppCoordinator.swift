@@ -89,7 +89,7 @@ class AppCoordinator: Coordinator {
         let productInfoVC = ProductInfoVC(nibName: "ProductInfoVC", bundle: Bundle.main)
         productInfoVC.coordinator = self
         productInfoVC.productInfoVM = ProductInfoVM(product: product as! Product)
-        navigationController.pushViewController(productInfoVC, animated: false)
+        navigationController.pushViewController(productInfoVC, animated: true)
         
         //print("=== GO TO Product Info ===")
     }
