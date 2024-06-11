@@ -17,13 +17,15 @@ class AppCoordinator: Coordinator {
     }
     
     func start() {
-       // let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-       // let vc = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as! AuthViewController
-        
+//        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+//        let vc = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as! AuthViewController
+
         let mainViewController = Login(nibName: "Login", bundle: Bundle.main)
         mainViewController.coordinator = self
-        
+
         navigationController.pushViewController(mainViewController, animated: false)
+
+//        self.goToSettings()
     }
     
     func gotoLogin(pushToStack: Bool) {
@@ -77,6 +79,12 @@ class AppCoordinator: Coordinator {
         navigationController.pushViewController(productVc, animated: true)
     }
     
+    func goToSettings() {
+           let settingsCoordinator = SettingsCoordinator(navigationController: navigationController)
+           childCoordinators.append(settingsCoordinator)
+           settingsCoordinator.start()
+       }
+ 
     func goToProductInfo(product:Any) {
         let productInfoVC = ProductInfoVC(nibName: "ProductInfoVC", bundle: Bundle.main)
         productInfoVC.coordinator = self
