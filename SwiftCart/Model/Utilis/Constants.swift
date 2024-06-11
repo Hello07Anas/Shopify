@@ -37,7 +37,7 @@ public enum K {
         static let Shopify_Shop_Name = "mad44-sv-iost1"
         static let Access_Token = "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"
         static let Base_URL = "https://mad44-sv-iost1.myshopify.com/admin/api/2024-04/"
-        static var userID =  UserDefaultsHelper.shared.getUserData().shopifyCustomerID ?? "6930899599407"
+        static var userID =  UserDefaultsHelper.shared.getUserData().shopifyCustomerID ?? "6930899632175"
 
     }
     

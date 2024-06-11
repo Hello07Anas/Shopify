@@ -51,30 +51,27 @@ class AddressesViewModel{
             })
             .disposed(by: disposeBag)
         
-        
-        /*let url = "https://236f00d0acd3538f6713fd3a323150b6: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@mad44-sv-iost1.myshopify.com/admin/api/2024-04/customers/6930899632175/addresses.json"
-        
-        network?.getApiData(url: url)
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [weak self] data in
-                print("ViewModel: Received addresses response")
-                if let userAddresses: userAddress = Utils.convertTo(from: data) {
-                    self?.addressesList = userAddresses.addresses 
-                    self?.addressesSubject.onNext(self?.addressesList ?? [])
-                    self?.bindAddresses()
-                    print("ViewModel: Number of addresses: \(String(describing: self?.addressesList?.count))")
-
-                        } else {
-                    print("loadData ")
-                }
-            }, onError: { error in
-                print("ViewModel: API Error: \(error.localizedDescription)")
-            })
-            .disposed(by: disposeBag)*/
+    
         
     }
     
-    func deleteAddress(index:Int){
-             // TODO: handle delete
+    func deleteAddress(index: Int) {
+        let customerId = K.Shopify.userID
+        let endpoint = K.endPoints.putOrDeleteAddress.rawValue
+            .replacingOccurrences(of: "{customer_id}", with: customerId)
+            .replacingOccurrences(of: "{address_id}", with: String(addressesList?[index].id ?? 0))
+        
+        NetworkManager.shared.delete(endpoint: endpoint)
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] statusCode in
+                print("Delete request successful with status code: \(statusCode)")
+                self?.addressesList?.remove(at: index)
+                self?.addressesSubject.onNext(self?.addressesList ?? [])
+                self?.bindAddresses()
+            }, onError: { error in
+                print("Error deleting address: \(error.localizedDescription)")
+            })
+            .disposed(by: disposeBag)
     }
-}
+    }
+

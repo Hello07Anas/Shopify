@@ -58,5 +58,23 @@ class NetworkManager : Networking {
                 }
             }
     }
+    
+    func delete(url: String = K.Shopify.Base_URL, endpoint: String, parameters: [String: Any]? = nil, headers: HTTPHeaders? = nil) -> Observable<Int> {
+        let (completeURL, combinedHeaders) = createRequestDetails(url: url, endpoint: endpoint, headers: headers)
+
+        return Observable.create { observer in
+            let disposable = RxAlamofire.requestData(.delete, completeURL, parameters: parameters, encoding: URLEncoding.default, headers: combinedHeaders)
+                .subscribe(onNext: { (response, _) in
+                    observer.onNext(response.statusCode)
+                    observer.onCompleted()
+                }, onError: { error in
+                    observer.onError(error)
+                })
+
+            return Disposables.create {
+                disposable.dispose()
+            }
+        }
+    }
 
 }
