@@ -36,7 +36,23 @@ class AddressesViewModel{
     }
     
     func getAddressesList() {
-        let url = "https://236f00d0acd3538f6713fd3a323150b6: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@mad44-sv-iost1.myshopify.com/admin/api/2024-04/customers/6930899632175/addresses.json"
+        
+        let customerID = K.Shopify.userID
+        let endpoint = K.endPoints.getOrPostAddress.rawValue.replacingOccurrences(of: "{customer_id}", with: customerID)
+        network?.get(endpoint: endpoint)
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] (response: userAddress) in
+                self?.addressesList = response.addresses
+                self?.addressesSubject.onNext(self?.addressesList ?? [])
+                self?.bindAddresses()
+                print("ViewModel: Number of addresses: \(String(describing: self?.addressesList?.count))")
+            }, onError: { (error: Error) in
+                print("Error occurred: \(error.localizedDescription)")
+            })
+            .disposed(by: disposeBag)
+        
+        
+        /*let url = "https://236f00d0acd3538f6713fd3a323150b6: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@mad44-sv-iost1.myshopify.com/admin/api/2024-04/customers/6930899632175/addresses.json"
         
         network?.getApiData(url: url)
             .observeOn(MainScheduler.instance)
@@ -54,7 +70,7 @@ class AddressesViewModel{
             }, onError: { error in
                 print("ViewModel: API Error: \(error.localizedDescription)")
             })
-            .disposed(by: disposeBag)
+            .disposed(by: disposeBag)*/
         
     }
     

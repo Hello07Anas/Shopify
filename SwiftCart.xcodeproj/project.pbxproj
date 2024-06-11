@@ -302,8 +302,9 @@
 			children = (
 				0E88FE942C112AAF004E3FA6 /* SettingsStoryboard.storyboard */,
 				0EC5CD332C16B93E00C65BB8 /* SettingsCoordinator.swift */,
-				0EC5CD3F2C16BFC600C65BB8 /* AddressDetails */,
+				0EC5CD442C16C04F00C65BB8 /* Settings */,
 				0EC5CD302C16374100C65BB8 /* Addresses */,
+				0EC5CD3F2C16BFC600C65BB8 /* AddressDetails */,
 			);
 			path = SettingsScene;
 			sourceTree = "<group>";
@@ -368,7 +369,6 @@
 		0EC5CD3F2C16BFC600C65BB8 /* AddressDetails */ = {
 			isa = PBXGroup;
 			children = (
-				0EC5CD442C16C04F00C65BB8 /* Settings */,
 				0EC5CD402C16BFD400C65BB8 /* ViewController */,
 			);
 			path = AddressDetails;
