@@ -14,29 +14,41 @@ class AddressesViewController: UIViewController {
     @IBOutlet weak var AddressesTable: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel = AddressesViewModel(network: NetworkManager.shared)
+        viewModel = AddressesViewModel()
         AddressesTable.dataSource = self
         AddressesTable.delegate = self
-        viewModel?.bindAddresses = {
-            self.AddressesTable.reloadData()
+        viewModel?.bindAddresses = { [weak self] in
+            self?.AddressesTable.reloadData()
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         viewModel?.getAddressesList()
     }
     
 
     @IBAction func addNewAddress(_ sender: Any) {
-        coordinator?.goToAddressDetails()
+        coordinator?.goToAddAddress()
     }
     
     @IBAction func backBtn(_ sender: Any) {
         coordinator?.finish()
     }
     
+
+    
 }
 
 extension AddressesViewController : UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel?.getAddresesCount() ?? 0
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+          guard let selectedAddress = viewModel?.getAddressByIndex(index: indexPath.row) else {
+              return
+          }
+        coordinator?.goToAddressDetails(address: selectedAddress)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -46,5 +58,21 @@ extension AddressesViewController : UITableViewDataSource, UITableViewDelegate {
         return cell
     }
     
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+           if editingStyle == .delete {
+               if  (viewModel?.addressesList?[indexPath.row].isDefault == true) {
+                   Utils.showAlert(title: "Delete", message: "You cannot delete the default address.", preferredStyle: .alert, from: self)
+               } else {
+                   let cancelAction = UIAlertAction(title: "cancel", style: .default, handler: nil)
+                   let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
+                       self?.viewModel?.deleteAddress(index: indexPath.row)
+                   }
+                   Utils.showAlert(title: "Delete", message:  "Are you sure you want to delete this Address?", preferredStyle: .alert, from: self, actions: [deleteAction, cancelAction])
+               }
+           }
+       }
+    }
     
-}
+    
+    
+
