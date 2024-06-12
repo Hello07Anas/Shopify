@@ -76,5 +76,64 @@ class NetworkManager : Networking {
             }
         }
     }
+    
+    func post<T: Encodable, U: Decodable>(url: String = K.Shopify.Base_URL, endpoint: String, body: T, headers: HTTPHeaders? = nil, responseType: U.Type) -> Observable<(Bool, String?, U?)> {
+            let (completeURL, combinedHeaders) = createRequestDetails(url: url, endpoint: endpoint, headers: headers)
+            print(completeURL)
+            return RxAlamofire
+                .requestData(.post, completeURL, parameters: body.dictionary, encoding: JSONEncoding.default, headers: combinedHeaders)
+                .flatMap { response, data -> Observable<(Bool, String?, U?)> in
+                    let statusCode = response.statusCode
+                    let decoder = JSONDecoder()
+                    decoder.dateDecodingStrategy = .iso8601
+                    do {
+                        let responseObject = try decoder.decode(U.self, from: data)
+                        if (201...299).contains(statusCode) {
+                            return Observable.just((true, "Succeeded", responseObject))
+                        } else {
+                            return Observable.just((false, "Request failed with status code: \(statusCode)", nil))
+                        }
+                    } catch {
+                        return Observable.just((false, "Decoding error: \(error.localizedDescription)", nil))
+                    }
+                }
+                .catchError { error in
+                    Observable.just((false, "Request error: \(error.localizedDescription)", nil))
+                }
+        }
+    
 
+func put<T: Encodable, U: Decodable>(url: String = K.Shopify.Base_URL, endpoint: String, body: T, headers: HTTPHeaders? = nil, responseType: U.Type) -> Observable<(Bool, String?, U?)> {
+            let (completeURL, combinedHeaders) = createRequestDetails(url: url, endpoint: endpoint, headers: headers)
+            print(completeURL)
+            return RxAlamofire
+                .requestData(.put, completeURL, parameters: body.dictionary, encoding: JSONEncoding.default, headers: combinedHeaders)
+                .flatMap { response, data -> Observable<(Bool, String?, U?)> in
+                    let statusCode = response.statusCode
+                    let decoder = JSONDecoder()
+                    decoder.dateDecodingStrategy = .iso8601
+                    do {
+                        let responseObject = try decoder.decode(U.self, from: data)
+                        if (201...299).contains(statusCode) {
+                            return Observable.just((true, "Succeeded", responseObject))
+                        } else {
+                            return Observable.just((false, "Request failed with status code: \(statusCode)", nil))
+                        }
+                    } catch {
+                        return Observable.just((false, "Decoding error: \(error.localizedDescription)", nil))
+                    }
+                }
+                .catchError { error in
+                    Observable.just((false, "Request error: \(error.localizedDescription)", nil))
+                }
+        }
+    }
+
+
+
+extension Encodable {
+    var dictionary: [String: Any]? {
+        guard let data = try? JSONEncoder().encode(self) else { return nil }
+        return (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)).flatMap { $0 as? [String: Any] }
+    }
 }

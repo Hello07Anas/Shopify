@@ -20,6 +20,9 @@ class AddressesViewController: UIViewController {
         viewModel?.bindAddresses = { [weak self] in
             self?.AddressesTable.reloadData()
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         viewModel?.getAddressesList()
     }
     
