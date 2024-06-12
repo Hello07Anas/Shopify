@@ -40,7 +40,7 @@ class SettingsCoordinator: Coordinator {
         let storyboard = UIStoryboard(name: K.Settings.Settings_Storyboard_Name, bundle: nil)
         let addressDetailsVC = storyboard.instantiateViewController(withIdentifier: K.Settings.Address_Details_View_Name) as! AddressDetailsViewController
         addressDetailsVC.coordinator = self
-        addressDetailsVC.viewModel = AddressDetailsVM(addressDetails: Address(), isUpdate: false)
+        addressDetailsVC.viewModel = AddressDetailsViewModel(addressDetails: Address(), isUpdate: false)
         navigationController.pushViewController(addressDetailsVC, animated: true)
     } 
     func goToAddressDetails(address : Address) {
@@ -49,7 +49,7 @@ class SettingsCoordinator: Coordinator {
         let storyboard = UIStoryboard(name: K.Settings.Settings_Storyboard_Name, bundle: nil)
         let addressDetailsVC = storyboard.instantiateViewController(withIdentifier: K.Settings.Address_Details_View_Name) as! AddressDetailsViewController
         addressDetailsVC.coordinator = self
-        addressDetailsVC.viewModel = AddressDetailsVM(addressDetails: address, isUpdate: true)
+        addressDetailsVC.viewModel = AddressDetailsViewModel(addressDetails: address, isUpdate: true)
         navigationController.pushViewController(addressDetailsVC, animated: true)
     }
 

@@ -9,7 +9,7 @@ import UIKit
 
 class AddressDetailsViewController: UIViewController {
     weak var coordinator: SettingsCoordinator?
-    var viewModel: AddressDetailsVM?
+    var viewModel: AddressDetailsViewModel?
     
     @IBOutlet weak var addressVCTitle: NSLayoutConstraint!
     @IBOutlet weak var defaultSwitch: UISwitch!
@@ -47,13 +47,17 @@ class AddressDetailsViewController: UIViewController {
         phone.text = viewModel?.addressDetails?.phone
         city.text = viewModel?.addressDetails?.city
         address.text = viewModel?.addressDetails?.address1
+        defaultSwitch.isEnabled = true
         if viewModel?.addressDetails?.isDefault == true {
             defaultSwitch.isOn = true
+        } else {
+            defaultSwitch.isOn = false
         }
     }
     
     func setUpAddNewAddress() {
         defaultSwitch.isOn = false
+        defaultSwitch.isEnabled = false
     }
     
     @IBAction func saveBtn(_ sender: Any) {
@@ -73,7 +77,10 @@ class AddressDetailsViewController: UIViewController {
             return
         }
         if viewModel?.isUpdate == true {
-            viewModel?.updateAddress(firstName: firstName, lastName: lastName, address1: address, city: city, phone: phone)
+          viewModel?.updateAddress(firstName: firstName, lastName: lastName, address1: address, city: city, phone: phone)
+            if  defaultSwitch.isOn == true {
+                viewModel?.setDefaultAddress(firstName: firstName, lastName: lastName, address1: address, city: city, phone: phone)
+            }
         } else {
             viewModel?.addNewAddress(firstName: firstName, lastName: lastName, address1: address, city: city, phone: phone)
         }
@@ -89,5 +96,8 @@ class AddressDetailsViewController: UIViewController {
             let arrString = Array(phoneNumber)
             return arrString.count > 2 && phoneNumber.first == "0" && arrString[1] == "1" && phoneTest.evaluate(with: phoneNumber)
         }
+    
+
+    
     }
 
