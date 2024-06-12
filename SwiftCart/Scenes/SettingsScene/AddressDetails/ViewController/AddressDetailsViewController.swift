@@ -10,6 +10,7 @@ import UIKit
 class AddressDetailsViewController: UIViewController {
     weak var coordinator: SettingsCoordinator?
     var viewModel: AddressDetailsViewModel?
+
     
     @IBOutlet weak var addressVCTitle: NSLayoutConstraint!
     @IBOutlet weak var defaultSwitch: UISwitch!
@@ -22,9 +23,9 @@ class AddressDetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.hideKeyboardWhenTappedAround()
         country.isUserInteractionEnabled = false
         country.text = "Egypt"
-        
         if viewModel?.isUpdate == true {
             setUpAddressDetails()
         } else {
@@ -38,7 +39,9 @@ class AddressDetailsViewController: UIViewController {
         viewModel?.bindAddress = {
             self.coordinator?.finish()
         }
+    
     }
+    
     
     func setUpAddressDetails() {
         defaultSwitch.isEnabled = false
@@ -58,6 +61,10 @@ class AddressDetailsViewController: UIViewController {
     func setUpAddNewAddress() {
         defaultSwitch.isOn = false
         defaultSwitch.isEnabled = false
+    }
+    
+    @objc func cityTextFieldTapped() {
+        coordinator?.goToCities()
     }
     
     @IBAction func saveBtn(_ sender: Any) {
@@ -90,14 +97,10 @@ class AddressDetailsViewController: UIViewController {
         coordinator?.finish()
     }
     
-        func validatePhoneNumber(_ phoneNumber: String) -> Bool {
-            let phoneRegex = "^[0-9+]{0,1}+[0-9]{11,11}$"
-            let phoneTest = NSPredicate(format: "SELF MATCHES %@", phoneRegex)
-            let arrString = Array(phoneNumber)
-            return arrString.count > 2 && phoneNumber.first == "0" && arrString[1] == "1" && phoneTest.evaluate(with: phoneNumber)
-        }
-    
-
-    
+    func validatePhoneNumber(_ phoneNumber: String) -> Bool {
+        let phoneRegex = "^[0-9+]{0,1}+[0-9]{11,11}$"
+        let phoneTest = NSPredicate(format: "SELF MATCHES %@", phoneRegex)
+        let arrString = Array(phoneNumber)
+        return arrString.count > 2 && phoneNumber.first == "0" && arrString[1] == "1" && phoneTest.evaluate(with: phoneNumber)
     }
-
+}

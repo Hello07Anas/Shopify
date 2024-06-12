@@ -54,9 +54,9 @@ class SettingsCoordinator: Coordinator {
     }
 
     func goToCities() {
-        // Implement navigation to Cities if needed
-    }
 
+    }
+    
     func goToCountries() {
         // Implement navigation to Countries if needed
     }
