@@ -12,6 +12,7 @@ class ProductCollectionCell: UICollectionViewCell {
     @IBOutlet weak var price: UILabel!
     @IBOutlet weak var ProductName: UILabel!
     @IBOutlet weak var img: UIImageView!
+    @IBOutlet weak var addFavBtnOL: UIButton!
     
     override func layoutSubviews() {
         super.layoutSubviews()
