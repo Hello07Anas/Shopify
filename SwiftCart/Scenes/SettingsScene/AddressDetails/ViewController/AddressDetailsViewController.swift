@@ -23,7 +23,6 @@ class AddressDetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.hideKeyboardWhenTappedAround()
         country.isUserInteractionEnabled = false
         country.text = "Egypt"
         if viewModel?.isUpdate == true {
