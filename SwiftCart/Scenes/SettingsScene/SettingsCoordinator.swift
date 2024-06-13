@@ -52,14 +52,13 @@ class SettingsCoordinator: Coordinator {
         addressDetailsVC.viewModel = AddressDetailsViewModel(addressDetails: address, isUpdate: true)
         navigationController.pushViewController(addressDetailsVC, animated: true)
     }
-
-    func goToCities() {
-        // Implement navigation to Cities if needed
-    }
     
-    func goToCountries() {
-        // Implement navigation to Countries if needed
-    }
+    func presentCitiesViewController(from viewController: UIViewController, onCitySelected: @escaping (String) -> Void) {
+          let citiesVC = CitiesViewController()
+          citiesVC.onCitySelected = onCitySelected
+          let navController = UINavigationController(rootViewController: citiesVC)
+          viewController.present(navController, animated: true, completion: nil)
+      }
 
     func finish() {
         navigationController.popViewController(animated: true)

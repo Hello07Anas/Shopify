@@ -23,8 +23,8 @@ class AppCoordinator: Coordinator {
        /* let mainViewController = Login(nibName: "Login", bundle: Bundle.main)
         mainViewController.coordinator = self
 
-        navigationController.pushViewController(mainViewController, animated: false)
-*/
+        navigationController.pushViewController(mainViewController, animated: false)*/
+
       self.goToSettings()
     }
     
