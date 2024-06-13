@@ -14,6 +14,9 @@ class ProductCollectionCell: UICollectionViewCell {
     @IBOutlet weak var img: UIImageView!
     @IBOutlet weak var addFavBtnOL: UIButton!
     
+    var isFavorited = false
+    var isCellNowFav = false
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         img.layer.cornerRadius = 20
@@ -30,4 +33,34 @@ class ProductCollectionCell: UICollectionViewCell {
 
     }
 
+    @IBAction func addToCartBtn(_ sender: Any) {
+        // TODO: Add to cart logic
+    }
+    
+    @IBAction func addToFavBtn(_ sender: Any) {
+        if isCellNowFav {
+            // here logic of Anas // TODO: Remove From Fav logic
+        } else {
+            // here logic of elham // TODO: Add to Fav logic
+            isFavorited.toggle()
+            setButtonImage(isFavorited: isFavorited)
+        }
+    }
+    
+    func setButtonImage(isFavorited: Bool) {
+        // TODO: Bougs here >><< when scroll the fill reused again
+        let imageName = isFavorited ? "heart.fill" : "heart"
+        let image = UIImage(systemName: imageName)
+        addFavBtnOL.setImage(image, for: .normal)
+    }
+    
+    func setBtnImg() {
+        if isCellNowFav {
+            let image = UIImage(systemName: "trash")
+            addFavBtnOL.setImage(image, for: .normal)
+        } else {
+            let image = UIImage(systemName: "heart")
+            addFavBtnOL.setImage(image, for: .normal)
+        }
+    }
 }
