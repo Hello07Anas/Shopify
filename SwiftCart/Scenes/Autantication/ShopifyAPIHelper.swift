@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Alamofire
 
 struct ShopifyAPIHelper {
     
@@ -13,29 +14,17 @@ struct ShopifyAPIHelper {
     
     private init() {}
     
-    private func createRequest(withPath path: String, method: String, body: [String: Any]? = nil) -> URLRequest {
-        let url = URL(string: K.Shopify.Base_URL + path)!
-        var request = URLRequest(url: url)
-        request.httpMethod = method
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue(K.Shopify.Access_Token, forHTTPHeaderField: "X-Shopify-Access-Token")
-        
-        if let body = body {
-            request.httpBody = try? JSONSerialization.data(withJSONObject: body)
-        }
-        
-//        print("Request URL: \(url)")
-//        print("Request Headers: \(request.allHTTPHeaderFields ?? [:])")
-//        if let body = body {
-//            print("Request Body: \(String(data: request.httpBody ?? Data(), encoding: .utf8) ?? "No Body")")
-//        }
-        
-        return request
+    private func createHeaders() -> HTTPHeaders {
+        let headers: HTTPHeaders = [
+            "Content-Type": "application/json",
+            "X-Shopify-Access-Token": K.Shopify.Access_Token
+        ]
+        return headers
     }
     
     func createCustomer(email: String, firstName: String, lastName: String, completion: @escaping (Result<String, Error>) -> Void) {
         let path = "customers.json"
-        let method = K.HTTPMethod.POST
+        let url = K.Shopify.Base_URL + path
         
         let customerData: [String: Any] = [
             "customer": [
@@ -45,49 +34,87 @@ struct ShopifyAPIHelper {
             ]
         ]
         
-        let request = createRequest(withPath: path, method: method, body: customerData)
-        
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                print("Error creating customer: \(error.localizedDescription)")
-                completion(.failure(error))
-                return
-            }
-            
-            guard let httpResponse = response as? HTTPURLResponse else {
-                let error = NSError(domain: "ShopifyAPI", code: -1, userInfo: [NSLocalizedDescriptionKey: "No response received"])
-                print("No HTTP response received")
-                completion(.failure(error))
-                return
-            }
-            
-            print("HTTP Status Code: \(httpResponse.statusCode)")
-            if let data = data {
-                print("Response Data: \(String(data: data, encoding: .utf8) ?? "No data")")
-            }
-            
-            if (200..<300).contains(httpResponse.statusCode), let data = data {
-                do {
-                    if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-                       let customerDict = json["customer"] as? [String: Any],
-                       let customerId = customerDict["id"] as? Int {
-                        print("Customer created with ID: \(customerId)")
-                        completion(.success("Customer created with ID: \(customerId)"))
-                    } else {
-                        print("Invalid JSON structure")
-                        let error = NSError(domain: "ShopifyAPI", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid JSON structure"])
-                        completion(.failure(error))
-                    }
-                } catch {
-                    print("Error parsing JSON: \(error.localizedDescription)")
+        AF.request(url, method: .post, parameters: customerData, encoding: JSONEncoding.default, headers: createHeaders())
+            .validate(statusCode: 200..<300)
+            .responseDecodable(of: CustomerResponse.self) { response in
+                switch response.result {
+                case .success(let customerResponse):
+                    let customerId = customerResponse.customer.id
+                    print("Customer created with ID: \(customerId)")
+                    completion(.success("Customer created with ID: \(customerId)"))
+                case .failure(let error):
+                    print("Error creating customer: \(error.localizedDescription)")
                     completion(.failure(error))
                 }
-            } else {
-                let errorDescription = "Server returned status code \(httpResponse.statusCode)"
-                print(errorDescription)
-                let error = NSError(domain: "ShopifyAPI", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: errorDescription])
-                completion(.failure(error))
             }
-        }.resume()
+    }
+    
+    func createDraftOrder(title: String, price: String, quantity: Int, customerId: Int, completion: @escaping (Result<String, Error>) -> Void) {
+        let path = "draft_orders.json"
+        let url = K.Shopify.Base_URL + path
+        
+        let draftOrderData: [String: Any] = [
+            "draft_order": [
+                "line_items": [
+                    [
+                        "title": title,
+                        "price": price,
+                        "quantity": quantity
+                    ]
+                ],
+                "customer": [
+                    "id": customerId
+                ],
+                "use_customer_default_address": true
+            ]
+        ]
+        
+        AF.request(url, method: .post, parameters: draftOrderData, encoding: JSONEncoding.default, headers: createHeaders())
+            .validate(statusCode: 200..<300)
+            .responseDecodable(of: DraftOrderResponse.self) { response in
+                switch response.result {
+                case .success(let draftOrderResponse):
+                    let draftOrderId = draftOrderResponse.draftOrder.id
+                    print("Draft order created with ID: \(draftOrderId)")
+                    completion(.success("Draft order created with ID: \(draftOrderId)"))
+                case .failure(let error):
+                    print("Error creating draft order: \(error.localizedDescription)")
+                    completion(.failure(error))
+                }
+            }
+    }
+}
+
+// Define the structure for the DraftOrderResponse.
+struct DraftOrderResponse: Decodable {
+    let draftOrder: DraftOrder
+    
+    enum CodingKeys: String, CodingKey {
+        case draftOrder = "draft_order"
+    }
+}
+
+struct DraftOrder: Decodable {
+    let id: Int
+    let name: String
+    let status: String
+}
+
+// Define the structure for the CustomerResponse.
+struct CustomerResponse: Decodable {
+    let customer: Customer
+}
+
+struct Customer: Decodable {
+    let id: Int
+    let email: String
+    let firstName: String
+    let lastName: String
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case email
+        case firstName = "first_name"
+        case lastName = "last_name"
     }
 }
