@@ -20,7 +20,7 @@ class SginUp: UIViewController { // TODO: fix routation in Sgin UP
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         self.navigationController?.navigationBar.isHidden = true
     }
     
@@ -78,21 +78,18 @@ class SginUp: UIViewController { // TODO: fix routation in Sgin UP
                 ShopifyAPIHelper.shared.createCustomer(email: email, firstName: name, lastName: "") { result in
                     switch result {
                     case .success(let shopifyCustomerID):
-                        DispatchQueue.main.async {
-                            self.storeUserData(uid: uid, shopifyCustomerID: shopifyCustomerID, email: email, name: name) {
-                                self.createDraftOrders(for: shopifyCustomerID) { success in
-                                    if success {
-                                        self.coordinator?.gotoHome()
-                                    } else {
-                                        Utils.showAlert(title: "Error", message: "Failed to create draft orders", preferredStyle: .alert, from: self)
-                                    }
+                        self.createDraftOrders(for: shopifyCustomerID) { draftOrderResult in
+                            switch draftOrderResult {
+                            case .success(let (cartID, favID)):
+                                self.storeUserData(uid: uid, shopifyCustomerID: shopifyCustomerID, email: email, name: name, cartID: cartID, favID: favID) {
+                                    self.coordinator?.gotoHome()
                                 }
+                            case .failure(let error):
+                                Utils.showAlert(title: "Error", message: "Failed to create draft orders: \(error.localizedDescription)", preferredStyle: .alert, from: self)
                             }
                         }
                     case .failure(let error):
-                        DispatchQueue.main.async {
-                            Utils.showAlert(title: "Error", message: "Failed to create Shopify customer: \(error.localizedDescription)", preferredStyle: .alert, from: self)
-                        }
+                        Utils.showAlert(title: "Error", message: "Failed to create Shopify customer: \(error.localizedDescription)", preferredStyle: .alert, from: self)
                     }
                 }
             }
@@ -105,14 +102,16 @@ class SginUp: UIViewController { // TODO: fix routation in Sgin UP
     
     // Helper Methods:
     
-    private func storeUserData(uid: String, shopifyCustomerID: String, email: String, name: String, completion: @escaping () -> Void) {
+    private func storeUserData(uid: String, shopifyCustomerID: String, email: String, name: String,cartID: String, favID: String, completion: @escaping () -> Void) {
         let numericCustomerID = extractNumericShopifyID(shopifyCustomerID: shopifyCustomerID)
         let db = Firestore.firestore()
         let userData: [String: Any] = [
             "uid": uid,
             "shopifyCustomerID": numericCustomerID,
             "email": email,
-            "name": name
+            "name": name,
+            "cartID": cartID,
+            "favID": favID
         ]
         
         db.collection("users").document(uid).setData(userData) { error in
@@ -129,10 +128,12 @@ class SginUp: UIViewController { // TODO: fix routation in Sgin UP
         }
     }
     
-    private func createDraftOrders(for shopifyCustomerID: String, completion: @escaping (Bool) -> Void) {
+    private func createDraftOrders(for shopifyCustomerID: String, completion: @escaping (Result<(String, String), Error>) -> Void) {
         let group = DispatchGroup()
-        var creationSuccess = true
-        
+        var draftOrder1ID: String?
+        var draftOrder2ID: String?
+        var creationError: Error?
+
         let draftOrder1: [String: Any] = [
             "title": "Fav",
             "price": "0.0",
@@ -149,10 +150,9 @@ class SginUp: UIViewController { // TODO: fix routation in Sgin UP
         ShopifyAPIHelper.shared.createDraftOrder(customerId: shopifyCustomerID, lineItems: [draftOrder1]) { result in
             switch result {
             case .success(let draftOrderId):
-                print("Draft order 1 created with ID: \(draftOrderId)")
+                draftOrder1ID = String(draftOrderId)
             case .failure(let error):
-                print("Failed to create draft order 1: \(error.localizedDescription)")
-                creationSuccess = false
+                creationError = error
             }
             group.leave()
         }
@@ -161,18 +161,25 @@ class SginUp: UIViewController { // TODO: fix routation in Sgin UP
         ShopifyAPIHelper.shared.createDraftOrder(customerId: shopifyCustomerID, lineItems: [draftOrder2]) { result in
             switch result {
             case .success(let draftOrderId):
-                print("Draft order 2 created with ID: \(draftOrderId)")
+                draftOrder2ID = String(draftOrderId)
             case .failure(let error):
-                print("Failed to create draft order 2: \(error.localizedDescription)")
-                creationSuccess = false
+                creationError = error
             }
             group.leave()
         }
         
         group.notify(queue: .main) {
-            completion(creationSuccess)
+            if let error = creationError {
+                completion(.failure(error))
+            } else if let draftOrder1ID = draftOrder1ID, let draftOrder2ID = draftOrder2ID {
+                completion(.success((draftOrder1ID, draftOrder2ID)))
+            } else {
+                completion(.failure(NSError(domain: "com.swiftcart", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unknown error occurred while creating draft orders"])))
+            }
         }
     }
+
+
     
     private func extractNumericShopifyID(shopifyCustomerID: String) -> String {
         let prefix = "Customer created with ID: "
