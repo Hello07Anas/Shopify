@@ -74,33 +74,12 @@ class Login: UIViewController {
                             cartID: userData["cartID"] as? String ?? "",
                             favID: userData["favID"] as? String ?? ""
                         )
-                        print("========")
-                        print("========")
-                        print("========")
-                        print("========")
-                        print("========")
-                        print("========")
-                        print("========")
-                        print("========")
-                        print("========")
-                        print("========")
                         
+                        print("========")
                         UserDefaultsHelper.shared.printUserDefaults()
-                
                         print("========")
-                        print("========")
-                        print("========")
-                        print("========")
-                        print("========")
-                        print("========")
-                        print("========")
-                        print("========")
-                        print("========")
-                        print("========")
-
                         self.coordinator?.gotoHome()
                         
-                        UserDefaultsHelper.shared.printUserDefaults()
                     } else {
                         Utils.showAlert(title: "Account Not Fully Set Up", message: "Your account is not fully set up. Please contact support.", preferredStyle: .alert, from: self)
                     }

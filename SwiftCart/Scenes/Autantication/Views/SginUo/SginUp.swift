@@ -82,6 +82,11 @@ class SginUp: UIViewController { // TODO: fix routation in Sgin UP
                             switch draftOrderResult {
                             case .success(let (cartID, favID)):
                                 self.storeUserData(uid: uid, shopifyCustomerID: shopifyCustomerID, email: email, name: name, cartID: cartID, favID: favID) {
+                                    
+                                    print("========")
+                                    UserDefaultsHelper.shared.printUserDefaults()
+                                    print("========")
+                
                                     self.coordinator?.gotoHome()
                                 }
                             case .failure(let error):
