@@ -102,7 +102,7 @@ class SginUp: UIViewController { // TODO: fix routation in Sgin UP
     
     // Helper Methods:
     
-    private func storeUserData(uid: String, shopifyCustomerID: String, email: String, name: String,cartID: String, favID: String, completion: @escaping () -> Void) {
+    private func storeUserData(uid: String, shopifyCustomerID: String, email: String, name: String, cartID: String, favID: String, completion: @escaping () -> Void) {
         let numericCustomerID = extractNumericShopifyID(shopifyCustomerID: shopifyCustomerID)
         let db = Firestore.firestore()
         let userData: [String: Any] = [
@@ -121,12 +121,13 @@ class SginUp: UIViewController { // TODO: fix routation in Sgin UP
                     Utils.showAlert(title: "Error", message: "Failed to store user data: \(error.localizedDescription)", preferredStyle: .alert, from: self)
                 } else {
                     print("Document successfully written!")
-                    UserDefaultsHelper.shared.saveUserData(email: email, name: name, uid: uid, shopifyCustomerID: numericCustomerID)
+                    UserDefaultsHelper.shared.saveUserData(email: email, name: name, uid: uid, shopifyCustomerID: numericCustomerID, cartID: cartID, favID: favID)
                     completion()
                 }
             }
         }
     }
+
     
     private func createDraftOrders(for shopifyCustomerID: String, completion: @escaping (Result<(String, String), Error>) -> Void) {
         let group = DispatchGroup()
@@ -178,6 +179,7 @@ class SginUp: UIViewController { // TODO: fix routation in Sgin UP
             }
         }
     }
+
 
 
     

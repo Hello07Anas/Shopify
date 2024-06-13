@@ -66,8 +66,38 @@ class Login: UIViewController {
                 
                 self.fetchUserDataFromFirestore(email: email) { userData in
                     if let userData = userData {
-                        UserDefaultsHelper.shared.saveUserData(email: email, name: userData["name"] as? String ?? "", uid: userData["uid"] as? String ?? "", shopifyCustomerID: userData["shopifyCustomerID"] as? String ?? "")
+                        UserDefaultsHelper.shared.saveUserData(
+                            email: email,
+                            name: userData["name"] as? String ?? "",
+                            uid: userData["uid"] as? String ?? "",
+                            shopifyCustomerID: userData["shopifyCustomerID"] as? String ?? "",
+                            cartID: userData["cartID"] as? String ?? "",
+                            favID: userData["favID"] as? String ?? ""
+                        )
+                        print("========")
+                        print("========")
+                        print("========")
+                        print("========")
+                        print("========")
+                        print("========")
+                        print("========")
+                        print("========")
+                        print("========")
+                        print("========")
                         
+                        UserDefaultsHelper.shared.printUserDefaults()
+                
+                        print("========")
+                        print("========")
+                        print("========")
+                        print("========")
+                        print("========")
+                        print("========")
+                        print("========")
+                        print("========")
+                        print("========")
+                        print("========")
+
                         self.coordinator?.gotoHome()
                         
                         UserDefaultsHelper.shared.printUserDefaults()
