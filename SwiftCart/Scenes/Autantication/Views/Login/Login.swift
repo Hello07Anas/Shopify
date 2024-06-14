@@ -66,11 +66,20 @@ class Login: UIViewController {
                 
                 self.fetchUserDataFromFirestore(email: email) { userData in
                     if let userData = userData {
-                        UserDefaultsHelper.shared.saveUserData(email: email, name: userData["name"] as? String ?? "", uid: userData["uid"] as? String ?? "", shopifyCustomerID: userData["shopifyCustomerID"] as? String ?? "")
+                        UserDefaultsHelper.shared.saveUserData(
+                            email: email,
+                            name: userData["name"] as? String ?? "",
+                            uid: userData["uid"] as? String ?? "",
+                            shopifyCustomerID: userData["shopifyCustomerID"] as? String ?? "",
+                            cartID: userData["cartID"] as? String ?? "",
+                            favID: userData["favID"] as? String ?? ""
+                        )
                         
+                        print("========")
+                        UserDefaultsHelper.shared.printUserDefaults()
+                        print("========")
                         self.coordinator?.gotoHome()
                         
-                        UserDefaultsHelper.shared.printUserDefaults()
                     } else {
                         Utils.showAlert(title: "Account Not Fully Set Up", message: "Your account is not fully set up. Please contact support.", preferredStyle: .alert, from: self)
                     }

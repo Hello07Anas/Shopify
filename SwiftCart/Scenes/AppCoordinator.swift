@@ -20,12 +20,11 @@ class AppCoordinator: Coordinator {
 //        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
 //        let vc = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as! AuthViewController
 
-       /* let mainViewController = Login(nibName: "Login", bundle: Bundle.main)
+        let mainViewController = Login(nibName: "Login", bundle: Bundle.main)
         mainViewController.coordinator = self
+        navigationController.pushViewController(mainViewController, animated: false)
 
-        navigationController.pushViewController(mainViewController, animated: false)*/
 
-      self.goToSettings()
     }
     
     func gotoLogin(pushToStack: Bool) {
