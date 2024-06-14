@@ -113,12 +113,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="53h-yo-AD3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3525.9541984732823" y="-14.084507042253522"/>
+            <point key="canvasLocation" x="2777" y="-12"/>
         </scene>
         <!--Cities View Controller-->
         <scene sceneID="yEE-II-1O6">
             <objects>
-                <tableViewController storyboardIdentifier="CitiesViewController" id="BjY-fn-yK0" customClass="CitiesViewController" customModule="SwiftCart" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="CitiesViewController" id="BjY-fn-yK0" customClass="CitiesViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="1fS-bn-b35">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -141,7 +141,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aKL-aS-dtl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4879" y="254"/>
+            <point key="canvasLocation" x="4401" y="667"/>
         </scene>
         <!--Addresses View Controller-->
         <scene sceneID="HP3-If-KUb">
@@ -518,7 +518,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="O7l-Xb-tiR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2592" y="-19"/>
+            <point key="canvasLocation" x="1946" y="666"/>
         </scene>
     </scenes>
     <resources>

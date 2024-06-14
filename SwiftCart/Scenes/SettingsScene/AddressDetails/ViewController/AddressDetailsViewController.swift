@@ -10,7 +10,7 @@ import UIKit
 class AddressDetailsViewController: UIViewController {
     weak var coordinator: SettingsCoordinator?
     var viewModel: AddressDetailsViewModel?
-
+    var selectedCity: String?
     
     @IBOutlet weak var addressVCTitle: NSLayoutConstraint!
     @IBOutlet weak var defaultSwitch: UISwitch!
@@ -38,9 +38,18 @@ class AddressDetailsViewController: UIViewController {
         viewModel?.bindAddress = {
             self.coordinator?.finish()
         }
-    
+        
+        let cityTapGesture = UITapGestureRecognizer(target: self, action: #selector(cityTextFieldTapped))
+        city.addGestureRecognizer(cityTapGesture)
+        city.isUserInteractionEnabled = true
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let selectedCity = selectedCity {
+            city.text = selectedCity
+        }
+    }
     
     func setUpAddressDetails() {
         defaultSwitch.isEnabled = false
@@ -63,7 +72,10 @@ class AddressDetailsViewController: UIViewController {
     }
     
     @objc func cityTextFieldTapped() {
-        coordinator?.goToCities()
+        coordinator?.presentCitiesViewController(from: self) { [weak self] selectedCity in
+            self?.selectedCity = selectedCity
+            self?.city.text = selectedCity
+        }
     }
     
     @IBAction func saveBtn(_ sender: Any) {
