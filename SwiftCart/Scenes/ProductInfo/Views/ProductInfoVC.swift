@@ -7,12 +7,14 @@
 
 import UIKit
 import Cosmos
+import RxSwift
 
 class ProductInfoVC: UIViewController{
     
     weak var coordinator: AppCoordinator?
-    
     var productInfoVM: ProductInfoVM!
+    private let disposeBag = DisposeBag()
+    var id: Int = 0
     
     @IBOutlet weak var productImageCollectionView: UICollectionView!
     @IBOutlet weak var productReviesCollectionView: UICollectionView!
@@ -30,11 +32,17 @@ class ProductInfoVC: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setupProductImageCollectionView()
         setupProductReviesCollectionView()
         
-        setDataOfProduct()
+        productInfoVM.productObservable
+            .subscribe(onNext: { [weak self] product in
+                self?.updateProductDetails(product)
+            })
+            .disposed(by: disposeBag)
+        
+        productInfoVM.fetchProduct(with: id)
         
         cosmos.rating = getRandomRating()
     }
@@ -59,7 +67,7 @@ class ProductInfoVC: UIViewController{
     func setupProductImageCollectionView() {
         productImageCollectionView.dataSource = self
         productImageCollectionView.delegate = self
-
+        
         let productImageNib = UINib(nibName: "productImgCellCollectionViewCell", bundle: nil)
         productImageCollectionView.register(productImageNib, forCellWithReuseIdentifier: "productImgCellCollectionViewCell")
         
@@ -74,10 +82,10 @@ class ProductInfoVC: UIViewController{
     func setupProductReviesCollectionView() {
         productReviesCollectionView.dataSource = self
         productReviesCollectionView.delegate = self
-
+        
         let productReviewNib = UINib(nibName: "productReviewCell", bundle: nil)
         productReviesCollectionView.register(productReviewNib, forCellWithReuseIdentifier: "productReviewCell")
-
+        
         if let reviewLayout = productReviesCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             reviewLayout.itemSize = CGSize(width: productReviesCollectionView.frame.width - 48, height: 85)
             reviewLayout.minimumLineSpacing = 8
@@ -88,31 +96,30 @@ class ProductInfoVC: UIViewController{
         pageControl.numberOfPages = 10
         pageControl.currentPage = 0
     }
-    
+
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView == productImageCollectionView {
             let pageIndex = round(scrollView.contentOffset.x / scrollView.frame.width)
             pageControl.currentPage = Int(pageIndex)
         }
     }
-    
-    func setDataOfProduct() {
-        if let product = productInfoVM.getProduct() as? SwiftCart.Product {
-            productName.text = product.title
-            productPrice.text = "\(product.variants.first?.price ?? "90.00") EGP"
-            productDescription.text = product.bodyHTML
 
-            pageControl.numberOfPages = product.images.count
-        }
-        
+    func updateProductDetails(_ product: ShopifyProduct) {
+        print("Updating UI with product details:", product)
+        productName.text = product.title
+        productPrice.text = "\(product.variants?.first?.price ?? "90.00") EGP"
+        productDescription.text = product.body_html
+        pageControl.numberOfPages = product.images?.count ?? 0
+
         productImageCollectionView.reloadData()
     }
-    
+
+
     func getRandomRating() -> Double {
         let randomRating = Double.random(in: 3.0...5.0)
         return (randomRating * 10).rounded() / 10.0
     }
-    
+
     func setButtonImage(isFavorited: Bool) {
         let imageName = isFavorited ? "heart.fill" : "heart"
         let image = UIImage(systemName: imageName)
@@ -126,7 +133,7 @@ class ProductInfoVC: UIViewController{
 extension ProductInfoVC: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == productImageCollectionView {
-            return (productInfoVM.getProduct() as? SwiftCart.Product)?.images.count ?? 0
+            return productInfoVM.getProduct()?.images?.count ?? 0
         } else if collectionView == productReviesCollectionView {
             return 25
         }
@@ -134,35 +141,34 @@ extension ProductInfoVC: UICollectionViewDataSource, UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        if collectionView == productImageCollectionView {
-//            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "productImgCellCollectionViewCell", for: indexPath) as! productImgCellCollectionViewCell
-//            return cell
         if collectionView == productImageCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "productImgCellCollectionViewCell", for: indexPath) as! productImgCellCollectionViewCell
             
-            if let product = productInfoVM.getProduct() as? SwiftCart.Product {
-                let imageURLString = product.images[indexPath.item].src
-                if let url = URL(string: imageURLString) {
+            if let product = productInfoVM.getProduct() {
+                let imageURLString = product.images?[indexPath.item].src
+                if let url = URL(string: imageURLString!) {
                     cell.configure(with: url)
                 }
             }
+            
             return cell
         } else if collectionView == productReviesCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "productReviewCell", for: indexPath) as! productReviewCell
-
+            
             var review: Review
-
+            
             if indexPath.item < 4 {
                 review = dummyReviews[indexPath.item]
             } else {
                 let randomIndex = Int.random(in: 0..<dummyReviews.count)
                 review = dummyReviews[randomIndex]
             }
-
+            
             cell.configure(with: review)
-
+            
             return cell
         }
+        
         return UICollectionViewCell()
     }
 }
