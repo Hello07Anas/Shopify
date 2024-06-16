@@ -105,7 +105,7 @@ class ProductInfoVC: UIViewController{
     }
 
     func updateProductDetails(_ product: ShopifyProduct) {
-        print("Updating UI with product details:", product)
+        //print("Updating UI with product details:", product)
         productName.text = product.title
         productPrice.text = "\(product.variants?.first?.price ?? "90.00") EGP"
         productDescription.text = product.body_html
@@ -155,22 +155,20 @@ extension ProductInfoVC: UICollectionViewDataSource, UICollectionViewDelegate {
         } else if collectionView == productReviesCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "productReviewCell", for: indexPath) as! productReviewCell
             
-            var review: Review
+            let randomIndex = Int.random(in: 0..<dummyReviews.count)
+            let review = dummyReviews[randomIndex]
             
-            if indexPath.item < 4 {
-                review = dummyReviews[indexPath.item]
-            } else {
-                let randomIndex = Int.random(in: 0..<dummyReviews.count)
-                review = dummyReviews[randomIndex]
-            }
+            let randomReviewerName = reviewers.randomElement() ?? "Anas"
+            let randomReview = Review(reviewerName: randomReviewerName, reviewDescription: review.reviewDescription, reviewRating: review.reviewRating)
             
-            cell.configure(with: review)
+            cell.configure(with: randomReview)
             
             return cell
         }
         
         return UICollectionViewCell()
     }
+
 }
 
 

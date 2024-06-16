@@ -24,7 +24,7 @@ class ProductInfoVM {
             .subscribe(onNext: { [weak self] product in
                 self?.product = product
                 self?.productObservable.onNext(product)
-                print("Product fetched successfully:", product)
+                //print("Product fetched successfully:", product)
             }, onError: { error in
                 print("Error fetching product: \(error.localizedDescription)")
             })
@@ -35,31 +35,3 @@ class ProductInfoVM {
         return product
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-//import Foundation
-//
-//class ProductInfoVM {
-//    
-//    private var product: Product
-//    
-//    init(product: Product) {
-//        self.product = product
-////        print("-------------------")
-////        print(product)
-//    }
-//    
-//    func getProduct() -> Product {
-//        return product
-//    }
-//}
