@@ -84,13 +84,16 @@ class AppCoordinator: Coordinator {
            settingsCoordinator.start()
        }
  
-    func goToProductInfo(product:Any) {
+    func goToProductInfo(productId: Int) {
         let productInfoVC = ProductInfoVC(nibName: "ProductInfoVC", bundle: Bundle.main)
         productInfoVC.coordinator = self
-        productInfoVC.productInfoVM = ProductInfoVM(product: product as! Product)
-        navigationController.pushViewController(productInfoVC, animated: true)
+        productInfoVC.id = productId
         
-        //print("=== GO TO Product Info ===")
+        let productInfoVM = ProductInfoVM()
+        productInfoVC.productInfoVM = productInfoVM
+        productInfoVM.fetchProduct(with: productId)
+        
+        navigationController.pushViewController(productInfoVC, animated: true)
     }
     
     func goToFav() {
