@@ -132,7 +132,7 @@ class CategoryViewController: UIViewController, UICollectionViewDelegate, UIColl
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         let selectedProduct = viewModel.getProducts()[indexPath.row]
-        coordinator?.goToProductInfo(product: selectedProduct)
+        coordinator?.goToProductInfo(productId: selectedProduct.id)
         //print("Item Selected")
     }
 }
