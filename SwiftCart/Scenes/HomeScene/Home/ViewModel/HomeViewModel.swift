@@ -29,11 +29,11 @@ class HomeViewModel {
         network.getApiData(url: url)
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] data in
-                print("ViewModel: Received brand response")
+               // print("ViewModel: Received brand response")
                 if let brandResponse: BrandResponse = Utils.convertTo(from: data) {
                     self?.brandsArray = brandResponse.brands ?? []
                     self?.brandsSubject.onNext(self?.brandsArray ?? [])
-                    print("ViewModel: Number of brands: \(self?.brandsArray.count ?? 0) image :: \(self?.brandsArray.first?.image?.src ?? "")")
+                  //  print("ViewModel: Number of brands: \(self?.brandsArray.count ?? 0) image :: \(self?.brandsArray.first?.image?.src ?? "")")
                 } else {
                     print("loadData else")
                 }

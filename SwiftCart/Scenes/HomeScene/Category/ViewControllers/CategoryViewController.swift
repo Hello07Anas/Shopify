@@ -16,7 +16,9 @@ class CategoryViewController: UIViewController, UICollectionViewDelegate, UIColl
     @IBOutlet weak var subCategoriesView: UISegmentedControl!
     
     @IBOutlet weak var topconstrensinCollectionView: NSLayoutConstraint!
+    
     var isFilterHidden = true
+    //let favCRUD = FavCRUD()
     
     weak var coordinator: AppCoordinator?
     private let disposeBag = DisposeBag()
@@ -26,6 +28,7 @@ class CategoryViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     override func viewDidLoad() {
         super.viewDidLoad()
+       // print("viewDidLoad ======================= CategoryViewController")
         subCategoriesView.isHidden = isFilterHidden
         topconstrensinCollectionView.constant = 8
         
@@ -38,8 +41,6 @@ class CategoryViewController: UIViewController, UICollectionViewDelegate, UIColl
         viewModel.getAllProducts()
     }
  
-    
-
     @IBAction func filter(_ sender: Any) {
         isFilterHidden = !isFilterHidden
         UIView.animate(withDuration: 0.5) {
@@ -136,3 +137,34 @@ class CategoryViewController: UIViewController, UICollectionViewDelegate, UIColl
         //print("Item Selected")
     }
 }
+
+//extension CategoryViewController: ProductCollectionCellDelegate {
+//    //let favCRUD = FavCRUD() //TODO: //Extensions must not contain stored properties  << search on it
+//
+//    func addToFavoriteTapped(for cell: ProductCollectionCell) {
+//        guard let indexPath = cell.indexPath else {
+//            return
+//        }
+//        print("ProductCollectionCellDelegate - IndexPath: \(indexPath)")
+//        var product = products[indexPath.item]
+//        let favId = 967136935983
+//        
+////        if product.isFavorited {
+////            favCRUD.deleteItem(favId: favId, itemId: 7680315883567)
+////        } else {
+//        let imageUrl = product.image
+//        let itemName = product.title
+//        let itemPrice = (product.variants[0].price as NSString).doubleValue
+//           // let itemPrice = (product.price as NSString).doubleValue
+//            
+//            favCRUD.saveItem(favId: favId, itemId: 7680315883567, itemImg: "https://cdn.shopify.com/s/files/1/0624/0239/6207/files/e1a602299eadb59238aecf3781d184b7.jpg?v=1716812290", itemName: itemName, itemPrice: itemPrice)
+//        //}
+//        
+//        //product.isFavorited.toggle()
+//        products[indexPath.item] = product
+//        
+//        collectionView.reloadData()
+//        print("ProductCollectionCellDelegate")
+//
+//    }
+//}

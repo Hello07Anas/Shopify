@@ -14,8 +14,10 @@ class ProductInfoVC: UIViewController{
     weak var coordinator: AppCoordinator?
     var productInfoVM: ProductInfoVM!
     private let disposeBag = DisposeBag()
+    let favCRUD = FavCRUD()
     var id: Int = 0
-    
+    let favId = Int(UserDefaultsHelper.shared.getUserData().favID ?? "0")
+
     @IBOutlet weak var productImageCollectionView: UICollectionView!
     @IBOutlet weak var productReviesCollectionView: UICollectionView!
     
@@ -48,8 +50,40 @@ class ProductInfoVC: UIViewController{
     }
 
     @IBAction func addToFavBtn(_ sender: Any) {
+        guard let product = productInfoVM.getProduct() else { return }
+        
         isFavorited.toggle()
         setButtonImage(isFavorited: isFavorited)
+        
+        if isFavorited {
+            let itemId = product.id
+            let itemImg = product.images?.first?.src ?? ""
+            let itemName = product.title
+            let itemPrice = Double(product.variants?.first?.price ?? "0.0") ?? 0.0
+            
+            favCRUD.saveItem(favId: favId!, itemId: itemId!, itemImg: itemImg, itemName: itemName!, itemPrice: itemPrice)
+        } else {
+            // Product is unfavorited, check if it was previously favorited
+            favCRUD.isItemInFavorites(favId: favId!, itemId: product.id!) { isFavorited in
+                if isFavorited {
+                    // Show alert to confirm deletion from favorites
+                    let yes = UIAlertAction(title: "Yes", style: .default) { _ in
+                        // Delete the item from favorites
+                        self.favCRUD.deleteItem(favId: self.favId!, itemId: product.id!)
+                    }
+                    let no = UIAlertAction(title: "No", style: .cancel, handler: nil)
+                    
+                    Utils.showAlert(title: "Remove from Favorites", message: "Are you sure you want to remove \(product.title) from your favorites?", preferredStyle: .alert, from: self, actions: [yes, no])
+                    
+                    // Restore the favorite state to true (as it was previously favorited)
+                    self.isFavorited = true
+                    self.setButtonImage(isFavorited: self.isFavorited)
+                } else {
+                    // Item was not previously favorited, do nothing or handle as needed
+                    // Here you may want to log an error or take other action
+                }
+            }
+        }
     }
     
 
@@ -171,7 +205,34 @@ extension ProductInfoVC: UICollectionViewDataSource, UICollectionViewDelegate {
 
 }
 
-
+//extension ProductInfoVC: ProductCollectionCellDelegate {
+//    func addToFavoriteTapped(for cell: ProductCollectionCell) {
+//        guard let indexPath = cell.indexPath else {
+//            return
+//        }
+//        print("ProductCollectionCellDelegate - IndexPath: \(indexPath)")
+//      //  var product = products[indexPath.item]
+//        var product = productInfoVM.getProduct()
+//        let favId = 967136935983
+//        
+////        if product.isFavorited {
+////            favCRUD.deleteItem(favId: favId, itemId: 7680315883567)
+////        } else {
+//        let imageUrl = product?.image
+//        let itemName = product?.title
+//        //let itemPrice = (product.variants[0].price as NSString).doubleValue
+//            
+//        favCRUD.saveItem(favId: favId, itemId: 7680315883567, itemImg: "https://cdn.shopify.com/s/files/1/0624/0239/6207/files/e1a602299eadb59238aecf3781d184b7.jpg?v=1716812290", itemName: itemName!, itemPrice: 120.0)
+////        }
+//        
+//        //product.isFavorited.toggle()
+//       // products[indexPath.item] = product
+//        
+//        //collectionView.reloadData()
+//        print("ProductCollectionCellDelegate")
+//
+//    }
+//}
 /*
 // MARK: - Navigation
 

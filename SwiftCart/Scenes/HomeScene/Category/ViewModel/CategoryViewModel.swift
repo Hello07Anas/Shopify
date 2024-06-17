@@ -31,11 +31,11 @@ class CategoryViewModel {
         network.getApiData(url: url)
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] data in
-                print("ViewModel: Received ALL Products response !!!!")
+               // print("ViewModel: Received ALL Products response !!!!")
                 if let productsResponse: ProductsResponse = Utils.convertTo(from: data) {
                     self?.productsArray = productsResponse.products ?? []
                     self?.categoriesSubject.onNext(self?.productsArray ?? [])
-                    print("ViewModel: Number of products: \(self?.productsArray.count ?? 0) image :: \(self?.productsArray.first?.image.src ?? "")")
+                  //  print("ViewModel: Number of products: \(self?.productsArray.count ?? 0) image :: \(self?.productsArray.first?.image.src ?? "")")
                 } else {
                     print("loadData else")
                 }
@@ -51,11 +51,11 @@ class CategoryViewModel {
         network.getApiData(url: url)
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] data in
-                print("ViewModel: Received Category Products response")
+                //print("ViewModel: Received Category Products response")
                 if let productsResponse: ProductsResponse = Utils.convertTo(from: data) {
                     self?.productsArray = productsResponse.products ?? []
                     self?.categoriesSubject.onNext(self?.productsArray ?? [])
-                    print("ViewModel: Number of products: \(self?.productsArray.count ?? 0) image :: \(self?.productsArray.first?.image.src ?? "")")
+                   // print("ViewModel: Number of products: \(self?.productsArray.count ?? 0) image :: \(self?.productsArray.first?.image.src ?? "")")
                 } else {
                     print("loadData else")
                 }
