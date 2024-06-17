@@ -70,7 +70,7 @@ class ProductCollectionCell: UICollectionViewCell {
                 let no = UIAlertAction(title: "No", style: .cancel, handler: nil)
                 
                 if let viewController = self.contentView.parentViewController {
-                    Utils.showAlert(title: "Already Favorited", message: "\(self.ProductName.text!) is already in your favorites. Do you want to remove it?", preferredStyle: .alert, from: viewController, actions: [yes, no])
+                    Utils.showAlert(title: "Already Favorited", message: "\(self.ProductName.text ?? "this item") is already in your favorites. Do you want to remove it?", preferredStyle: .alert, from: viewController, actions: [yes, no])
                 }
             } else {
                 isFavorited.toggle()

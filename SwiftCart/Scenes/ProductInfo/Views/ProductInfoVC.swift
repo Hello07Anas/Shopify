@@ -51,38 +51,19 @@ class ProductInfoVC: UIViewController{
 
     @IBAction func addToFavBtn(_ sender: Any) {
         guard let product = productInfoVM.getProduct() else { return }
-        
+        let itemId = product.id
+
         isFavorited.toggle()
         setButtonImage(isFavorited: isFavorited)
         
         if isFavorited {
-            let itemId = product.id
             let itemImg = product.images?.first?.src ?? ""
             let itemName = product.title
             let itemPrice = Double(product.variants?.first?.price ?? "0.0") ?? 0.0
             
             favCRUD.saveItem(favId: favId!, itemId: itemId!, itemImg: itemImg, itemName: itemName!, itemPrice: itemPrice)
         } else {
-            // Product is unfavorited, check if it was previously favorited
-            favCRUD.isItemInFavorites(favId: favId!, itemId: product.id!) { isFavorited in
-                if isFavorited {
-                    // Show alert to confirm deletion from favorites
-                    let yes = UIAlertAction(title: "Yes", style: .default) { _ in
-                        // Delete the item from favorites
-                        self.favCRUD.deleteItem(favId: self.favId!, itemId: product.id!)
-                    }
-                    let no = UIAlertAction(title: "No", style: .cancel, handler: nil)
-                    
-                    Utils.showAlert(title: "Remove from Favorites", message: "Are you sure you want to remove \(product.title) from your favorites?", preferredStyle: .alert, from: self, actions: [yes, no])
-                    
-                    // Restore the favorite state to true (as it was previously favorited)
-                    self.isFavorited = true
-                    self.setButtonImage(isFavorited: self.isFavorited)
-                } else {
-                    // Item was not previously favorited, do nothing or handle as needed
-                    // Here you may want to log an error or take other action
-                }
-            }
+            favCRUD.deleteItem(favId: favId!, itemId: itemId!)
         }
     }
     
