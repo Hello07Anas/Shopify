@@ -12,6 +12,7 @@ class AddressDetailsViewController: UIViewController {
     var viewModel: AddressDetailsViewModel?
     var selectedCity: String?
     
+    @IBOutlet weak var titleVC: UILabel!
     @IBOutlet weak var addressVCTitle: NSLayoutConstraint!
     @IBOutlet weak var defaultSwitch: UISwitch!
     @IBOutlet weak var address: UITextField!
@@ -64,11 +65,14 @@ class AddressDetailsViewController: UIViewController {
         } else {
             defaultSwitch.isOn = false
         }
+        
+        titleVC.text = "Address Details"
     }
     
     func setUpAddNewAddress() {
         defaultSwitch.isOn = false
         defaultSwitch.isEnabled = false
+        titleVC.text = "Add a New Address"
     }
     
     @objc func cityTextFieldTapped() {

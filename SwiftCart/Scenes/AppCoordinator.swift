@@ -20,10 +20,11 @@ class AppCoordinator: Coordinator {
 //        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
 //        let vc = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as! AuthViewController
 
-        let mainViewController = Login(nibName: "Login", bundle: Bundle.main)
+       let mainViewController = Login(nibName: "Login", bundle: Bundle.main)
         mainViewController.coordinator = self
         navigationController.pushViewController(mainViewController, animated: false)
 
+      //  self.goToSettings()
 
     }
     
@@ -52,16 +53,20 @@ class AppCoordinator: Coordinator {
     func gotoHome() {
         
         let storyboard = UIStoryboard(name: K.Home.Home_Storyboard_Name, bundle: Bundle.main)
+        let settingsStoryboard = UIStoryboard(name: K.Settings.Settings_Storyboard_Name, bundle: Bundle.main)
         let homeVc = storyboard.instantiateViewController(withIdentifier: K.Home.Home_View_Name) as! HomeViewController
         let categoryVc = storyboard.instantiateViewController(withIdentifier: K.Home.Category_View_Name) as! CategoryViewController
+        let myCartVC = settingsStoryboard.instantiateViewController(withIdentifier: K.Settings.MyCart_View_Name) as! MyCartViewController
         homeVc.coordinator = self
         categoryVc.coordinator = self
+        myCartVC.coordinator = self
         
         homeVc.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 0)
         categoryVc.tabBarItem = UITabBarItem(title: "Categories", image: UIImage(systemName: "list.bullet"), tag: 1)
+        myCartVC.tabBarItem = UITabBarItem(title: "MyCart", image: UIImage(systemName: "cart"), tag:2)
         
         let tabBar = UITabBarController()
-        tabBar.viewControllers = [homeVc, categoryVc]
+        tabBar.viewControllers = [homeVc, categoryVc, myCartVC]
         tabBar.tabBar.backgroundColor = .white
         
         navigationController.pushViewController(tabBar, animated: true)
