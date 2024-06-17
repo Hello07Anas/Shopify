@@ -57,16 +57,19 @@ class AppCoordinator: Coordinator {
         let homeVc = storyboard.instantiateViewController(withIdentifier: K.Home.Home_View_Name) as! HomeViewController
         let categoryVc = storyboard.instantiateViewController(withIdentifier: K.Home.Category_View_Name) as! CategoryViewController
         let myCartVC = settingsStoryboard.instantiateViewController(withIdentifier: K.Settings.Cart_View_Name) as! CartViewController
+        let profileVC = settingsStoryboard.instantiateViewController(withIdentifier: K.Settings.Profile_View_Name) as! ProfileViewController
         homeVc.coordinator = self
         categoryVc.coordinator = self
         myCartVC.coordinator = self
+        profileVC.coordinator = self
         
         homeVc.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 0)
         categoryVc.tabBarItem = UITabBarItem(title: "Categories", image: UIImage(systemName: "list.bullet"), tag: 1)
         myCartVC.tabBarItem = UITabBarItem(title: "MyCart", image: UIImage(systemName: "cart"), tag:2)
+        profileVC.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "person"), tag:3)
         
         let tabBar = UITabBarController()
-        tabBar.viewControllers = [homeVc, categoryVc, myCartVC]
+        tabBar.viewControllers = [homeVc, categoryVc, myCartVC, profileVC]
         tabBar.tabBar.backgroundColor = .white
         
         navigationController.pushViewController(tabBar, animated: true)
