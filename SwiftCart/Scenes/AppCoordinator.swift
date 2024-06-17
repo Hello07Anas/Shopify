@@ -56,7 +56,7 @@ class AppCoordinator: Coordinator {
         let settingsStoryboard = UIStoryboard(name: K.Settings.Settings_Storyboard_Name, bundle: Bundle.main)
         let homeVc = storyboard.instantiateViewController(withIdentifier: K.Home.Home_View_Name) as! HomeViewController
         let categoryVc = storyboard.instantiateViewController(withIdentifier: K.Home.Category_View_Name) as! CategoryViewController
-        let myCartVC = settingsStoryboard.instantiateViewController(withIdentifier: K.Settings.MyCart_View_Name) as! MyCartViewController
+        let myCartVC = settingsStoryboard.instantiateViewController(withIdentifier: K.Settings.Cart_View_Name) as! CartViewController
         homeVc.coordinator = self
         categoryVc.coordinator = self
         myCartVC.coordinator = self

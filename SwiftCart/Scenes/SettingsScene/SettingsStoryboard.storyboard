@@ -521,10 +521,10 @@
             </objects>
             <point key="canvasLocation" x="1946" y="666"/>
         </scene>
-        <!--My Cart View Controller-->
+        <!--Cart View Controller-->
         <scene sceneID="SyP-Ab-m6j">
             <objects>
-                <viewController storyboardIdentifier="MyCartViewController" id="grB-nr-phe" customClass="MyCartViewController" customModule="SwiftCart" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CartViewController" id="grB-nr-phe" customClass="CartViewController" customModule="SwiftCart" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="lK3-uI-RZv">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
