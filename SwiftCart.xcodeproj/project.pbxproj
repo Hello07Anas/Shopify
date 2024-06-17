@@ -206,9 +206,9 @@
 				04715A6B2C08F1D500D8DC3B /* LaunchScreen.storyboard */,
 				4C3110192C13909D00B88AC5 /* Coordinator.swift */,
 				4C3110172C13904F00B88AC5 /* AppCoordinator.swift */,
-				4C8022E32C18774100C7BEBF /* Fav */,
-				0E88FE922C112A8C004E3FA6 /* SettingsScene */,
 				B972D5E02C0CA0D2007E0329 /* HomeScene */,
+				0E88FE922C112A8C004E3FA6 /* SettingsScene */,
+				4C8022E32C18774100C7BEBF /* Fav */,
 				4CC00E7C2C09FD9500DD2758 /* Autantication */,
 				4C6E01D82C166E5B0092E4E0 /* ProductInfo */,
 				4C9C39AE2C0A25CE003F0769 /* NibAssestant */,
@@ -590,9 +590,9 @@
 		B972D5E02C0CA0D2007E0329 /* HomeScene */ = {
 			isa = PBXGroup;
 			children = (
+				B972D5E32C0CA131007E0329 /* HomeStoryboard.storyboard */,
 				0EA17AAD2C2087FE00E0B704 /* Profile */,
 				0EB1FD6D2C1FBE7B00F4A48D /* Cart */,
-				B972D5E32C0CA131007E0329 /* HomeStoryboard.storyboard */,
 				B9A4BB5D2C0DD02B00DB16E5 /* Category */,
 				B9A4BB632C0DD39F00DB16E5 /* Product */,
 				0EC5CD2D2C162EFB00C65BB8 /* Home */,
