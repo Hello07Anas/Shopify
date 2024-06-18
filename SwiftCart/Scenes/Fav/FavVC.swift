@@ -45,7 +45,6 @@ class FavVC: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         
-        
     }
 
     @IBAction func backBtn(_ sender: Any) {
@@ -104,6 +103,10 @@ extension FavVC: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource 
 }
 
 extension FavVC: ProductCollectionCellDelegate {
+    func saveToFavorite(foe cell: ProductCollectionCell) {
+        print("")
+    }
+    
 
     func deleteFavoriteTapped(for cell: ProductCollectionCell) {
         guard let indexPath = cell.indexPath else {

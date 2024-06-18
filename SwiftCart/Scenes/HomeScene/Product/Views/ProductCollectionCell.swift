@@ -9,6 +9,7 @@ import UIKit
 
 protocol ProductCollectionCellDelegate: AnyObject {
     func deleteFavoriteTapped(for cell: ProductCollectionCell)
+    func saveToFavorite(foe cell: ProductCollectionCell)
 }
 
 class ProductCollectionCell: UICollectionViewCell {
@@ -18,12 +19,13 @@ class ProductCollectionCell: UICollectionViewCell {
     @IBOutlet weak var img: UIImageView!
     @IBOutlet weak var addFavBtnOL: UIButton!
     
-    var isFavorited = false
-    var isCellNowFav = false
+
     weak var delegate: ProductCollectionCellDelegate?
     var indexPath: IndexPath?
     var coordinator: AppCoordinator?
-    
+    var isFavorited = false
+    var isCellNowFav = false
+    var isCellNowCategorie = false
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -60,20 +62,13 @@ class ProductCollectionCell: UICollectionViewCell {
     @IBAction func addToFavBtn(_ sender: Any) {
         if isCellNowFav {
             deleteItemFromFavScreen()
-        } else {
+        } else if isCellNowCategorie {
+            //print("isCellNowCategorie")
             if isFavorited {
-                let yes = UIAlertAction(title: "Yes", style: .default, handler: { _ in
-                    self.isFavorited = false
-                    self.setButtonImage(isFavorited: false)
-                    //self.delegate?.deleteFavoriteTapped(for: self) // TODO: handel it using delegate
-                })
-                let no = UIAlertAction(title: "No", style: .cancel, handler: nil)
-                
-                if let viewController = self.contentView.parentViewController {
-                    Utils.showAlert(title: "Already Favorited", message: "\(self.ProductName.text ?? "this item") is already in your favorites. Do you want to remove it?", preferredStyle: .alert, from: viewController, actions: [yes, no])
-                }
+                deleteItemFromFavScreen()
             } else {
-                isFavorited.toggle()
+                delegate?.saveToFavorite(foe: self)
+                isFavorited = true
                 setButtonImage(isFavorited: isFavorited)
             }
         }
@@ -82,6 +77,8 @@ class ProductCollectionCell: UICollectionViewCell {
     func deleteItemFromFavScreen() {
         let yes = UIAlertAction(title: "Yes", style: .default, handler: { _ in
             self.delegate?.deleteFavoriteTapped(for: self)
+            self.isFavorited = false
+            self.setButtonImage(isFavorited: self.isFavorited)
         })
         let no = UIAlertAction(title: "No", style: .cancel, handler: nil)
         
@@ -120,13 +117,3 @@ extension UIView { // helps with alert i present
         return nil
     }
 }
-
-/*
- if isCellNowFav {
- // here logic of Anas // TODO: Remove From Fav logic
-} else {
- // here logic of elham // TODO: Add to Fav logic
- isFavorited.toggle()
- setButtonImage(isFavorited: isFavorited)
-}
- */
