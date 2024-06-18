@@ -19,10 +19,10 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JDB-2d-50C" userLabel="Container">
-                        <rect key="frame" x="8" y="8" width="377" height="144"/>
+                        <rect key="frame" x="8" y="4" width="377" height="152"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="9" translatesAutoresizingMaskIntoConstraints="NO" id="GL7-7H-7ae">
-                                <rect key="frame" x="0.0" y="0.0" width="113" height="144"/>
+                                <rect key="frame" x="0.0" y="0.0" width="113" height="152"/>
                                 <color key="backgroundColor" systemColor="labelColor"/>
                                 <color key="tintColor" name="Background"/>
                                 <userDefinedRuntimeAttributes>
@@ -32,7 +32,7 @@
                                 </userDefinedRuntimeAttributes>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="etz-KL-1U4">
-                                <rect key="frame" x="261" y="92" width="100" height="36"/>
+                                <rect key="frame" x="261" y="100" width="100" height="36"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="NO8-0H-tSr">
                                         <rect key="frame" x="0.0" y="0.0" width="100" height="36"/>
@@ -42,6 +42,9 @@
                                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain" image="minus.circle" catalog="system"/>
+                                                <connections>
+                                                    <action selector="minusBtn:" destination="HHD-pi-DtG" eventType="touchUpInside" id="2Pa-77-Asl"/>
+                                                </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KoD-Ry-Flb">
                                                 <rect key="frame" x="33.5" y="0.0" width="33" height="36"/>
@@ -54,6 +57,9 @@
                                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain" image="plus.circle.fill" catalog="system"/>
+                                                <connections>
+                                                    <action selector="plusBtn:" destination="HHD-pi-DtG" eventType="touchUpInside" id="6Gv-aX-jYO"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
@@ -74,7 +80,7 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="4ih-qY-0X4">
-                                <rect key="frame" x="131" y="85" width="72" height="43"/>
+                                <rect key="frame" x="131" y="93" width="72" height="43"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10 / White" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SSy-Aj-U3k">
                                         <rect key="frame" x="0.0" y="0.0" width="72" height="19.5"/>
@@ -121,16 +127,23 @@
                         </userDefinedRuntimeAttributes>
                     </view>
                 </subviews>
-                <color key="backgroundColor" name="Background"/>
+                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
-                    <constraint firstItem="JDB-2d-50C" firstAttribute="top" secondItem="VCG-zV-rVE" secondAttribute="top" constant="8" id="5XS-vS-rhi"/>
+                    <constraint firstItem="JDB-2d-50C" firstAttribute="top" secondItem="VCG-zV-rVE" secondAttribute="top" constant="4" id="5XS-vS-rhi"/>
                     <constraint firstItem="JDB-2d-50C" firstAttribute="leading" secondItem="VCG-zV-rVE" secondAttribute="leading" constant="8" id="FYK-Ic-uZX"/>
                     <constraint firstAttribute="trailing" secondItem="JDB-2d-50C" secondAttribute="trailing" constant="8" id="TUh-pF-g6C"/>
-                    <constraint firstAttribute="bottom" secondItem="JDB-2d-50C" secondAttribute="bottom" constant="8" id="aaO-wr-XbJ"/>
+                    <constraint firstAttribute="bottom" secondItem="JDB-2d-50C" secondAttribute="bottom" constant="4" id="aaO-wr-XbJ"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="QGl-HF-syQ"/>
-            <point key="canvasLocation" x="649.61832061068696" y="152.11267605633805"/>
+            <connections>
+                <outlet property="productImage" destination="GL7-7H-7ae" id="Uuf-EM-lRS"/>
+                <outlet property="productPrice" destination="JpS-nh-FXy" id="PUn-J5-UV0"/>
+                <outlet property="productQuantity" destination="KoD-Ry-Flb" id="45H-8Q-qdD"/>
+                <outlet property="productTitle" destination="pZn-jB-QBN" id="nRx-RZ-3TI"/>
+                <outlet property="productVariant" destination="SSy-Aj-U3k" id="b87-Ag-fb2"/>
+            </connections>
+            <point key="canvasLocation" x="648.55072463768124" y="152.00892857142856"/>
         </tableViewCell>
     </objects>
     <resources>

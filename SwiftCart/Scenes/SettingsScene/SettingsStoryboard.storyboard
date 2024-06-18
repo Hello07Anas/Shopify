@@ -574,7 +574,7 @@
                                 </constraints>
                             </stackView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="1Ih-rO-tNa">
-                                <rect key="frame" x="8" y="112" width="398" height="686"/>
+                                <rect key="frame" x="8" y="112" width="398" height="694"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EHx-ab-e2b">
@@ -602,13 +602,14 @@
                             <constraint firstItem="uZC-HR-fDv" firstAttribute="trailing" secondItem="T6z-oM-jQA" secondAttribute="trailing" constant="16" id="cWV-zh-m2U"/>
                             <constraint firstItem="EHx-ab-e2b" firstAttribute="centerY" secondItem="tZg-M0-r8h" secondAttribute="centerY" id="edf-Jf-HMg"/>
                             <constraint firstItem="tZg-M0-r8h" firstAttribute="width" secondItem="lK3-uI-RZv" secondAttribute="width" multiplier="0.6" id="hAr-H1-JxF"/>
-                            <constraint firstItem="T6z-oM-jQA" firstAttribute="top" secondItem="1Ih-rO-tNa" secondAttribute="bottom" constant="8" id="kN3-Vj-lUb"/>
+                            <constraint firstItem="T6z-oM-jQA" firstAttribute="top" secondItem="1Ih-rO-tNa" secondAttribute="bottom" id="kN3-Vj-lUb"/>
                             <constraint firstItem="tZg-M0-r8h" firstAttribute="centerX" secondItem="uZC-HR-fDv" secondAttribute="centerX" id="qBP-JW-RBY"/>
                             <constraint firstItem="uZC-HR-fDv" firstAttribute="trailing" secondItem="1Ih-rO-tNa" secondAttribute="trailing" constant="8" id="u1J-gg-nk5"/>
                             <constraint firstItem="1Ih-rO-tNa" firstAttribute="leading" secondItem="uZC-HR-fDv" secondAttribute="leading" constant="8" id="vcL-bL-JvZ"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="cartTableView" destination="1Ih-rO-tNa" id="mIA-Lf-GfS"/>
                         <outlet property="totalPrice" destination="Hbf-M3-XJk" id="WHJ-Zg-FAd"/>
                     </connections>
                 </viewController>

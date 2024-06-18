@@ -59,11 +59,12 @@ class AddressDetailsViewController: UIViewController {
         phone.text = viewModel?.addressDetails?.phone
         city.text = viewModel?.addressDetails?.city
         address.text = viewModel?.addressDetails?.address1
-        defaultSwitch.isEnabled = true
         if viewModel?.addressDetails?.isDefault == true {
             defaultSwitch.isOn = true
+            defaultSwitch.isEnabled = false
         } else {
             defaultSwitch.isOn = false
+            defaultSwitch.isEnabled = true
         }
         
         titleVC.text = "Address Details"
@@ -113,9 +114,10 @@ class AddressDetailsViewController: UIViewController {
     }
     
     func validatePhoneNumber(_ phoneNumber: String) -> Bool {
-        let phoneRegex = "^[0-9+]{0,1}+[0-9]{11,11}$"
+        let phoneRegex = "^[0-9+]{0,1}+[0-9]{10,11}$"
         let phoneTest = NSPredicate(format: "SELF MATCHES %@", phoneRegex)
         let arrString = Array(phoneNumber)
         return arrString.count > 2 && phoneNumber.first == "0" && arrString[1] == "1" && phoneTest.evaluate(with: phoneNumber)
     }
+    
 }
