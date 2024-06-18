@@ -26,6 +26,7 @@ class ProductCollectionCell: UICollectionViewCell {
     var isFavorited = false
     var isCellNowFav = false
     var isCellNowCategorie = false
+    var isCellNowHome = false
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -64,6 +65,14 @@ class ProductCollectionCell: UICollectionViewCell {
             deleteItemFromFavScreen()
         } else if isCellNowCategorie {
             //print("isCellNowCategorie")
+            if isFavorited {
+                deleteItemFromFavScreen()
+            } else {
+                delegate?.saveToFavorite(foe: self)
+                isFavorited = true
+                setButtonImage(isFavorited: isFavorited)
+            }
+        } else if isCellNowHome {
             if isFavorited {
                 deleteItemFromFavScreen()
             } else {
