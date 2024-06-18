@@ -7,9 +7,9 @@
 
 import Foundation
 
-struct DraftOrderResponseModel : Decodable {
-    let singleResult: DraftOrderModel?
-    let result: [DraftOrderModel]?
+struct DraftOrderResponseModel : Codable {
+    var singleResult: DraftOrderModel?
+    var result: [DraftOrderModel]?
     
     enum CodingKeys: String, CodingKey {
         case singleResult = "draft_order"
@@ -20,7 +20,7 @@ struct DraftOrderResponseModel : Decodable {
 struct DraftOrderModel: Codable {
     let id: Int
     let currency: String
-    let lineItems: [LineItem]
+    var lineItems: [LineItem]
     let totalPrice: String
     
     enum CodingKeys: String, CodingKey {

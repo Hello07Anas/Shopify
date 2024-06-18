@@ -17,6 +17,7 @@ class CartViewModel{
     }
     private let disposeBag = DisposeBag()
     var cartProductsList : [LineItem]?
+    var draftOrder : DraftOrderResponseModel?
     var bindCartProducts : (()-> Void) = {}
     
     init(network: NetworkManager?) {
@@ -46,7 +47,7 @@ class CartViewModel{
                     let filteredLineItems = lineItems.filter { item in
                         return item.variantID  != nil
                     }
-                    
+                    self?.draftOrder = response
                     self?.cartProductsList = filteredLineItems
                     self?.cartSubject.onNext(self?.cartProductsList ?? [])
                     self?.bindCartProducts()
@@ -59,6 +60,28 @@ class CartViewModel{
                 print("Error occurred: \(error.localizedDescription)")
             })
             .disposed(by: disposeBag)
+    }
+    
+    func deletePrduct( id : Int){
+        draftOrder?.singleResult?.lineItems.removeAll(where:  { $0.variantID == id })
+        cartProductsList?.removeAll(where:  { $0.variantID == id })
+        let cartID = UserDefaultsHelper.shared.getUserData().cartID!
+        let endpoint = K.endPoints.draftOrders.rawValue.replacingOccurrences(of: "{draft_orders_id}", with: cartID)
+        
+        network?.put(endpoint: endpoint, body: draftOrder, responseType: DraftOrderResponseModel.self)
+                        .observeOn(MainScheduler.instance)
+                        .subscribe(onNext: { (success, message, response) in
+                            if success {
+                                print("Success: \(String(describing: response))")
+                            } else {
+                                print("Failed to put address: \(message ?? "No error message")")
+                            }
+                            self.cartSubject.onNext(self.cartProductsList ?? [])
+                            self.bindCartProducts()
+                        }, onError: { error in
+                            print("Error occurred: \(error.localizedDescription)")
+                        })
+                        .disposed(by: disposeBag)
     }
         
     func configCell(_ cell: ProductCartCell, at index: Int) {
