@@ -11,14 +11,31 @@ struct ProductDumy {
     let name: String
     let price: String
     let imageName: String
+    var isFavorited: Bool
+    let itemId: Int
+    
+    init(name: String, price: String, imageName: String, isFavorited: Bool = false, itemId: Int) {
+        self.name = name
+        self.price = price
+        self.imageName = imageName
+        self.isFavorited = isFavorited
+        self.itemId = itemId
+    }
 }
 
 class FavVC: UIViewController {
 
     var coordinator: AppCoordinator?
     var products: [ProductDumy] = []
-
+    let favCRUD = FavCRUD()
+    
     @IBOutlet weak var collectionView: UICollectionView!
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        fetchFavoriteItems()
+        collectionView.reloadData()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,38 +45,44 @@ class FavVC: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         
-        
-        for i in 1...15 {
-            products.append(ProductDumy(name: "Product \(i)", price: "$\(i * 10)", imageName: "9"))
-        }
-        
-        collectionView.reloadData()
     }
 
     @IBAction func backBtn(_ sender: Any) {
         coordinator?.finish()
     }
+
+    private func fetchFavoriteItems() {
+        let favId = Int(UserDefaultsHelper.shared.getUserData().favID ?? "0")
+        favCRUD.readItems(favId: favId!) { [weak self] lineItems in
+            DispatchQueue.main.async {
+                // Map lineItems to ProductDumy
+                self?.products = lineItems.map { lineItem -> ProductDumy in
+                    let image = lineItem.properties.first?["value"] ?? ""
+                    let isFavorited = true
+                    return ProductDumy(name: lineItem.title, price: lineItem.price, imageName: image, isFavorited: isFavorited, itemId: lineItem.id!)
+                }
+                self?.collectionView.reloadData()
+            }
+        }
+    }
+
 }
 
 extension FavVC: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return products.count
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductCell", for: indexPath) as! ProductCollectionCell
         
         let product = products[indexPath.item]
-//        cell.ProductName.text = product.title
-//        cell.price.text = product.variants[0].price
-//        cell.img.image = UIImage(named: product.images[0].src)
-        cell.ProductName.text = product.name
-        cell.price.text = product.price
-        cell.img.image = UIImage(named: product.imageName)
-        // Set isCellNowFav to true for all cells
+        cell.configure(with: product, isFavorited: true)
         cell.isCellNowFav = true
+        cell.delegate = self
+        cell.indexPath = indexPath
         cell.setBtnImg()
-        
+
         return cell
     }
     
@@ -68,13 +91,59 @@ extension FavVC: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource 
         let sectionInset: CGFloat = 10
         let totalSpacing = sectionInset * 2 + spacing
         let width = (collectionView.frame.width - totalSpacing) / 2
-        print("DONE!!")
-        print("DONE!!")
-        print("DONE!!")
         return CGSize(width: width, height: 150)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let product = products[indexPath.item]
+        print("Selected product itemId: \(product.itemId)")
+        coordinator?.goToProductInfo(productId: product.itemId, isFav: product.isFavorited)
+        //print("===============");print(product.isFavorited);print("===============")
     }
 }
 
+extension FavVC: ProductCollectionCellDelegate {
+    func saveToFavorite(foe cell: ProductCollectionCell) {
+        print("")
+    }
+    
+
+    func deleteFavoriteTapped(for cell: ProductCollectionCell) {
+        guard let indexPath = cell.indexPath else {
+            return
+        }
+
+        var product = products[indexPath.item]
+        let favId = Int(UserDefaultsHelper.shared.getUserData().favID ?? "0")
+        
+        favCRUD.deleteItem(favId: favId!, itemId: product.itemId)
+
+        product.isFavorited.toggle()
+        products[indexPath.item] = product
+        products.remove(at: indexPath.item)
+
+        collectionView.reloadData()
+        
+        //print("ProductCollectionCellDelegate - IndexPath: \(indexPath)")
+        //print("===---===ProductCollectionCellDelegate"); print(favId as Any)
+        //print("ProductCollectionCellDelegate===---==="); print("ProductCollectionCellDelegate")
+    }
+}
+
+
+extension UIImageView {
+    func load(url: URL) {
+        DispatchQueue.global().async { [weak self] in
+            if let data = try? Data(contentsOf: url) {
+                if let image = UIImage(data: data) {
+                    DispatchQueue.main.async {
+                        self?.image = image
+                    }
+                }
+            }
+        }
+    }
+}
 /*
 // MARK: - Navigation
 

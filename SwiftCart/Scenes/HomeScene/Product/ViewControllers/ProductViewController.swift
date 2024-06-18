@@ -17,10 +17,12 @@ class ProductViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     @IBOutlet weak var topconstrensinCollectionView: NSLayoutConstraint!
     var isFilterHidden = true
-    
+    let favCRUD = FavCRUD()
+
     weak var coordinator: AppCoordinator?
     private let disposeBag = DisposeBag()
     private var products: [Product] = []
+    private var favoriteProductIDs: Set<Int> = [] // TODO: s
     var brandID: Int?
     var viewModel = CategoryViewModel(network: NetworkManager.shared)
     
@@ -36,13 +38,22 @@ class ProductViewController: UIViewController, UICollectionViewDelegate, UIColle
         
         let nib = UINib(nibName: "ProductCollectionCell", bundle: nil)
         collectionView.register(nib, forCellWithReuseIdentifier: "ProductCell")
-        
         setupBindings()
         if let brandID = brandID {
             viewModel.getCategoryProducts(categoryId: brandID)
         }
+        fetchFavoriteItems()
     }
     
+    private func fetchFavoriteItems() {
+        let favId = Int(UserDefaultsHelper.shared.getUserData().favID ?? "0") ?? 0
+        favCRUD.readItems(favId: favId) { [weak self] lineItems in
+            DispatchQueue.main.async {
+                self?.favoriteProductIDs = Set(lineItems.compactMap { $0.id })
+                self?.collectionView.reloadData()
+            }
+        }
+    }
     
     @IBAction func filter(_ sender: Any) {
         isFilterHidden = !isFilterHidden
@@ -97,13 +108,22 @@ class ProductViewController: UIViewController, UICollectionViewDelegate, UIColle
         }
         cell.ProductName.text = product.title
         cell.price.text = product.variants[0].price
+        
+        cell.isCellNowHome = true
+        cell.indexPath = indexPath
+        cell.delegate = self
+        cell.isFavorited = favoriteProductIDs.contains(product.id)
+        cell.setButtonImage(isFavorited: cell.isFavorited)
+        
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         let selectedProduct = viewModel.getProducts()[indexPath.row]
-        coordinator?.goToProductInfo(productId: selectedProduct.id)
+        let isFavorited = favoriteProductIDs.contains(selectedProduct.id)
+
+        coordinator?.goToProductInfo(productId: selectedProduct.id, isFav: isFavorited) //TODO: change flase to be dynamic
         //print("Item Selected")
     }
     
@@ -115,5 +135,30 @@ class ProductViewController: UIViewController, UICollectionViewDelegate, UIColle
         let padding: CGFloat = 20
         let collectionViewSize = collectionView.frame.size.width - padding
         return CGSize(width: collectionViewSize / 2, height: ( collectionViewSize / 2))
+    }
+}
+
+extension ProductViewController: ProductCollectionCellDelegate {
+    func saveToFavorite(foe cell: ProductCollectionCell) {
+        guard let indexPath = cell.indexPath else {
+            print("No index path found for cell")
+            return
+        }
+        
+        let product = products[indexPath.item]
+        let favId = Int(UserDefaultsHelper.shared.getUserData().favID ?? "0")
+        favCRUD.saveItem(favId: favId!, itemId: product.id, itemImg: product.image.src, itemName: product.title, itemPrice: Double(product.variants[0].price) ?? 70.0)
+    }
+    
+    
+    func deleteFavoriteTapped(for cell: ProductCollectionCell) {
+        guard let indexPath = cell.indexPath else {
+            print("No index path found for cell")
+            return
+        }
+        
+        let product = products[indexPath.item]
+        let favId = Int(UserDefaultsHelper.shared.getUserData().favID ?? "0")
+        favCRUD.deleteItem(favId: favId!, itemId: product.id)
     }
 }

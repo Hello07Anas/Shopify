@@ -84,10 +84,11 @@ class AppCoordinator: Coordinator {
            settingsCoordinator.start()
        }
  
-    func goToProductInfo(productId: Int) {
+    func goToProductInfo(productId: Int, isFav: Bool) {
         let productInfoVC = ProductInfoVC(nibName: "ProductInfoVC", bundle: Bundle.main)
         productInfoVC.coordinator = self
         productInfoVC.id = productId
+        productInfoVC.isFavorited = isFav
         
         let productInfoVM = ProductInfoVM()
         productInfoVC.productInfoVM = productInfoVM
@@ -106,11 +107,3 @@ class AppCoordinator: Coordinator {
         navigationController.popViewController(animated: true)
     }
 }
-
-
-//    func gotoProductInfo(product: Any) {
-//    let productInfoVC = ProductInfoVC(nibName: "ProductInfoVC", bundle: Bundle.main)
-//    productInfoVC.coordinator = self
-//    productInfoVC.productInfoVM = ProductInfoVM(product: product)
-//    navigationController.pushViewController(productInfoVC, animated: false)
-//    }
