@@ -103,7 +103,7 @@ class ProductViewController: UIViewController, UICollectionViewDelegate, UIColle
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         let selectedProduct = viewModel.getProducts()[indexPath.row]
-        coordinator?.goToProductInfo(productId: selectedProduct.id)
+        coordinator?.goToProductInfo(productId: selectedProduct.id, isFav: false) //TODO: change flase to be dynamic
         //print("Item Selected")
     }
     

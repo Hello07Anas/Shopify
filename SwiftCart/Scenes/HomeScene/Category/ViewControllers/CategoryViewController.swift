@@ -133,38 +133,7 @@ class CategoryViewController: UIViewController, UICollectionViewDelegate, UIColl
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         let selectedProduct = viewModel.getProducts()[indexPath.row]
-        coordinator?.goToProductInfo(productId: selectedProduct.id)
+        coordinator?.goToProductInfo(productId: selectedProduct.id, isFav: false) // TODO: change flase to be dynamic
         //print("Item Selected")
     }
 }
-
-//extension CategoryViewController: ProductCollectionCellDelegate {
-//    //let favCRUD = FavCRUD() //TODO: //Extensions must not contain stored properties  << search on it
-//
-//    func addToFavoriteTapped(for cell: ProductCollectionCell) {
-//        guard let indexPath = cell.indexPath else {
-//            return
-//        }
-//        print("ProductCollectionCellDelegate - IndexPath: \(indexPath)")
-//        var product = products[indexPath.item]
-//        let favId = 967136935983
-//        
-////        if product.isFavorited {
-////            favCRUD.deleteItem(favId: favId, itemId: 7680315883567)
-////        } else {
-//        let imageUrl = product.image
-//        let itemName = product.title
-//        let itemPrice = (product.variants[0].price as NSString).doubleValue
-//           // let itemPrice = (product.price as NSString).doubleValue
-//            
-//            favCRUD.saveItem(favId: favId, itemId: 7680315883567, itemImg: "https://cdn.shopify.com/s/files/1/0624/0239/6207/files/e1a602299eadb59238aecf3781d184b7.jpg?v=1716812290", itemName: itemName, itemPrice: itemPrice)
-//        //}
-//        
-//        //product.isFavorited.toggle()
-//        products[indexPath.item] = product
-//        
-//        collectionView.reloadData()
-//        print("ProductCollectionCellDelegate")
-//
-//    }
-//}

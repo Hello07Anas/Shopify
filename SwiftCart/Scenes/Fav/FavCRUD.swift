@@ -33,7 +33,10 @@ struct FavCRUD {
     }
 
     func saveItem(favId: Int, itemId: Int, itemImg: String, itemName: String, itemPrice: Double) {
-        let lineItem = LineItem(id: nil, quantity: 1, price: String(format: "%.2f", itemPrice), title: itemName, properties: [["name": "image", "value": itemImg]])
+        let lineItem = LineItem(id: nil, quantity: 1, price: String(format: "%.2f", itemPrice), title: itemName, properties: [
+            ["name": "image", "value": itemImg],
+            ["name": "itemId", "value": String(itemId)]
+        ])
 
         getDraftOrder(favId: favId) { draftOrder in
             var updatedDraftOrder = draftOrder ?? DraftOrder(line_items: [])
@@ -51,22 +54,60 @@ struct FavCRUD {
                 print("No draft order found")
                 return
             }
-            
-            //print("Before deletion: \(updatedDraftOrder.line_items!)")
-            updatedDraftOrder.line_items?.removeAll { $0.id == itemId }
-            //print("After deletion: \(updatedDraftOrder.line_items!)")
+
+            if let index = updatedDraftOrder.line_items?.firstIndex(where: {
+                $0.properties.contains(where: { $0["name"] == "itemId" && $0["value"] == String(itemId) })
+            }) {
+                updatedDraftOrder.line_items?.remove(at: index)
+            } else {
+                print("Item with id \(itemId) not found in line_items")
+            }
 
             let updateRequest = DraftOrderUpdateRequest(draft_order: updatedDraftOrder)
             self.updateDraftOrder(favId: favId, updateRequest: updateRequest)
         }
     }
 
-
+//    func readItems(favId: Int, completion: @escaping ([LineItem]) -> Void) {
+//        getDraftOrder(favId: favId) { draftOrder in
+//            completion(draftOrder?.line_items?.map { item in
+//                var newItem = item
+//                if let itemIdProperty = item.properties.first(where: { $0["name"] == "itemId" }),
+//                   let itemId = itemIdProperty["value"],
+//                   let id = Int(itemId) {
+//                    newItem = LineItem(id: id, quantity: item.quantity, price: item.price, title: item.title, properties: item.properties)
+//                }
+//                return newItem
+//            } ?? [])
+//        }
+//    }
     func readItems(favId: Int, completion: @escaping ([LineItem]) -> Void) {
         getDraftOrder(favId: favId) { draftOrder in
-            completion(draftOrder?.line_items ?? [])
+            guard let draftOrder = draftOrder else {
+                completion([])
+                return
+            }
+            
+            guard let lineItems = draftOrder.line_items else {
+                completion([])
+                return
+            }
+            
+            let items = lineItems.dropFirst().map { item in
+                var newItem = item
+                if let itemIdProperty = item.properties.first(where: { $0["name"] == "itemId" }),
+                   let itemId = itemIdProperty["value"],
+                   let id = Int(itemId) {
+                    newItem = LineItem(id: id, quantity: item.quantity, price: item.price, title: item.title, properties: item.properties)
+                }
+                return newItem
+            }
+            
+            completion(items)
         }
     }
+
+
 
     private func getDraftOrder(favId: Int, completion: @escaping (DraftOrder?) -> Void) {
         let endpoint = "/\(favId).json"
@@ -94,6 +135,7 @@ struct FavCRUD {
                 }
             }
     }
+
     private func updateDraftOrder(favId: Int, updateRequest: DraftOrderUpdateRequest) {
         let endpoint = "/\(favId).json"
         AF.request(baseUrl + endpoint, method: .put, parameters: updateRequest, encoder: JSONParameterEncoder.default, headers: ["X-Shopify-Access-Token": accessToken])

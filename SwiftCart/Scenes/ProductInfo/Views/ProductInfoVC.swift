@@ -47,6 +47,7 @@ class ProductInfoVC: UIViewController{
         productInfoVM.fetchProduct(with: id)
         
         cosmos.rating = getRandomRating()
+        setButtonImage(isFavorited: isFavorited)
     }
 
     @IBAction func addToFavBtn(_ sender: Any) {
@@ -54,7 +55,7 @@ class ProductInfoVC: UIViewController{
         let itemId = product.id
 
         isFavorited.toggle()
-        setButtonImage(isFavorited: isFavorited)
+//        setButtonImage(isFavorited: isFavorited)
         
         if isFavorited {
             let itemImg = product.images?.first?.src ?? ""
@@ -62,11 +63,25 @@ class ProductInfoVC: UIViewController{
             let itemPrice = Double(product.variants?.first?.price ?? "0.0") ?? 0.0
             
             favCRUD.saveItem(favId: favId!, itemId: itemId!, itemImg: itemImg, itemName: itemName!, itemPrice: itemPrice)
+//            print("favId when save is =========================== \(favId!)")
+//            print("itemId when save is =========================== \(itemId!)")
+            setButtonImage(isFavorited: true)
         } else {
-            favCRUD.deleteItem(favId: favId!, itemId: itemId!)
+            let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
+
+                self.favCRUD.deleteItem(favId: self.favId!, itemId: itemId!)
+                
+//                print("favId when delete is =========================== \(self.favId!)")
+//                print("itemId when delete is =========================== \(itemId!)")
+                
+                self.setButtonImage(isFavorited: false) // Example UI update
+            }
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            
+            Utils.showAlert(title: "Confirm Deletion", message: "Are you sure you want to remove this item from favorites?", preferredStyle: .alert, from: self, actions: [deleteAction, cancelAction])
         }
     }
-    
 
     @IBAction func addToCartBtn(_ sender: Any) {
         // TOOD: Add to Cart
@@ -186,34 +201,6 @@ extension ProductInfoVC: UICollectionViewDataSource, UICollectionViewDelegate {
 
 }
 
-//extension ProductInfoVC: ProductCollectionCellDelegate {
-//    func addToFavoriteTapped(for cell: ProductCollectionCell) {
-//        guard let indexPath = cell.indexPath else {
-//            return
-//        }
-//        print("ProductCollectionCellDelegate - IndexPath: \(indexPath)")
-//      //  var product = products[indexPath.item]
-//        var product = productInfoVM.getProduct()
-//        let favId = 967136935983
-//        
-////        if product.isFavorited {
-////            favCRUD.deleteItem(favId: favId, itemId: 7680315883567)
-////        } else {
-//        let imageUrl = product?.image
-//        let itemName = product?.title
-//        //let itemPrice = (product.variants[0].price as NSString).doubleValue
-//            
-//        favCRUD.saveItem(favId: favId, itemId: 7680315883567, itemImg: "https://cdn.shopify.com/s/files/1/0624/0239/6207/files/e1a602299eadb59238aecf3781d184b7.jpg?v=1716812290", itemName: itemName!, itemPrice: 120.0)
-////        }
-//        
-//        //product.isFavorited.toggle()
-//       // products[indexPath.item] = product
-//        
-//        //collectionView.reloadData()
-//        print("ProductCollectionCellDelegate")
-//
-//    }
-//}
 /*
 // MARK: - Navigation
 
