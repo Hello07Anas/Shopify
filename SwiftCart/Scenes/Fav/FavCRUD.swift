@@ -68,19 +68,6 @@ struct FavCRUD {
         }
     }
 
-//    func readItems(favId: Int, completion: @escaping ([LineItem]) -> Void) {
-//        getDraftOrder(favId: favId) { draftOrder in
-//            completion(draftOrder?.line_items?.map { item in
-//                var newItem = item
-//                if let itemIdProperty = item.properties.first(where: { $0["name"] == "itemId" }),
-//                   let itemId = itemIdProperty["value"],
-//                   let id = Int(itemId) {
-//                    newItem = LineItem(id: id, quantity: item.quantity, price: item.price, title: item.title, properties: item.properties)
-//                }
-//                return newItem
-//            } ?? [])
-//        }
-//    }
     func readItems(favId: Int, completion: @escaping ([LineItem]) -> Void) {
         getDraftOrder(favId: favId) { draftOrder in
             guard let draftOrder = draftOrder else {
