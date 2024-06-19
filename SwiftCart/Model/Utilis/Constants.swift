@@ -63,6 +63,8 @@ public enum K {
         case putOrDeleteAddress = "/customers/{customer_id}/addresses/{address_id}.json"
         case defaultAddress = "/customers/{customer_id}/addresses/{address_id}/default.json"
         case draftOrders = "/draft_orders/{draft_orders_id}.json"
+        case variants = "/variants/{variant_id}.json"
+        
     }
     
     //MARK: Add any Const ants u need in a staruct pleas

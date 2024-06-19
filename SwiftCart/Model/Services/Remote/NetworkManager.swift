@@ -37,7 +37,7 @@ class NetworkManager : Networking {
     }
     
     
-    private func createRequestDetails(url : String ,endpoint: String, headers: HTTPHeaders?) -> (String, HTTPHeaders) {
+     func createRequestDetails(url : String ,endpoint: String, headers: HTTPHeaders?) -> (String, HTTPHeaders) {
         let url = "\(K.Shopify.Base_URL)\(endpoint)"
         var combinedHeaders = headers ?? HTTPHeaders()
         combinedHeaders.add(name: "X-Shopify-Access-Token", value: K.Shopify.Access_Token)

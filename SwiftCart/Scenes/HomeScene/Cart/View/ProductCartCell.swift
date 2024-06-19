@@ -15,7 +15,8 @@ class ProductCartCell: UITableViewCell {
     @IBOutlet weak var productTitle: UILabel!
     @IBOutlet weak var productImage: UIImageView!
     
-     var cellID: Int?
+    weak var delegate: ProductCartCellDelegate?
+    var cellID: Int?
     private var quantity: Int = 1
     
     override func awakeFromNib() {
@@ -25,6 +26,7 @@ class ProductCartCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
+        setupCellAppearance()
 
         // Configure the view for the selected state
     }
@@ -37,8 +39,22 @@ class ProductCartCell: UITableViewCell {
     }
     
     @IBAction func minusBtn(_ sender: Any) {
+        if quantity > 1{
+            productQuantity.text = "\(quantity)"
+            quantity -= 1
+            if let cellID = cellID {
+                print("minus btn \(cellID) & \(quantity)")
+                delegate?.didUpdateProductQuantity(forCellID: cellID, with: quantity)
+            }
+        }
     }
     @IBAction func plusBtn(_ sender: Any) {
+        productQuantity.text = "\(quantity)"
+        quantity += 1
+        if let cellID = cellID {
+            print("plus btn \(cellID) & \(quantity)")
+            delegate?.didUpdateProductQuantity(forCellID: cellID, with: quantity)
+        }
     }
     
 }
@@ -49,17 +65,26 @@ protocol ProductCartCellProtocol {
     func setImage(with imageURLString: String?)
 }
 
-extension ProductCartCell : ProductCartCellProtocol {
+protocol ProductCartCellDelegate: AnyObject {
+    func didUpdateProductQuantity(forCellID id: Int, with quantity: Int)
+}
+
+extension ProductCartCell : ProductCartCellProtocol , ProductCartCellDelegate{
+    func didUpdateProductQuantity(forCellID id: Int, with quantity: Int) {
+        
+    }
+    
+    
     func setCell(id: Int) {
         cellID = id
     }
     
     func setProduct(_ product: LineItem) {
-    
         productTitle.text = product.productTitle
         productPrice.text = "$\(product.productPrice)"
         productQuantity.text = "\(product.quantity)"
-        if let sizeColor = product.sizeColor {
+        quantity = product.quantity
+        if product.sizeColor != nil {
             productVariant.text = product.sizeColor
         } else {
             productVariant.isHidden = true
@@ -74,6 +99,5 @@ extension ProductCartCell : ProductCartCellProtocol {
         productImage.sd_setImage(with: imageUrl, placeholderImage: UIImage(named: "9"))
     }
 
-    
     
 }
