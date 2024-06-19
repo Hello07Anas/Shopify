@@ -29,7 +29,7 @@ class SginUp: UIViewController { // TODO: fix routation in Sgin UP
     }
     
     @IBAction func skipBtn(_ sender: Any) {
-        coordinator?.gotoHome()
+        coordinator?.gotoHome(isThereConnection: true)
     }
     
     @IBAction func alleadyHaveAcc(_ sender: Any) {
@@ -87,7 +87,7 @@ class SginUp: UIViewController { // TODO: fix routation in Sgin UP
                                     UserDefaultsHelper.shared.printUserDefaults()
                                     print("========")
                 
-                                    self.coordinator?.gotoHome()
+                                    self.coordinator?.gotoHome(isThereConnection: true)
                                 }
                             case .failure(let error):
                                 Utils.showAlert(title: "Error", message: "Failed to create draft orders: \(error.localizedDescription)", preferredStyle: .alert, from: self)

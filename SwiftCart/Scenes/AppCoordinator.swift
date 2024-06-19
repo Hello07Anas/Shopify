@@ -6,25 +6,34 @@
 //
 
 import UIKit
+import Reachability
 
 class AppCoordinator: Coordinator {
-    
+    let reachability = try! Reachability()
+
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
     
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
+        setupReachability()
     }
     
     func start() {
 //        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
 //        let vc = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as! AuthViewController
-
-        let mainViewController = Login(nibName: "Login", bundle: Bundle.main)
-        mainViewController.coordinator = self
-        navigationController.pushViewController(mainViewController, animated: false)
-
-
+        
+//        let mainViewController = Login(nibName: "Login", bundle: Bundle.main)
+//        mainViewController.coordinator = self
+//        navigationController.pushViewController(mainViewController, animated: false)
+        
+        if UserDefaultsHelper.shared.getUserData().email == nil {
+            let mainViewController = Login(nibName: "Login", bundle: Bundle.main)
+            mainViewController.coordinator = self
+            navigationController.pushViewController(mainViewController, animated: false)
+        } else if UserDefaultsHelper.shared.getUserData().email != nil {
+            gotoHome(isThereConnection: isNetworkReachable())
+        }
     }
     
     func gotoLogin(pushToStack: Bool) {
@@ -48,8 +57,7 @@ class AppCoordinator: Coordinator {
         }
     }
     
-    
-    func gotoHome() {
+    func gotoHome(isThereConnection: Bool) {
         
         let storyboard = UIStoryboard(name: K.Home.Home_Storyboard_Name, bundle: Bundle.main)
         let homeVc = storyboard.instantiateViewController(withIdentifier: K.Home.Home_View_Name) as! HomeViewController
@@ -68,14 +76,20 @@ class AppCoordinator: Coordinator {
     }
     
     func goToProducts(brandID:Int) {
-        
-        let storyboard = UIStoryboard(name: K.Home.Home_Storyboard_Name, bundle: Bundle.main)
-        let productVc = storyboard.instantiateViewController(withIdentifier: K.Home.Product_View_Name) as! ProductViewController
-        
-        productVc.coordinator = self
-        productVc.brandID = brandID
-        
-        navigationController.pushViewController(productVc, animated: true)
+        if isNetworkReachable() {
+            let storyboard = UIStoryboard(name: K.Home.Home_Storyboard_Name, bundle: Bundle.main)
+            let productVc = storyboard.instantiateViewController(withIdentifier: K.Home.Product_View_Name) as! ProductViewController
+            
+            productVc.coordinator = self
+            productVc.brandID = brandID
+            
+            navigationController.pushViewController(productVc, animated: true)
+        } else {
+        Utils.showAlert(title: "No Internet Connection",
+                        message: "Please check your network settings and try again.",
+                        preferredStyle: .alert,
+                        from: navigationController)
+        }
     }
     
     func goToSettings() {
@@ -85,25 +99,78 @@ class AppCoordinator: Coordinator {
        }
  
     func goToProductInfo(productId: Int, isFav: Bool) {
-        let productInfoVC = ProductInfoVC(nibName: "ProductInfoVC", bundle: Bundle.main)
-        productInfoVC.coordinator = self
-        productInfoVC.id = productId
-        productInfoVC.isFavorited = isFav
-        
-        let productInfoVM = ProductInfoVM()
-        productInfoVC.productInfoVM = productInfoVM
-        productInfoVM.fetchProduct(with: productId)
-        
-        navigationController.pushViewController(productInfoVC, animated: true)
+        if isNetworkReachable() {
+            let productInfoVC = ProductInfoVC(nibName: "ProductInfoVC", bundle: Bundle.main)
+            productInfoVC.coordinator = self
+            productInfoVC.id = productId
+            productInfoVC.isFavorited = isFav
+            
+            let productInfoVM = ProductInfoVM()
+            productInfoVC.productInfoVM = productInfoVM
+            productInfoVM.fetchProduct(with: productId)
+            
+            navigationController.pushViewController(productInfoVC, animated: true)
+        } else {
+            Utils.showAlert(title: "No Internet Connection",
+                            message: "Please check your network settings and try again.",
+                            preferredStyle: .alert,
+                            from: navigationController)
+        }
     }
-    
+
     func goToFav() {
-        let fav = FavVC(nibName: "FavVC", bundle: nil)
-        fav.coordinator = self
-        navigationController.pushViewController(fav, animated: true)
+        if isNetworkReachable() {
+            if UserDefaultsHelper.shared.getUserData().name == nil {
+                let sginUp = UIAlertAction(title: "Oki, i want creaet acc", style: .default, handler: { _ in self.gotoSignUp(pushToStack: true)
+                })
+                let login = UIAlertAction(title: "Oki, i want login to my acc", style: .default, handler: { _ in self.gotoLogin(pushToStack: true)
+                })
+
+                let destructiveAction = UIAlertAction(title: "Not now", style: .cancel, handler: nil)
+                
+                Utils.showAlert(title: "Soory :(", message: "in gust mode u dont have a fav, but you can SginUp or Login easly and open this feature", preferredStyle: .alert, from: navigationController, actions: [sginUp, login, destructiveAction])
+            } else {
+                let fav = FavVC(nibName: "FavVC", bundle: nil)
+                fav.coordinator = self
+                navigationController.pushViewController(fav, animated: true)
+            }
+        } else {
+            Utils.showAlert(title: "No Internet Connection",
+                            message: "Please check your network settings and try again.",
+                            preferredStyle: .alert,
+                            from: navigationController)
+        }
     }
         
     func finish() {
-        navigationController.popViewController(animated: true)
+        if isNetworkReachable() {
+            navigationController.popViewController(animated: true)
+        } else {
+            gotoHome(isThereConnection: isNetworkReachable())
+        }
+    }
+    
+    // reachabilty
+    func setupReachability() {
+        reachability.whenReachable = { reachability in
+            if reachability.connection == .wifi {
+                print("Reachable via WiFi")
+            } else {
+                print("Reachable via Cellular")
+            }
+        }
+        reachability.whenUnreachable = { _ in
+            print("Not reachable")
+        }
+
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to start notifier")
+        }
+    }
+    
+    func isNetworkReachable() -> Bool {
+        return reachability.connection != .unavailable
     }
 }
