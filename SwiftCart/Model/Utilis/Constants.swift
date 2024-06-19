@@ -29,6 +29,8 @@ public enum K {
         static let Addresses_View_Name = "AddressesViewController"
         static let Address_Details_View_Name = "AddressDetailsViewController"
         static let Contact_Us_View_Name = "ContactUsViewController"
+        static let Cart_View_Name = "CartViewController"
+        static let Profile_View_Name = "ProfileViewController"
     }
     
     enum Shopify {
@@ -60,6 +62,9 @@ public enum K {
         case getOrPostAddress = "/customers/{customer_id}/addresses.json"
         case putOrDeleteAddress = "/customers/{customer_id}/addresses/{address_id}.json"
         case defaultAddress = "/customers/{customer_id}/addresses/{address_id}/default.json"
+        case draftOrders = "/draft_orders/{draft_orders_id}.json"
+        case variants = "/variants/{variant_id}.json"
+        
     }
     
     //MARK: Add any Const ants u need in a staruct pleas

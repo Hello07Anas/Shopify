@@ -73,7 +73,6 @@ class AddressDetailsViewModel {
                     .disposed(by: disposeBag)
             }
     
-    
     func setDefaultAddress(firstName : String , lastName : String , address1 : String , city : String, phone : String){
         let customerID = K.Shopify.userID
         let endpoint = K.endPoints.defaultAddress.rawValue

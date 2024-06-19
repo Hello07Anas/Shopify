@@ -52,11 +52,20 @@ extension AddressesViewController : UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = AddressesTable.dequeueReusableCell(withIdentifier: "addressCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "addressCell", for: indexPath)
         let address = viewModel?.getAddressByIndex(index: indexPath.row)
-        cell.textLabel?.text = "\(address?.city ?? "")-\(address?.country ?? "") "
+        cell.textLabel?.text = "\(address?.address1 ?? "") - \(address?.city ?? "")"
+        cell.imageView?.image = UIImage(named: "Location Icon")?.resized(to: CGSize(width: 32, height: 32))
+        if let isDefault = viewModel?.getAddressByIndex(index: indexPath.row).isDefault, isDefault {
+            cell.accessoryType = .checkmark
+        } else {
+            cell.accessoryType = .disclosureIndicator
+        }
+
         return cell
     }
+
+
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
            if editingStyle == .delete {
@@ -70,6 +79,9 @@ extension AddressesViewController : UITableViewDataSource, UITableViewDelegate {
                    Utils.showAlert(title: "Delete", message:  "Are you sure you want to delete this Address?", preferredStyle: .alert, from: self, actions: [deleteAction, cancelAction])
                }
            }
+       }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+           return 60.0 // Set the desired cell height here
        }
     }
     
