@@ -16,6 +16,10 @@ class ProductViewController: UIViewController, UICollectionViewDelegate, UIColle
     @IBOutlet weak var subCategoriesView: UISegmentedControl!
     
     @IBOutlet weak var topconstrensinCollectionView: NSLayoutConstraint!
+    
+    @IBOutlet weak var searchBar: UISearchBar!
+    
+    
     var isFilterHidden = true
     let favCRUD = FavCRUD()
 
@@ -43,6 +47,7 @@ class ProductViewController: UIViewController, UICollectionViewDelegate, UIColle
             viewModel.getCategoryProducts(categoryId: brandID)
         }
         fetchFavoriteItems()
+        setupSearchBar()
     }
     
     private func fetchFavoriteItems() {
@@ -160,5 +165,26 @@ extension ProductViewController: ProductCollectionCellDelegate {
         let product = products[indexPath.item]
         let favId = Int(UserDefaultsHelper.shared.getUserData().favID ?? "0")
         favCRUD.deleteItem(favId: favId!, itemId: product.id)
+    }
+}
+
+extension ProductViewController: UISearchBarDelegate {
+    
+    func setupSearchBar() {
+        searchBar.delegate = self
+        bindSearchBar()
+    }
+    
+    private func bindSearchBar() {
+        searchBar.rx.text.orEmpty
+            .distinctUntilChanged()
+            .subscribe(onNext: { [weak self] query in
+                self?.viewModel.searchProducts(query: query)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        viewModel.searchProducts(query: searchText)
     }
 }

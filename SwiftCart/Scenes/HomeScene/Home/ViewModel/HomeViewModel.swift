@@ -5,7 +5,6 @@
 //  Created by Elham on 02/06/2024.
 //
 
-
 import Foundation
 import RxSwift
 
@@ -15,7 +14,8 @@ class HomeViewModel {
         return brandsSubject.asObservable()
     }
     
-    private var brandsArray: [Brand] = []
+    private var allBrands: [Brand] = []
+    private var filteredBrands: [Brand] = []
     private let network: Networking
     private let disposeBag = DisposeBag()
     
@@ -29,11 +29,12 @@ class HomeViewModel {
         network.getApiData(url: url)
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] data in
-               // print("ViewModel: Received brand response")
+                // print("ViewModel: Received brand response")
                 if let brandResponse: BrandResponse = Utils.convertTo(from: data) {
-                    self?.brandsArray = brandResponse.brands ?? []
-                    self?.brandsSubject.onNext(self?.brandsArray ?? [])
-                  //  print("ViewModel: Number of brands: \(self?.brandsArray.count ?? 0) image :: \(self?.brandsArray.first?.image?.src ?? "")")
+                    self?.allBrands = brandResponse.brands ?? []
+                    self?.filteredBrands = self?.allBrands ?? []
+                    self?.brandsSubject.onNext(self?.filteredBrands ?? [])
+                    // print("ViewModel: Number of brands: \(self?.brandsArray.count ?? 0) image :: \(self?.brandsArray.first?.image?.src ?? "")")
                 } else {
                     print("loadData else")
                 }
@@ -44,10 +45,19 @@ class HomeViewModel {
     }
     
     func getBrands() -> [Brand] {
-        return brandsArray
+        return filteredBrands
     }
     
     func getBrandsCount() -> Int {
-        return brandsArray.count
+        return filteredBrands.count
+    }
+    
+    func filterBrands(query: String) {
+        if query.isEmpty {
+            filteredBrands = allBrands
+        } else {
+            filteredBrands = allBrands.filter { $0.title!.lowercased().contains(query.lowercased()) }
+        }
+        brandsSubject.onNext(filteredBrands)
     }
 }

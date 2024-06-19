@@ -15,6 +15,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     var viewModel = HomeViewModel(network: NetworkManager.shared)
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var searchBar: UISearchBar!
+    
+    
     var currentCellIndex = 0
     var timer: Timer?
     
@@ -45,8 +48,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @IBAction func favBtn(_ sender: Any) {
         coordinator?.goToFav()
     }
-    
-    
     
     private func bindViewModel() {
         viewModel.brandsObservable
@@ -184,3 +185,23 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
 }
 
+extension HomeViewController: UISearchBarDelegate {
+    
+    func setupSearchBar() {
+        searchBar.delegate = self
+        bindSearchBar()
+    }
+    
+    private func bindSearchBar() {
+        searchBar.rx.text.orEmpty
+            .distinctUntilChanged()
+            .subscribe(onNext: { [weak self] query in
+                self?.viewModel.filterBrands(query: query)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        viewModel.filterBrands(query: searchText)
+    }
+}
