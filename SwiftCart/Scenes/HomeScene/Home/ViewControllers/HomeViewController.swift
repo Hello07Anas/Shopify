@@ -197,3 +197,24 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         collectionView.collectionViewLayout = layout
     }
 }
+
+extension HomeViewController: UISearchBarDelegate {
+    
+    func setupSearchBar() {
+        searchBar.delegate = self
+        bindSearchBar()
+    }
+    
+    private func bindSearchBar() {
+        searchBar.rx.text.orEmpty
+            .distinctUntilChanged()
+            .subscribe(onNext: { [weak self] query in
+                self?.viewModel.filterBrands(query: query)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        viewModel.filterBrands(query: searchText)
+    }
+}
