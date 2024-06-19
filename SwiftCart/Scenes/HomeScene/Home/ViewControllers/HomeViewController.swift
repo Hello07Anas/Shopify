@@ -83,19 +83,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             return brandCell
         }
     }
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        if indexPath.section == 0 {
-//            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "homeCell", for: indexPath) as! HomeCollectionViewCell
-//            cell.img.image = UIImage(named: "\(indexPath.row)")
-//            return cell
-//        } else {
-//            let brandCell = collectionView.dequeueReusableCell(withReuseIdentifier: "brandcell", for: indexPath) as! BrandCollectionViewCell
-//            if let imageUrl = URL(string: viewModel.getBrands()[indexPath.row].image?.src ?? "https://cdn.shopify.com/s/files/1/0624/0239/6207/collections/97a3b1227876bf099d279fd38290e567.jpg?v=1716812402") {
-//                brandCell.img.sd_setImage(with: imageUrl, placeholderImage: UIImage(named: "9"))
-//            }
-//            return brandCell
-//        }
-//    }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
           if indexPath.section == 0 {
