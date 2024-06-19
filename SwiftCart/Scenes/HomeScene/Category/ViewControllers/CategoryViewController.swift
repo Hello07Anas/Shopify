@@ -65,16 +65,17 @@ class CategoryViewController: UIViewController, UICollectionViewDelegate, UIColl
         
     }
     
-    func setupBindings() {
-        viewModel.categoriesObservable?
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [weak self] products in
-                self?.products = products
-                self?.collectionView.reloadData()
-            })
-            .disposed(by: disposeBag)
-    }
-
+    
+       func setupBindings() {
+           viewModel.categoriesObservable?
+               .observeOn(MainScheduler.instance)
+               .subscribe(onNext: { [weak self] products in
+                   self?.products = products
+                   self?.collectionView.reloadData()
+               })
+               .disposed(by: disposeBag)
+       }
+    
     @IBAction func segmentedControlChanged(_ sender: UISegmentedControl) {
         viewModel.clearFilter()  // Clear any previous filters
         switch sender.selectedSegmentIndex {
@@ -104,7 +105,7 @@ class CategoryViewController: UIViewController, UICollectionViewDelegate, UIColl
             self.viewModel.filterProductsArray(productType: "T-SHIRTS")
         }
     }
-
+    
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -114,6 +115,11 @@ class CategoryViewController: UIViewController, UICollectionViewDelegate, UIColl
         return viewModel.getProductsCount()
     }
 
+    @IBAction func goToFav(_ sender: Any) {
+        coordinator?.goToFav()
+    }
+  
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductCell", for: indexPath) as! ProductCollectionCell
