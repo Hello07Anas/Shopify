@@ -15,6 +15,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     var viewModel = HomeViewModel(network: NetworkManager.shared)
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var searchBar: UISearchBar!
+    
+    
     var currentCellIndex = 0
     var timer: Timer?
     
@@ -45,8 +48,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @IBAction func favBtn(_ sender: Any) {
         coordinator?.goToFav()
     }
-    
-    
     
     private func bindViewModel() {
         viewModel.brandsObservable
@@ -82,6 +83,19 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             return brandCell
         }
     }
+//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        if indexPath.section == 0 {
+//            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "homeCell", for: indexPath) as! HomeCollectionViewCell
+//            cell.img.image = UIImage(named: "\(indexPath.row)")
+//            return cell
+//        } else {
+//            let brandCell = collectionView.dequeueReusableCell(withReuseIdentifier: "brandcell", for: indexPath) as! BrandCollectionViewCell
+//            if let imageUrl = URL(string: viewModel.getBrands()[indexPath.row].image?.src ?? "https://cdn.shopify.com/s/files/1/0624/0239/6207/collections/97a3b1227876bf099d279fd38290e567.jpg?v=1716812402") {
+//                brandCell.img.sd_setImage(with: imageUrl, placeholderImage: UIImage(named: "9"))
+//            }
+//            return brandCell
+//        }
+//    }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
           if indexPath.section == 0 {
@@ -183,4 +197,3 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         collectionView.collectionViewLayout = layout
     }
 }
-

@@ -16,6 +16,7 @@ class CategoryViewController: UIViewController, UICollectionViewDelegate, UIColl
     @IBOutlet weak var subCategoriesView: UISegmentedControl!
     
     @IBOutlet weak var topconstrensinCollectionView: NSLayoutConstraint!
+    @IBOutlet weak var searchBar: UISearchBar!
     
     var isFilterHidden = true
     let favCRUD = FavCRUD()
@@ -40,6 +41,7 @@ class CategoryViewController: UIViewController, UICollectionViewDelegate, UIColl
         setupBindings()
         viewModel.getAllProducts()
         fetchFavoriteItems()
+        setupSearchBar()
     }
  
     private func fetchFavoriteItems() {
@@ -186,5 +188,26 @@ extension CategoryViewController: ProductCollectionCellDelegate {
 //        collectionView.reloadData()
         
        // print("Deleted favorite for product id: \(product.id)")
+    }
+}
+
+extension CategoryViewController: UISearchBarDelegate {
+    
+    func setupSearchBar() {
+        searchBar.delegate = self
+        bindSearchBar()
+    }
+    
+    private func bindSearchBar() {
+        searchBar.rx.text.orEmpty
+            .distinctUntilChanged()
+            .subscribe(onNext: { [weak self] query in
+                self?.viewModel.searchProducts(query: query)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        viewModel.searchProducts(query: searchText)
     }
 }

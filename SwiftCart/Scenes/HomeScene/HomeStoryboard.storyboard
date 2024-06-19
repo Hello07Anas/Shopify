@@ -136,6 +136,7 @@
                     <navigationItem key="navigationItem" id="YWC-dj-XOm"/>
                     <connections>
                         <outlet property="collectionView" destination="wVp-9J-Zl3" id="J8m-17-ocs"/>
+                        <outlet property="searchBar" destination="11y-h5-npP" id="zXg-m0-mWe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Why-rc-wut" sceneMemberID="firstResponder"/>
@@ -344,6 +345,7 @@
                     <connections>
                         <outlet property="categoriesSegmented" destination="UFs-Ag-brQ" id="0iE-yn-uQJ"/>
                         <outlet property="collectionView" destination="gvF-Zc-zsh" id="GZ4-PV-1tH"/>
+                        <outlet property="searchBar" destination="oE9-wY-2Z5" id="GgV-WQ-7CH"/>
                         <outlet property="subCategoriesView" destination="S4h-VS-EDV" id="yEw-TV-0YU"/>
                         <outlet property="topconstrensinCollectionView" destination="aok-XD-y4T" id="UmL-7N-2WJ"/>
                     </connections>

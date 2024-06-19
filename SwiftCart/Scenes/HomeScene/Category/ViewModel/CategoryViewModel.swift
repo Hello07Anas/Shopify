@@ -85,4 +85,18 @@ class CategoryViewModel {
         isFiltering = false
         categoriesSubject.onNext(productsArray)
     }
+    
+    func searchProducts(query: String) {
+        if query.isEmpty {
+            isFiltering = false
+            categoriesSubject.onNext(productsArray)
+        } else {
+            isFiltering = true
+            filteredProductsArray = productsArray.filter { product in
+                product.title.lowercased().contains(query.lowercased())
+            }
+            categoriesSubject.onNext(filteredProductsArray)
+        }
+    }
+
 }
