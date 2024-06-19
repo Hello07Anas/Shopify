@@ -30,7 +30,7 @@ class Login: UIViewController {
     }
 
     @IBAction func skipBtn(_ sender: Any) { 
-        coordinator?.gotoHome()
+        coordinator?.gotoHome(isThereConnection: true)
     }
     
     @IBAction func dontHaveAcc(_ sender: Any) {
@@ -78,7 +78,7 @@ class Login: UIViewController {
                         print("========")
                         UserDefaultsHelper.shared.printUserDefaults()
                         print("========")
-                        self.coordinator?.gotoHome()
+                        self.coordinator?.gotoHome(isThereConnection: true)
                         
                     } else {
                         Utils.showAlert(title: "Account Not Fully Set Up", message: "Your account is not fully set up. Please contact support.", preferredStyle: .alert, from: self)
