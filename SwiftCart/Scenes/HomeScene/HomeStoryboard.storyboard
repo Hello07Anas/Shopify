@@ -236,6 +236,7 @@
                     <navigationItem key="navigationItem" id="UW7-2T-MBx"/>
                     <connections>
                         <outlet property="collectionView" destination="r6T-qA-GeN" id="hvL-Q9-03I"/>
+                        <outlet property="searchBar" destination="eEk-qb-nlH" id="meY-ZX-xe9"/>
                         <outlet property="sliderPrice" destination="Bik-Wo-VIa" id="zOn-Sd-7xR"/>
                         <outlet property="subCategoriesView" destination="kXO-Be-J5Q" id="g8c-yO-tlq"/>
                         <outlet property="topconstrensinCollectionView" destination="6he-Lk-EmI" id="Uji-n3-fVt"/>
