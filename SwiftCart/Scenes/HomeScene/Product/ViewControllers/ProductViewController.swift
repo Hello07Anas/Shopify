@@ -43,6 +43,7 @@ class ProductViewController: UIViewController, UICollectionViewDelegate, UIColle
         let nib = UINib(nibName: "ProductCollectionCell", bundle: nil)
         collectionView.register(nib, forCellWithReuseIdentifier: "ProductCell")
         setupBindings()
+        setUpPriceFilter()
         if let brandID = brandID {
             viewModel.getCategoryProducts(categoryId: brandID)
         }
@@ -70,17 +71,35 @@ class ProductViewController: UIViewController, UICollectionViewDelegate, UIColle
         }
         
     }
+    
     @IBAction func SubCategoriesBtn(_ sender: Any) {
         switch subCategoriesView.selectedSegmentIndex {
         case 0:
-            self.viewModel.filterProductsArray(productType: "T-SHIRTS")
+            viewModel.getCategoryProducts(categoryId: brandID ?? 0)
+            viewModel.isFiltering = false
         case 1:
             self.viewModel.filterProductsArray(productType: "SHOES")
         case 2:
             self.viewModel.filterProductsArray(productType: "ACCESSORIES")
-        default:
+        case 3:
             self.viewModel.filterProductsArray(productType: "T-SHIRTS")
+        default:
+            viewModel.getCategoryProducts(categoryId: brandID ?? 0)
         }
+    }
+    
+    
+    func setUpPriceFilter() {
+        sliderPrice.rx.value
+            .distinctUntilChanged()
+            .debounce(.milliseconds(100), scheduler: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] value in
+                guard let self = self else { return }
+                DispatchQueue.global().async {
+                    self.viewModel.filterProducts(price: value)
+                }
+            })
+            .disposed(by: disposeBag)
     }
     
     func setupBindings() {
@@ -88,15 +107,32 @@ class ProductViewController: UIViewController, UICollectionViewDelegate, UIColle
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] products in
                 self?.products = products
+                self?.updateSliderRange()
                 self?.collectionView.reloadData()
             })
             .disposed(by: disposeBag)
     }
     
+    func updateSliderRange() {
+        let prices = products.compactMap { Float($0.variants[0].price) }
+        if let minPrice = prices.min(), let maxPrice = prices.max() {
+            sliderPrice.minimumValue = minPrice - 30
+            sliderPrice.maximumValue = maxPrice + 30
+            sliderPrice.value = maxPrice
+        }
+    }
+
+    
     @IBAction func backTToHome(_ sender: Any) {
         coordinator?.finish()
     }
   
+    
+    @IBAction func favBtn(_ sender: Any) {
+        coordinator?.goToFav()
+    }
+  
+    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -136,12 +172,53 @@ class ProductViewController: UIViewController, UICollectionViewDelegate, UIColle
         return 10
     }
     
+    
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let padding: CGFloat = 20
         let collectionViewSize = collectionView.frame.size.width - padding
         return CGSize(width: collectionViewSize / 2, height: ( collectionViewSize / 2))
     }
+    
+    func createProductsSectionLayout() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 10)
+        
+        let horizontalGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(200))
+        let horizontalGroup = NSCollectionLayoutGroup.horizontal(layoutSize: horizontalGroupSize, subitems: [item])
+        
+        let verticalGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(200))
+        let verticalGroup = NSCollectionLayoutGroup.vertical(layoutSize: verticalGroupSize, subitems: [horizontalGroup])
+        
+        let section = NSCollectionLayoutSection(group: verticalGroup)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 4, bottom: 2, trailing: 4)
+        section.interGroupSpacing = 10
+        
+        let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(50))
+        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerFooterSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+        section.boundarySupplementaryItems = [sectionHeader]
+        
+        return section
+    }
+    
+    func setupCollectionViewLayout() {
+        let layout = UICollectionViewCompositionalLayout { sectionIndex, _ in
+            switch sectionIndex {
+            case 0:
+                return self.createProductsSectionLayout()
+           
+            default:
+                return nil
+            }
+        }
+        collectionView.collectionViewLayout = layout
+    }
 }
+
+
+
+
 
 extension ProductViewController: ProductCollectionCellDelegate {
     func saveToFavorite(foe cell: ProductCollectionCell) {
