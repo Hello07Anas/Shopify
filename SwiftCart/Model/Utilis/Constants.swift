@@ -67,5 +67,14 @@ public enum K {
         
     }
     
+    enum Currency : String{
+        case baseURL = "https://api.currencyapi.com/v3/latest"
+        case endPoint = "base_currency={base_currency}&currencies[]={currencies}"
+        case ApiKey = "cur_live_ucypaSmXyj5YoUkYSZLwVz6wXgb4Z0IIPmV0W33o"
+        case egp = "EGP"
+        case USD = "USD"
+
+    }
+    
     //MARK: Add any Const ants u need in a staruct pleas
 }

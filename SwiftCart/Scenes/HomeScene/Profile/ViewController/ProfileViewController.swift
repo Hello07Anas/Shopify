@@ -19,9 +19,13 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
         setupOrderView()
         setupUserView()
+        
+        // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         userName.text = "Welcome, \(String(describing: UserDefaultsHelper.shared.getUserData().name ?? ""))👋"
         email.text = UserDefaultsHelper.shared.getUserData().email
-        // Do any additional setup after loading the view.
     }
 
     /*
