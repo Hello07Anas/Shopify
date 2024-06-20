@@ -14,15 +14,15 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var orderView: UIView!
     @IBOutlet weak var email: UILabel!
     @IBOutlet weak var userName: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupOrderView()
         setupUserView()
-        userName.text = "Welcome, \(String(describing: UserDefaultsHelper.shared.getUserData().name!))👋"
+        userName.text = "Welcome, \(String(describing: UserDefaultsHelper.shared.getUserData().name ?? ""))👋"
         email.text = UserDefaultsHelper.shared.getUserData().email
         // Do any additional setup after loading the view.
     }
-    
 
     /*
     // MARK: - Navigation
@@ -40,6 +40,8 @@ class ProfileViewController: UIViewController {
     }
     @IBAction func showWishlist(_ sender: Any) {
     }
+    
+    
     
     private func setupOrderView() {
         orderView.layer.borderColor = UIColor.black.cgColor
