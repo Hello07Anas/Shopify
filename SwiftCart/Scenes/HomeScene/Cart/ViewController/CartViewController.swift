@@ -8,11 +8,12 @@
 import UIKit
 
 class CartViewController: UIViewController {
+    
     weak var coordinator: AppCoordinator?
+    let viewModel = CartViewModel(network: NetworkManager.shared)
+
     @IBOutlet weak var cartTableView: UITableView!
     @IBOutlet weak var totalPrice: UILabel!
-    
-    let viewModel = CartViewModel(network: NetworkManager.shared)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,6 +26,11 @@ class CartViewController: UIViewController {
         viewModel.bindCartProducts = { [weak self] in
             DispatchQueue.main.async {
                 self?.cartTableView.reloadData()
+            }
+        }
+        viewModel.updateTotalPrice = { [weak self] totalPriceText in
+            DispatchQueue.main.async {
+                self?.totalPrice.text = totalPriceText
             }
         }
         
@@ -47,11 +53,20 @@ class CartViewController: UIViewController {
     @IBAction func goToFav(_ sender: Any) {
         coordinator?.goToFav()
     }
+    
 }
 
 extension CartViewController: UITableViewDataSource, UITableViewDelegate, ProductCartCellDelegate {
     func didUpdateProductQuantity(forCellID id: Int, with quantity: Int) {
-        viewModel.updateLineItemQuantity(variantID: id, newQuantity: quantity)
+        if quantity < 1 {
+            let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+            let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
+                self?.viewModel.deleteProduct(id: id)
+            }
+            Utils.showAlert(title: "Delete", message: "Are you sure you want to delete this item?", preferredStyle: .alert, from: self, actions: [deleteAction, cancelAction])
+        } else {
+            viewModel.updateLineItemQuantity(variantID: id, newQuantity: quantity)
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

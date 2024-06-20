@@ -39,17 +39,14 @@ class ProductCartCell: UITableViewCell {
     }
     
     @IBAction func minusBtn(_ sender: Any) {
-        if quantity > 1{
-            productQuantity.text = "\(quantity)"
             quantity -= 1
             if let cellID = cellID {
                 print("minus btn \(cellID) & \(quantity)")
                 delegate?.didUpdateProductQuantity(forCellID: cellID, with: quantity)
             }
-        }
     }
+    
     @IBAction func plusBtn(_ sender: Any) {
-        productQuantity.text = "\(quantity)"
         quantity += 1
         if let cellID = cellID {
             print("plus btn \(cellID) & \(quantity)")
@@ -70,10 +67,8 @@ protocol ProductCartCellDelegate: AnyObject {
 }
 
 extension ProductCartCell : ProductCartCellProtocol , ProductCartCellDelegate{
-    func didUpdateProductQuantity(forCellID id: Int, with quantity: Int) {
-        
-    }
     
+    func didUpdateProductQuantity(forCellID id: Int, with quantity: Int) {}
     
     func setCell(id: Int) {
         cellID = id
@@ -81,7 +76,7 @@ extension ProductCartCell : ProductCartCellProtocol , ProductCartCellDelegate{
     
     func setProduct(_ product: LineItem) {
         productTitle.text = product.productTitle
-        productPrice.text = "$\(product.productPrice)"
+        productPrice.text = "\(product.productPrice)"
         productQuantity.text = "\(product.quantity)"
         quantity = product.quantity
         if product.sizeColor != nil {
@@ -98,6 +93,5 @@ extension ProductCartCell : ProductCartCellProtocol , ProductCartCellDelegate{
         }
         productImage.sd_setImage(with: imageUrl, placeholderImage: UIImage(named: "9"))
     }
-
     
 }

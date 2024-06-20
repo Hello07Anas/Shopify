@@ -20,6 +20,8 @@ class CartViewModel {
     var draftOrder: DraftOrderResponseModel?
     var bindCartProducts: (() -> Void) = {}
     var bindMaxLimitQuantity: (() -> Void) = {}
+    var updateTotalPrice: ((String) -> Void)?
+
     
     init(network: NetworkManager?) {
         self.network = network
@@ -51,6 +53,8 @@ class CartViewModel {
                     self?.cartProductsList = filteredLineItems
                     self?.cartSubject.onNext(self?.cartProductsList ?? [])
                     self?.bindCartProducts()
+                        self?.updateTotalPrice?(response.singleResult?.totalPrice ?? "0.0")
+
                     print("ViewModel: Number of CartProducts: \(String(describing: self?.cartProductsList))")
                 } else {
                     print("ViewModel: No items in cart")
