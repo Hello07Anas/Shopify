@@ -11,14 +11,13 @@ import FirebaseAuth
 class SettingsViewController: UIViewController {
     
     weak var coordinator: SettingsCoordinator?
-    var appCoordinator: AppCoordinator?
     @IBOutlet weak var settingsList: UITableView!
     @IBOutlet weak var logOutLoginBtn: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.navigationController?.navigationBar.isHidden = true
+        //self.navigationController?.navigationBar.isHidden = true
         settingsList.delegate  = self
         settingsList.dataSource = self
         updateLogOutLoginButton()
@@ -31,6 +30,7 @@ class SettingsViewController: UIViewController {
         if userData.email != nil {
             do {
                 try Auth.auth().signOut()
+                Utils.showAlert(title: "will miss you \(userData.name!)🥹", message: "See you soon!🥲", preferredStyle: .alert, from: self)
                 logOutLoginBtn.setTitle("Login", for: .normal)
                 UserDefaultsHelper.shared.clearUserData()
             } catch let signOutError as NSError {
@@ -38,7 +38,7 @@ class SettingsViewController: UIViewController {
                 Utils.showAlert(title: "Error!", message: "soory somethign went roung pleas try again later", preferredStyle: .alert, from: self)
             }
         } else {
-            appCoordinator?.gotoLogin(pushToStack: true) // TODO: Bougs here
+            coordinator?.parentCoordinator?.gotoLogin(pushToStack: true)
             logOutLoginBtn.setTitle("Logout", for: .normal)
         }
     }

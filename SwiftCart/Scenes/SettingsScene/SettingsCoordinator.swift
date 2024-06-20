@@ -10,9 +10,11 @@ import UIKit
 class SettingsCoordinator: Coordinator {
     var navigationController: UINavigationController
     var childCoordinators = [Coordinator]()
+    var parentCoordinator: AppCoordinator?
 
-    init(navigationController: UINavigationController) {
+    init(navigationController: UINavigationController, parentCoordinator: AppCoordinator?) {
         self.navigationController = navigationController
+        self.parentCoordinator = parentCoordinator
     }
 
     func start() {
