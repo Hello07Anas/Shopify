@@ -28,7 +28,7 @@ class NetworkManager : Networking {
         return RxAlamofire.data(.get, url)
             .flatMap { data -> Observable<Data> in
                 if let jsonString = String(data: data, encoding: .utf8) {
-                    print("NetworkManager: Response Data: \(jsonString)")
+                  //  print("NetworkManager: Response Data: \(jsonString)")
                 } else {
                     print("NetworkManager: Response Data: unable to convert to string")
                 }

@@ -13,6 +13,9 @@ class CategoryViewModel {
     var categoriesObservable: Observable<[Product]>? {
         return categoriesSubject.asObservable()
     }
+    var filteredBrandProductArray = [Product]()
+    var isFilteringBrandProducts = false
+    
 
     private var productsArray: [Product] = []
     private var filteredProductsArray: [Product] = []
@@ -31,11 +34,11 @@ class CategoryViewModel {
         network.getApiData(url: url)
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] data in
-                print("ViewModel: Received ALL Products response !!!!")
+               // print("ViewModel: Received ALL Products response !!!!")
                 if let productsResponse: ProductsResponse = Utils.convertTo(from: data) {
                     self?.productsArray = productsResponse.products ?? []
                     self?.categoriesSubject.onNext(self?.productsArray ?? [])
-                    print("ViewModel: Number of products: \(self?.productsArray.count ?? 0) image :: \(self?.productsArray.first?.image.src ?? "")")
+                  //  print("ViewModel: Number of products: \(self?.productsArray.count ?? 0) image :: \(self?.productsArray.first?.image.src ?? "")")
                 } else {
                     print("loadData else")
                 }
@@ -51,11 +54,11 @@ class CategoryViewModel {
         network.getApiData(url: url)
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] data in
-                print("ViewModel: Received Category Products response")
+                //print("ViewModel: Received Category Products response")
                 if let productsResponse: ProductsResponse = Utils.convertTo(from: data) {
                     self?.productsArray = productsResponse.products ?? []
                     self?.categoriesSubject.onNext(self?.productsArray ?? [])
-                    print("ViewModel: Number of products: \(self?.productsArray.count ?? 0) image :: \(self?.productsArray.first?.image.src ?? "")")
+                   // print("ViewModel: Number of products: \(self?.productsArray.count ?? 0) image :: \(self?.productsArray.first?.image.src ?? "")")
                 } else {
                     print("loadData else")
                 }
@@ -73,16 +76,48 @@ class CategoryViewModel {
         categoriesSubject.onNext(filteredProductsArray)
     }
 
+    func filterProducts(price: Float) {
+        var filterArray = isFiltering ? filteredProductsArray : productsArray
+        if price != 0.0 {
+            isFilteringBrandProducts = true
+            filteredBrandProductArray = filterArray.filter {
+                guard let productPrice = Float($0.variants[0].price) else { return false }
+                return productPrice <= price
+            }
+        } else {
+            isFilteringBrandProducts = false
+        }
+        categoriesSubject.onNext(isFilteringBrandProducts ? filteredBrandProductArray : filteredProductsArray )
+    }
+
+    
+    
+    
     func getProductsCount() -> Int {
-        return isFiltering ? filteredProductsArray.count : productsArray.count
+        return isFiltering ? (isFilteringBrandProducts ? filteredBrandProductArray.count : filteredProductsArray.count) : productsArray.count
     }
 
     func getProducts() -> [Product] {
-        return isFiltering ? filteredProductsArray : productsArray
+        return isFiltering ? (isFilteringBrandProducts ? filteredBrandProductArray : filteredProductsArray ): productsArray
     }
+    
     
     func clearFilter() {
         isFiltering = false
         categoriesSubject.onNext(productsArray)
     }
+    
+    func searchProducts(query: String) {
+        if query.isEmpty {
+            isFiltering = false
+            categoriesSubject.onNext(productsArray)
+        } else {
+            isFiltering = true
+            filteredProductsArray = productsArray.filter { product in
+                product.title.lowercased().contains(query.lowercased())
+            }
+            categoriesSubject.onNext(filteredProductsArray)
+        }
+    }
+
 }

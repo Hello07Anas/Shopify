@@ -15,6 +15,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     var viewModel = HomeViewModel(network: NetworkManager.shared)
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var searchBar: UISearchBar!
+    
+    
     var currentCellIndex = 0
     var timer: Timer?
     
@@ -45,8 +48,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @IBAction func favBtn(_ sender: Any) {
         coordinator?.goToFav()
     }
-    
-    
     
     private func bindViewModel() {
         viewModel.brandsObservable
@@ -150,7 +151,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     func createBrandSectionLayout() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .absolute(100))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing:10)
         
         let horizontalGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(100))
         let horizontalGroup = NSCollectionLayoutGroup.horizontal(layoutSize: horizontalGroupSize, subitems: [item])
@@ -181,5 +182,26 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             }
         }
         collectionView.collectionViewLayout = layout
+    }
+}
+
+extension HomeViewController: UISearchBarDelegate {
+    
+    func setupSearchBar() {
+        searchBar.delegate = self
+        bindSearchBar()
+    }
+    
+    private func bindSearchBar() {
+        searchBar.rx.text.orEmpty
+            .distinctUntilChanged()
+            .subscribe(onNext: { [weak self] query in
+                self?.viewModel.filterBrands(query: query)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        viewModel.filterBrands(query: searchText)
     }
 }

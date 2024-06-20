@@ -14,8 +14,10 @@ class ProductInfoVC: UIViewController{
     weak var coordinator: AppCoordinator?
     var productInfoVM: ProductInfoVM!
     private let disposeBag = DisposeBag()
+    let favCRUD = FavCRUD()
     var id: Int = 0
-    
+    let favId = Int(UserDefaultsHelper.shared.getUserData().favID ?? "0")
+
     @IBOutlet weak var productImageCollectionView: UICollectionView!
     @IBOutlet weak var productReviesCollectionView: UICollectionView!
     
@@ -45,13 +47,41 @@ class ProductInfoVC: UIViewController{
         productInfoVM.fetchProduct(with: id)
         
         cosmos.rating = getRandomRating()
+        setButtonImage(isFavorited: isFavorited)
     }
 
     @IBAction func addToFavBtn(_ sender: Any) {
+        guard let product = productInfoVM.getProduct() else { return }
+        let itemId = product.id
+
         isFavorited.toggle()
-        setButtonImage(isFavorited: isFavorited)
+//        setButtonImage(isFavorited: isFavorited)
+        
+        if isFavorited {
+            let itemImg = product.images?.first?.src ?? ""
+            let itemName = product.title
+            let itemPrice = Double(product.variants?.first?.price ?? "0.0") ?? 0.0
+            
+            favCRUD.saveItem(favId: favId!, itemId: itemId!, itemImg: itemImg, itemName: itemName!, itemPrice: itemPrice)
+//            print("favId when save is =========================== \(favId!)")
+//            print("itemId when save is =========================== \(itemId!)")
+            setButtonImage(isFavorited: true)
+        } else {
+            let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
+
+                self.favCRUD.deleteItem(favId: self.favId!, itemId: itemId!)
+                
+//                print("favId when delete is =========================== \(self.favId!)")
+//                print("itemId when delete is =========================== \(itemId!)")
+                
+                self.setButtonImage(isFavorited: false) // Example UI update
+            }
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            
+            Utils.showAlert(title: "Confirm Deletion", message: "Are you sure you want to remove this item from favorites?", preferredStyle: .alert, from: self, actions: [deleteAction, cancelAction])
+        }
     }
-    
 
     @IBAction func addToCartBtn(_ sender: Any) {
         // TOOD: Add to Cart
@@ -170,7 +200,6 @@ extension ProductInfoVC: UICollectionViewDataSource, UICollectionViewDelegate {
     }
 
 }
-
 
 /*
 // MARK: - Navigation
