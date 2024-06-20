@@ -6,26 +6,55 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class SettingsViewController: UIViewController {
+    
     weak var coordinator: SettingsCoordinator?
-
     @IBOutlet weak var settingsList: UITableView!
+    @IBOutlet weak var logOutLoginBtn: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.navigationController?.navigationBar.isHidden = true
+        //self.navigationController?.navigationBar.isHidden = true
         settingsList.delegate  = self
         settingsList.dataSource = self
+        updateLogOutLoginButton()
     }
     
     @IBAction func logOut(_ sender: Any) {
-        // TODO: handle LogOut --> Anas entry Point
+        // TODO: handle LogOut --> Anas entry Point مهو اي حاجة اعمل يا انس
+        let userData = UserDefaultsHelper.shared.getUserData()
+        
+        if userData.email != nil {
+            do {
+                try Auth.auth().signOut()
+                Utils.showAlert(title: "will miss you \(userData.name!)🥹", message: "See you soon!🥲", preferredStyle: .alert, from: self)
+                logOutLoginBtn.setTitle("Login", for: .normal)
+                UserDefaultsHelper.shared.clearUserData()
+            } catch let signOutError as NSError {
+                print("Error signing out: %@", signOutError)
+                Utils.showAlert(title: "Error!", message: "soory somethign went roung pleas try again later", preferredStyle: .alert, from: self)
+            }
+        } else {
+            coordinator?.parentCoordinator?.gotoLogin(pushToStack: true)
+            logOutLoginBtn.setTitle("Logout", for: .normal)
+        }
     }
     
     @IBAction func backBtn(_ sender: Any) {
         coordinator?.finish()
+    }
+    
+    private func updateLogOutLoginButton() {
+        let userData = UserDefaultsHelper.shared.getUserData()
+        
+        if userData.email != nil || userData.name != nil {
+            logOutLoginBtn.setTitle("Logout", for: .normal)
+        } else {
+            logOutLoginBtn.setTitle("Login", for: .normal)
+        }
     }
     
 }

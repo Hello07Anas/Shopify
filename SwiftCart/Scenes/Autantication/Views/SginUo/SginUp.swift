@@ -21,7 +21,7 @@ class SginUp: UIViewController { // TODO: fix routation in Sgin UP
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.navigationController?.navigationBar.isHidden = true
+        //self.navigationController?.navigationBar.isHidden = true
     }
     
     @IBAction func backBtn(_ sender: Any) {

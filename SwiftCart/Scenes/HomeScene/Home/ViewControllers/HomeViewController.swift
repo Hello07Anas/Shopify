@@ -25,9 +25,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.navigationController?.navigationBar.isHidden = false
-        //self.navigationItem.hidesBackButton = true // TODO: Un coomit this line now for testing
         self.navigationItem.title = "Home"
         
         guard let collectionView = collectionView else {

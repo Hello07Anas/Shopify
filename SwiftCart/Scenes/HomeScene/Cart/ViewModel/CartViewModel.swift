@@ -40,7 +40,7 @@ class CartViewModel {
     }
     
     func getCartProductsList() {
-        let cartID = UserDefaultsHelper.shared.getUserData().cartID!
+        let cartID = UserDefaultsHelper.shared.getUserData().cartID ?? ""
         let endpoint = K.endPoints.draftOrders.rawValue.replacingOccurrences(of: "{draft_orders_id}", with: cartID)
         network?.get(endpoint: endpoint)
             .observeOn(MainScheduler.instance)

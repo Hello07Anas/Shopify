@@ -26,11 +26,10 @@ class AppCoordinator: Coordinator {
 //        let mainViewController = Login(nibName: "Login", bundle: Bundle.main)
 //        mainViewController.coordinator = self
 //        navigationController.pushViewController(mainViewController, animated: false)
-        
+        navigationController.navigationBar.isHidden = true
+
         if UserDefaultsHelper.shared.getUserData().email == nil {
-            let mainViewController = Login(nibName: "Login", bundle: Bundle.main)
-            mainViewController.coordinator = self
-            navigationController.pushViewController(mainViewController, animated: false)
+            gotoLogin(pushToStack: true)
         } else if UserDefaultsHelper.shared.getUserData().email != nil {
             gotoHome(isThereConnection: isNetworkReachable())
         }
@@ -58,28 +57,31 @@ class AppCoordinator: Coordinator {
     }
     
     func gotoHome(isThereConnection: Bool) {
-        
-        let storyboard = UIStoryboard(name: K.Home.Home_Storyboard_Name, bundle: Bundle.main)
-        let settingsStoryboard = UIStoryboard(name: K.Settings.Settings_Storyboard_Name, bundle: Bundle.main)
-        let homeVc = storyboard.instantiateViewController(withIdentifier: K.Home.Home_View_Name) as! HomeViewController
-        let categoryVc = storyboard.instantiateViewController(withIdentifier: K.Home.Category_View_Name) as! CategoryViewController
-        let myCartVC = settingsStoryboard.instantiateViewController(withIdentifier: K.Settings.Cart_View_Name) as! CartViewController
-        let profileVC = settingsStoryboard.instantiateViewController(withIdentifier: K.Settings.Profile_View_Name) as! ProfileViewController
-        homeVc.coordinator = self
-        categoryVc.coordinator = self
-        myCartVC.coordinator = self
-        profileVC.coordinator = self
-        
-        homeVc.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 0)
-        categoryVc.tabBarItem = UITabBarItem(title: "Categories", image: UIImage(systemName: "list.bullet"), tag: 1)
-        myCartVC.tabBarItem = UITabBarItem(title: "MyCart", image: UIImage(systemName: "cart"), tag:2)
-        profileVC.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "person"), tag:3)
-        
-        let tabBar = UITabBarController()
-        tabBar.viewControllers = [homeVc, categoryVc, myCartVC, profileVC]
-        tabBar.tabBar.backgroundColor = .white
-        
-        navigationController.pushViewController(tabBar, animated: true)
+        if let homeVC = navigationController.viewControllers.last(where: { $0 is HomeViewController }) { // TODO: Bougs here we not remove from stack we have to handle it
+            navigationController.popToViewController(homeVC, animated: true)
+        } else {
+            let storyboard = UIStoryboard(name: K.Home.Home_Storyboard_Name, bundle: Bundle.main)
+            let settingsStoryboard = UIStoryboard(name: K.Settings.Settings_Storyboard_Name, bundle: Bundle.main)
+            let homeVc = storyboard.instantiateViewController(withIdentifier: K.Home.Home_View_Name) as! HomeViewController
+            let categoryVc = storyboard.instantiateViewController(withIdentifier: K.Home.Category_View_Name) as! CategoryViewController
+            let myCartVC = settingsStoryboard.instantiateViewController(withIdentifier: K.Settings.Cart_View_Name) as! CartViewController
+            let profileVC = settingsStoryboard.instantiateViewController(withIdentifier: K.Settings.Profile_View_Name) as! ProfileViewController
+            homeVc.coordinator = self
+            categoryVc.coordinator = self
+            myCartVC.coordinator = self
+            profileVC.coordinator = self
+            
+            homeVc.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 0)
+            categoryVc.tabBarItem = UITabBarItem(title: "Categories", image: UIImage(systemName: "list.bullet"), tag: 1)
+            myCartVC.tabBarItem = UITabBarItem(title: "MyCart", image: UIImage(systemName: "cart"), tag:2)
+            profileVC.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "person"), tag:3)
+            
+            let tabBar = UITabBarController()
+            tabBar.viewControllers = [homeVc, categoryVc, myCartVC, profileVC]
+            tabBar.tabBar.backgroundColor = .white
+            
+            navigationController.pushViewController(tabBar, animated: true)
+        }
     }
     
     func goToProducts(brandID:Int) {
@@ -100,10 +102,10 @@ class AppCoordinator: Coordinator {
     }
     
     func goToSettings() {
-           let settingsCoordinator = SettingsCoordinator(navigationController: navigationController)
-           childCoordinators.append(settingsCoordinator)
-           settingsCoordinator.start()
-       }
+        let settingsCoordinator = SettingsCoordinator(navigationController: navigationController, parentCoordinator: self)
+        childCoordinators.append(settingsCoordinator)
+        settingsCoordinator.start()
+    }
  
     func goToProductInfo(productId: Int, isFav: Bool) {
         if isNetworkReachable() {

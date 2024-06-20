@@ -19,9 +19,6 @@ class Login: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-
-        self.navigationController?.navigationBar.isHidden = true
-
     }
 
     @IBAction func backBtn(_ sender: Any) {
