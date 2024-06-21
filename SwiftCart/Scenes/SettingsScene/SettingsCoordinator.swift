@@ -53,6 +53,14 @@ class SettingsCoordinator: Coordinator {
         addressDetailsVC.coordinator = self
         addressDetailsVC.viewModel = AddressDetailsViewModel(addressDetails: address, isUpdate: true)
         navigationController.pushViewController(addressDetailsVC, animated: true)
+    }  
+    
+    func goToCurrency( ) {
+        let storyboard = UIStoryboard(name: K.Settings.Settings_Storyboard_Name, bundle: nil)
+        let currencyVC = storyboard.instantiateViewController(withIdentifier: K.Settings.Currency_View_Name) as! CurrencyViewController
+        currencyVC.modalPresentationStyle = .overCurrentContext
+        currencyVC.coordinator = self
+        navigationController.present(currencyVC, animated: false)
     }
     
     func presentCitiesViewController(from viewController: UIViewController, onCitySelected: @escaping (String) -> Void) {

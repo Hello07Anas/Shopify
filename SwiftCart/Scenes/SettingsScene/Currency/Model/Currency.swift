@@ -7,15 +7,16 @@
 
 import Foundation
 
-struct Currency : Codable{
-    var data : Data
+struct Currency: Codable {
+    var meta: Meta
+    var data: [String: CurrencyData]
+    
+    struct Meta: Codable {
+        var last_updated_at: String
+    }
 }
 
-struct Data : Codable {
-    var EGP : Target
-}
-
-struct Target : Codable{
-    var code:String
-    var value:Double
+struct CurrencyData: Codable {
+    var code: String
+    var value: Double
 }

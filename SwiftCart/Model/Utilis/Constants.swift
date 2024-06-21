@@ -31,6 +31,7 @@ public enum K {
         static let Contact_Us_View_Name = "ContactUsViewController"
         static let Cart_View_Name = "CartViewController"
         static let Profile_View_Name = "ProfileViewController"
+        static let Currency_View_Name = "CurrencyViewController"
     }
     
     enum Shopify {
@@ -73,7 +74,7 @@ public enum K {
         case ApiKey = "cur_live_ucypaSmXyj5YoUkYSZLwVz6wXgb4Z0IIPmV0W33o"
         case egp = "EGP"
         case USD = "USD"
-
+        case SAR = "SAR"
     }
     
     enum customRadioButton : String {

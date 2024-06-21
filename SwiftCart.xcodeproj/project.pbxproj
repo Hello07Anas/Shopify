@@ -24,6 +24,9 @@
 		04CC142C2C17D9E2009BB5D4 /* AddressesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CC14292C17D06A009BB5D4 /* AddressesViewModel.swift */; };
 		04CC142D2C17D9F0009BB5D4 /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CC14282C17D041009BB5D4 /* Address.swift */; };
 		0E5332932C24DD29009DA9EF /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5332922C24DD29009DA9EF /* Currency.swift */; };
+		0E53329B2C2523DC009DA9EF /* CurrencyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E53329A2C2523DC009DA9EF /* CurrencyViewController.swift */; };
+		0E53329D2C2538DA009DA9EF /* CurrencyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E53329C2C2538DA009DA9EF /* CurrencyManager.swift */; };
+		0E5332A02C253A04009DA9EF /* CurrencyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E53329F2C253A04009DA9EF /* CurrencyViewModel.swift */; };
 		0E88FE952C112AAF004E3FA6 /* SettingsStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E88FE942C112AAF004E3FA6 /* SettingsStoryboard.storyboard */; };
 		0EA17AB02C20882700E0B704 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EA17AAF2C20882700E0B704 /* ProfileViewController.swift */; };
 		0EA286402C21332E00179A17 /* CartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EA2863F2C21332E00179A17 /* CartViewModel.swift */; };
@@ -108,6 +111,9 @@
 		04CC14292C17D06A009BB5D4 /* AddressesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressesViewModel.swift; sourceTree = "<group>"; };
 		04CC142A2C17D07C009BB5D4 /* AddressesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressesViewController.swift; sourceTree = "<group>"; };
 		0E5332922C24DD29009DA9EF /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
+		0E53329A2C2523DC009DA9EF /* CurrencyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyViewController.swift; sourceTree = "<group>"; };
+		0E53329C2C2538DA009DA9EF /* CurrencyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyManager.swift; sourceTree = "<group>"; };
+		0E53329F2C253A04009DA9EF /* CurrencyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyViewModel.swift; sourceTree = "<group>"; };
 		0E88FE942C112AAF004E3FA6 /* SettingsStoryboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SettingsStoryboard.storyboard; sourceTree = "<group>"; };
 		0EA17AAF2C20882700E0B704 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		0EA2863F2C21332E00179A17 /* CartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartViewModel.swift; sourceTree = "<group>"; };
@@ -314,6 +320,7 @@
 			isa = PBXGroup;
 			children = (
 				04715A8B2C08FD7300D8DC3B /* NetworkManager.swift */,
+				0E53329C2C2538DA009DA9EF /* CurrencyManager.swift */,
 			);
 			path = Remote;
 			sourceTree = "<group>";
@@ -338,6 +345,8 @@
 		0E5332902C24DCF2009DA9EF /* Currency */ = {
 			isa = PBXGroup;
 			children = (
+				0E53329E2C2539E7009DA9EF /* ViewModel */,
+				0E5332992C2523C0009DA9EF /* ViewController */,
 				0E5332912C24DD14009DA9EF /* Model */,
 			);
 			path = Currency;
@@ -349,6 +358,22 @@
 				0E5332922C24DD29009DA9EF /* Currency.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		0E5332992C2523C0009DA9EF /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				0E53329A2C2523DC009DA9EF /* CurrencyViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		0E53329E2C2539E7009DA9EF /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				0E53329F2C253A04009DA9EF /* CurrencyViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		0E88FE922C112A8C004E3FA6 /* SettingsScene */ = {
@@ -880,12 +905,15 @@
 				4C806C9D2C13683900413E54 /* SginUp.swift in Sources */,
 				4C3110182C13904F00B88AC5 /* AppCoordinator.swift in Sources */,
 				0EC5CD342C16B93E00C65BB8 /* SettingsCoordinator.swift in Sources */,
+				0E5332A02C253A04009DA9EF /* CurrencyViewModel.swift in Sources */,
 				4CE498082C1FA6E90064C2BB /* FavCRUD.swift in Sources */,
 				4C6E01DC2C166EA70092E4E0 /* ProductInfoVC.swift in Sources */,
 				4C3110182C13904F00B88AC5 /* AppCoordinator.swift in Sources */,
 				B97796F62C17339500B51BBA /* CategoryViewModel.swift in Sources */,
 				B9A4BB8C2C0E0AE700DB16E5 /* HomeViewModel.swift in Sources */,
 				B9F634B92C1754B30073C04D /* ProductCollectionCell.swift in Sources */,
+				0E53329D2C2538DA009DA9EF /* CurrencyManager.swift in Sources */,
+				0E53329B2C2523DC009DA9EF /* CurrencyViewController.swift in Sources */,
 				B9A4BB902C0E143D00DB16E5 /* Util.swift in Sources */,
 				0EB1FD782C1FCB7800F4A48D /* ProductCartCell.swift in Sources */,
 				04715A632C08F1D100D8DC3B /* SceneDelegate.swift in Sources */,
