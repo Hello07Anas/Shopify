@@ -59,7 +59,6 @@ struct UserDefaultsHelper {
         private let userDefaults = UserDefaults.standard
         
         func saveCurrency(currencyType: String, value: Double) {
-            print("Saving currency: \(currencyType) with value: \(value)")
             userDefaults.set(value, forKey: currencyType.uppercased())
         }
         

@@ -45,7 +45,7 @@ class ProductCollectionCell: UICollectionViewCell {
 
     func configure(with product: ProductDumy, isFavorited: Bool) {
         ProductName.text = product.name
-        price.text = product.price
+        price.text = product.price.formatAsCurrency()
         
         if let url = URL(string: product.imageName) {
             img.load(url: url)
