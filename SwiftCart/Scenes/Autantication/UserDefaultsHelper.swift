@@ -10,7 +10,6 @@ import Foundation
 struct UserDefaultsHelper {
     
     static let shared = UserDefaultsHelper()
-    
     private init() {}
     
     func saveUserData(email: String, name: String, uid: String, shopifyCustomerID: String, cartID: String, favID: String) {
@@ -57,4 +56,25 @@ struct UserDefaultsHelper {
         //print("UserDefaults - Email: \(userEmail), Name: \(userName), UID: \(userUID), ShopifyCustomerID: \(shopifyCustomerID), CartID: \(cartID), FavID: \(favID)")
         return Customer(id: Int(shopifyCustomerID) ?? 0, email: userEmail, firstName: userName, lastName: "")
     }
+
+        private let userDefaults = UserDefaults.standard
+        
+        func saveCurrency(currencyType: String, value: Double) {
+            userDefaults.set(value, forKey: currencyType.uppercased())
+        }
+        
+        func getCurrencyValue(for currencyType: String) -> Double? {
+            let value = userDefaults.double(forKey: currencyType.uppercased())
+            return value != 0 ? value : 1.0
+        }
+        
+        func getCurrencyType() -> String? {
+            return userDefaults.string(forKey: "selectedCurrencyType")
+        }
+        
+        func saveCurrencyType(currencyType: String) {
+            userDefaults.set(currencyType.uppercased(), forKey: "selectedCurrencyType")
+        }
+    
+
 }

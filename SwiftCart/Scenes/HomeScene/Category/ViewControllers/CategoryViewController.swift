@@ -181,7 +181,7 @@ class CategoryViewController: UIViewController, UICollectionViewDelegate, UIColl
             cell.img.sd_setImage(with: imageUrl, placeholderImage: UIImage(named: "9"))
         }
         cell.ProductName.text = product.title
-        cell.price.text = product.variants[0].price
+        cell.price.text = product.variants[0].price.formatAsCurrency()
         cell.isCellNowCategorie = true
         cell.indexPath = indexPath
         cell.delegate = self

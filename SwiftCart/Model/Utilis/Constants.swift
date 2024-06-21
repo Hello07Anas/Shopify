@@ -33,6 +33,7 @@ public enum K {
         static let Contact_Us_View_Name = "ContactUsViewController"
         static let Cart_View_Name = "CartViewController"
         static let Profile_View_Name = "ProfileViewController"
+        static let Currency_View_Name = "CurrencyViewController"
         static let Order_View_Name = "OrderViewController"
         static let OrderDetails_View_Name = "OrderDetailsViewController"
     }
@@ -69,6 +70,20 @@ public enum K {
         case draftOrders = "/draft_orders/{draft_orders_id}.json"
         case variants = "/variants/{variant_id}.json"
         
+    }
+    
+    enum Currency : String{
+        case baseURL = "https://api.currencyapi.com/v3/latest"
+        case endPoint = "base_currency={base_currency}&currencies[]={currencies}"
+        case ApiKey = "cur_live_ucypaSmXyj5YoUkYSZLwVz6wXgb4Z0IIPmV0W33o"
+        case egp = "EGP"
+        case USD = "USD"
+        case SAR = "SAR"
+    }
+    
+    enum customRadioButton : String {
+        case filled = "circle.inset.filled"
+        case unFilled = "circle"
     }
     
     //MARK: Add any Const ants u need in a staruct pleas

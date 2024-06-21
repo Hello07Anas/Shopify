@@ -30,7 +30,7 @@ class CartViewController: UIViewController {
         }
         viewModel.updateTotalPrice = { [weak self] totalPriceText in
             DispatchQueue.main.async {
-                self?.totalPrice.text = totalPriceText
+                self?.totalPrice.text = totalPriceText.formatAsCurrency()
             }
         }
         

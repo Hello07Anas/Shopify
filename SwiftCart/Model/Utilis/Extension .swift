@@ -17,3 +17,46 @@ extension UIImage {
     }
 }
 
+extension String {
+    
+    private func getCurrencyValue(from userDefaults: UserDefaults, for currencyType: String) -> Double? {
+        let value = userDefaults.double(forKey: currencyType)
+        print("Retrieved currency value: \(value) for type: \(currencyType)") // Debugging print
+        return value != 0 ? value : nil
+    }
+    
+    private func getCurrencySymbol(for currencyType: String) -> String {
+        switch currencyType.uppercased() {
+        case "USD":
+            return "$"
+        case "EGP":
+            return "E£"
+        case "SAR":
+            return "﷼"
+        default:
+            return ""
+        }
+    }
+    
+    func formatAsCurrency() -> String {
+        let userDefaults = UserDefaults.standard
+        let currencyType = CurrencyManager.instance.getCurrencyType()
+        
+        guard let value = Double(self) else {
+            print("Failed to convert string to double: \(self)") // Debugging print
+            return self
+        }
+        
+        guard let currencyValue = getCurrencyValue(from: userDefaults, for: currencyType.uppercased()) else {
+            print("Failed to retrieve currency value for type: \(currencyType)") // Debugging print
+            return self
+        }
+        
+        let convertedValue = value * currencyValue
+        let currencySymbol = getCurrencySymbol(for: currencyType)
+        
+        print("Converted value: \(convertedValue) with symbol: \(currencySymbol)") // Debugging print
+        
+        return "\(String(format: "%.2f", convertedValue)) \(currencySymbol)"
+    }
+}

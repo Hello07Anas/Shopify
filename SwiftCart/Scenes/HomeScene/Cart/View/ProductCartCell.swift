@@ -74,9 +74,9 @@ extension ProductCartCell : ProductCartCellProtocol , ProductCartCellDelegate{
         cellID = id
     }
     
-    func setProduct(_ product: LineItem) {
+    func setProduct(_ product: LineItem) {        
         productTitle.text = product.productTitle
-        productPrice.text = "\(product.productPrice)"
+        productPrice.text = "\(product.productPrice)".formatAsCurrency()
         productQuantity.text = "\(product.quantity)"
         quantity = product.quantity
         if product.sizeColor != nil {

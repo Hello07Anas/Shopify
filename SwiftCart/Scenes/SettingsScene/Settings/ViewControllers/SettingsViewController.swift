@@ -102,8 +102,7 @@ extension SettingsViewController : UITableViewDataSource, UITableViewDelegate {
         case 0:
             coordinator?.goToAddresses()
         case 1:
-            // TODO: handle cuurency
-          return
+            coordinator?.goToCurrency()
         case 2:
             // TODO: handle About Us
             return

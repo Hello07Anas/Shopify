@@ -137,7 +137,7 @@ class ProductInfoVC: UIViewController{
     func updateProductDetails(_ product: ShopifyProduct) {
         //print("Updating UI with product details:", product)
         productName.text = product.title
-        productPrice.text = "\(product.variants?.first?.price ?? "90.00") EGP"
+        productPrice.text = "\(product.variants?.first?.price ?? "90.00")".formatAsCurrency()
         productDescription.text = product.body_html
         pageControl.numberOfPages = product.images?.count ?? 0
 

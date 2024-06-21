@@ -148,7 +148,7 @@ class ProductViewController: UIViewController, UICollectionViewDelegate, UIColle
             cell.img.sd_setImage(with: imageUrl, placeholderImage: UIImage(named: "9"))
         }
         cell.ProductName.text = product.title
-        cell.price.text = product.variants[0].price
+        cell.price.text = product.variants[0].price.formatAsCurrency()
         
         cell.isCellNowHome = true
         cell.indexPath = indexPath
