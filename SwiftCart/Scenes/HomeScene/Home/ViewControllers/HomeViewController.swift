@@ -39,6 +39,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         bindViewModel()
         viewModel.loadData()
+        fetchCurrency()
     }
     
     
@@ -201,4 +202,14 @@ extension HomeViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         viewModel.filterBrands(query: searchText)
     }
+    
+    func fetchCurrency() {
+           CurrencyManager.instance.getData { [weak self] currency, message in
+               guard let self = self, let currency = currency else { return }
+               let currencyType = CurrencyManager.instance.getCurrencyType()
+               let rate = currency.data[currencyType]?.value ?? 1.0
+               UserDefaultsHelper.shared.saveCurrency(currencyType: currencyType, value: rate)
+           }
+       }
+    
 }
