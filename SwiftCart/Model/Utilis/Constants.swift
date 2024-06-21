@@ -76,5 +76,10 @@ public enum K {
 
     }
     
+    enum customRadioButton : String {
+        case filled = "circle.inset.filled"
+        case unFilled = "circle"
+    }
+    
     //MARK: Add any Const ants u need in a staruct pleas
 }
