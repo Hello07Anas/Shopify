@@ -85,6 +85,12 @@ class Login: UIViewController {
         }
     }
     
+    @IBAction func loginWithGoogle(_ sender: Any) {
+    }
+    
+    @IBAction func loginWIthX(_ sender: Any) {
+    }
+    
     // Helper methods
     
     private func fetchUserDataFromFirestore(email: String, completion: @escaping ([String: Any]?) -> Void) {
