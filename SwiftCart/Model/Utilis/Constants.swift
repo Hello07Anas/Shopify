@@ -21,7 +21,7 @@ public enum K {
         static let Home_View_Name = "HomeViewController"
         static let Category_View_Name = "CategoryViewController"
         static let Product_View_Name = "ProductViewController"
-        
+        static let OnBoarding_View_Name = "OnBoardingScreenViewController"
         
     }
     

@@ -36,7 +36,7 @@ class OrderDetailsViewController: UIViewController {
             //TODO: formatAsCurrency
             price.text = "\(orderDetails!.totalPrice)  \(orderDetails!.currency.rawValue)"
             
-            //phone.text = orderDetails.phone
+            phone.text = orderDetails?.address!.phone
             
             self.tableView.reloadData()
             }

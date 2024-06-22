@@ -96,6 +96,8 @@
 		B9C62FFC2C24E9BB00C08944 /* OrderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9C62FFB2C24E9BB00C08944 /* OrderTableViewCell.swift */; };
 		B9C630222C250B5400C08944 /* OrderDetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9C630212C250B5400C08944 /* OrderDetailsTableViewCell.swift */; };
 		B9C630282C2514F700C08944 /* OrderDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9C630272C2514F700C08944 /* OrderDetailsViewController.swift */; };
+		B9D88F162C2733920028A407 /* OnBoardingScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D88F152C2733920028A407 /* OnBoardingScreenViewController.swift */; };
+		B9D88F192C27340F0028A407 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = B9D88F182C27340F0028A407 /* Lottie */; };
 		B9E93B132C172C2B007CE79D /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E93B122C172C2B007CE79D /* Product.swift */; };
 		B9F634B82C1754B30073C04D /* ProductCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B9F634B72C1754B30073C04D /* ProductCollectionCell.xib */; };
 		B9F634B92C1754B30073C04D /* ProductCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9F634B62C1754B30073C04D /* ProductCollectionCell.swift */; };
@@ -183,6 +185,10 @@
 		B9C62FFB2C24E9BB00C08944 /* OrderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderTableViewCell.swift; sourceTree = "<group>"; };
 		B9C630212C250B5400C08944 /* OrderDetailsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailsTableViewCell.swift; sourceTree = "<group>"; };
 		B9C630272C2514F700C08944 /* OrderDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailsViewController.swift; sourceTree = "<group>"; };
+		B9D88F152C2733920028A407 /* OnBoardingScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingScreenViewController.swift; sourceTree = "<group>"; };
+		B9D88F1A2C273B830028A407 /* test.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = test.json; sourceTree = "<group>"; };
+		B9D88F1B2C273B910028A407 /* SwiftCart.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SwiftCart.json; sourceTree = "<group>"; };
+		B9D88F1C2C273B980028A407 /* tes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = tes.json; sourceTree = "<group>"; };
 		B9E93B122C172C2B007CE79D /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
 		B9F634B62C1754B30073C04D /* ProductCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCollectionCell.swift; sourceTree = "<group>"; };
 		B9F634B72C1754B30073C04D /* ProductCollectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProductCollectionCell.xib; sourceTree = "<group>"; };
@@ -199,6 +205,7 @@
 				B9A4BB842C0E0A2600DB16E5 /* Cosmos in Frameworks */,
 				B91DC0872C0E87BF003AE4CC /* SDWebImageMapKit in Frameworks */,
 				4CDD48622C266A6700B50F65 /* GoogleSignInSwift in Frameworks */,
+				B9D88F192C27340F0028A407 /* Lottie in Frameworks */,
 				4CCFAD5E2C23412B0011B9FC /* Reachability in Frameworks */,
 				B9A4BB812C0E0A1100DB16E5 /* RxAlamofire in Frameworks */,
 				4C806C992C1364AB00413E54 /* FirebaseFirestoreSwift in Frameworks */,
@@ -228,6 +235,9 @@
 		04715A5F2C08F1D100D8DC3B /* SwiftCart */ = {
 			isa = PBXGroup;
 			children = (
+				B9D88F1B2C273B910028A407 /* SwiftCart.json */,
+				B9D88F1C2C273B980028A407 /* tes.json */,
+				B9D88F1A2C273B830028A407 /* test.json */,
 				04715A872C08FD4300D8DC3B /* Model */,
 				04715A752C08FB6900D8DC3B /* Scenes */,
 				04715A602C08F1D100D8DC3B /* AppDelegate.swift */,
@@ -697,6 +707,7 @@
 				B9A4BB5D2C0DD02B00DB16E5 /* Category */,
 				B9A4BB632C0DD39F00DB16E5 /* Product */,
 				0EC5CD2D2C162EFB00C65BB8 /* Home */,
+				B9D88F152C2733920028A407 /* OnBoardingScreenViewController.swift */,
 			);
 			path = HomeScene;
 			sourceTree = "<group>";
@@ -881,6 +892,7 @@
 				4CCFAD5D2C23412B0011B9FC /* Reachability */,
 				4CDD485F2C266A6700B50F65 /* GoogleSignIn */,
 				4CDD48612C266A6700B50F65 /* GoogleSignInSwift */,
+				B9D88F182C27340F0028A407 /* Lottie */,
 			);
 			productName = SwiftCart;
 			productReference = 04715A5D2C08F1D100D8DC3B /* SwiftCart.app */;
@@ -918,6 +930,7 @@
 				4CD50D5C2C1B5F6A0016404C /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
 				4CCFAD5C2C23412B0011B9FC /* XCRemoteSwiftPackageReference "Reachability.swift" */,
 				4CDD485E2C266A6600B50F65 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				B9D88F172C27340F0028A407 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			productRefGroup = 04715A5E2C08F1D100D8DC3B /* Products */;
 			projectDirPath = "";
@@ -995,6 +1008,7 @@
 				0EC5CD432C16C01D00C65BB8 /* AddressDetailsViewController.swift in Sources */,
 				4C17956D2C172C670045E497 /* productReviewCell.swift in Sources */,
 				04715A612C08F1D100D8DC3B /* AppDelegate.swift in Sources */,
+				B9D88F162C2733920028A407 /* OnBoardingScreenViewController.swift in Sources */,
 				04715A822C08FCC500D8DC3B /* ViewModelTemp.swift in Sources */,
 				0EC5CD4D2C18D6C400C65BB8 /* AddressDetailsViewModel.swift in Sources */,
 				04715A912C08FDC400D8DC3B /* Model.swift in Sources */,
@@ -1305,6 +1319,14 @@
 				minimumVersion = 25.0.1;
 			};
 		};
+		B9D88F172C27340F0028A407 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.4.3;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1357,6 +1379,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B9A4BB822C0E0A2600DB16E5 /* XCRemoteSwiftPackageReference "Cosmos" */;
 			productName = Cosmos;
+		};
+		B9D88F182C27340F0028A407 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B9D88F172C27340F0028A407 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

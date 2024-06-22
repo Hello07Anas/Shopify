@@ -65,7 +65,7 @@ extension OrderViewController : UITableViewDataSource, UITableViewDelegate {
         print(order?.date ?? "")
         //TODO: formatAsCurrency
         cell?.price.text = "\(order!.totalPrice)  \(order!.currency.rawValue)"
-       // cell?.phone.text = order?.phone
+        cell?.phone.text = order?.address!.phone
         
 
         return cell!

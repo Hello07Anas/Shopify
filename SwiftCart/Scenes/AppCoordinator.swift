@@ -28,6 +28,16 @@ class AppCoordinator: Coordinator {
 //        navigationController.pushViewController(mainViewController, animated: false)
         navigationController.navigationBar.isHidden = true
 
+        let storyboard = UIStoryboard(name: K.Home.Home_Storyboard_Name, bundle: Bundle.main)
+        let onBoardingVc = storyboard.instantiateViewController(withIdentifier: K.Home.OnBoarding_View_Name) as! OnBoardingScreenViewController
+        
+        onBoardingVc.coordinator = self
+        navigationController.pushViewController(onBoardingVc, animated: true)
+        
+           }
+    
+    func getStarted(){
+       
         if UserDefaultsHelper.shared.getUserData().email == nil {
             gotoLogin(pushToStack: true)
         } else if UserDefaultsHelper.shared.getUserData().email != nil {
@@ -67,23 +77,20 @@ class AppCoordinator: Coordinator {
             let myCartVC = settingsStoryboard.instantiateViewController(withIdentifier: K.Settings.Cart_View_Name) as! CartViewController
             let profileVC = settingsStoryboard.instantiateViewController(withIdentifier: K.Settings.Profile_View_Name) as! ProfileViewController
             
-            let orderVc = storyboard.instantiateViewController(withIdentifier: K.Settings.Order_View_Name) as! OrderViewController
-            
+           
             homeVc.coordinator = self
             categoryVc.coordinator = self
             myCartVC.coordinator = self
             profileVC.coordinator = self
             
-            orderVc.coordinator = self
             
             homeVc.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 0)
             categoryVc.tabBarItem = UITabBarItem(title: "Categories", image: UIImage(systemName: "list.bullet"), tag: 1)
             myCartVC.tabBarItem = UITabBarItem(title: "MyCart", image: UIImage(systemName: "cart"), tag:2)
             profileVC.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "person"), tag:3)
-            orderVc.tabBarItem = UITabBarItem(title: "Order", image: UIImage(systemName: "star"), tag:4)
             
             let tabBar = UITabBarController()
-            tabBar.viewControllers = [homeVc, categoryVc, myCartVC, profileVC,orderVc]
+            tabBar.viewControllers = [homeVc, categoryVc, myCartVC, profileVC]
             tabBar.tabBar.backgroundColor = .white
             
             navigationController.pushViewController(tabBar, animated: true)
@@ -112,7 +119,7 @@ class AppCoordinator: Coordinator {
     func goToOrders() {
         if isNetworkReachable() {
             let storyboard = UIStoryboard(name: K.Home.Home_Storyboard_Name, bundle: Bundle.main)
-            let orderVc = storyboard.instantiateViewController(withIdentifier: K.Home.Product_View_Name) as! OrderViewController
+            let orderVc = storyboard.instantiateViewController(withIdentifier: K.Settings.Order_View_Name) as! OrderViewController
             
             orderVc.coordinator = self
             
