@@ -31,6 +31,10 @@ class ProductInfoVM {
             .disposed(by: disposeBag)
     }
 
+    func getDisposeBag() -> DisposeBag {
+        return disposeBag
+    }
+    
     func getProduct() -> ShopifyProduct? {
         return product
     }
