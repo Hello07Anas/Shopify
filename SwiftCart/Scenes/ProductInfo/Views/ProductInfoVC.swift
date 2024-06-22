@@ -17,6 +17,7 @@ class ProductInfoVC: UIViewController{
     let favCRUD = FavCRUD()
     var id: Int = 0
     let favId = Int(UserDefaultsHelper.shared.getUserData().favID ?? "0")
+    let cartVM = CartViewModel(network: NetworkManager.shared)
 
     @IBOutlet weak var productImageCollectionView: UICollectionView!
     @IBOutlet weak var productReviesCollectionView: UICollectionView!
@@ -48,6 +49,13 @@ class ProductInfoVC: UIViewController{
         
         cosmos.rating = getRandomRating()
         setButtonImage(isFavorited: isFavorited)
+        cartVM.productSoldOut = {
+            Utils.showAlert(title: "Sold Out", message: "Sorry, you can't add this product to your cart.", preferredStyle: .alert, from: self)
+        }
+        cartVM.productAlreadyExist = {
+            Utils.showAlert(title: "Aleary Exist", message: "go to your cart to update the quantity.", preferredStyle: .alert, from: self)
+        }
+        cartVM.getCartProductsList()
     }
 
     @IBAction func addToFavBtn(_ sender: Any) {
@@ -84,7 +92,9 @@ class ProductInfoVC: UIViewController{
     }
 
     @IBAction func addToCartBtn(_ sender: Any) {
-        // TOOD: Add to Cart
+        guard let product = productInfoVM.getProduct() else { return }
+        print("============== \(product)")
+        self.cartVM.addNewItemLine(variantID: product.variants?.first?.id ?? 0, quantity: 1, imageURLString: product.images?.first?.src ?? "", productID: 0, productTitle: product.title ?? "No title", productPrice: product.variants?.first?.price ?? "")
     }
     
     

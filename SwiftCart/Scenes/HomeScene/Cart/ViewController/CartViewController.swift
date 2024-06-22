@@ -33,12 +33,11 @@ class CartViewController: UIViewController {
                 self?.totalPrice.text = totalPriceText.formatAsCurrency()
             }
         }
-        
         viewModel.bindMaxLimitQuantity = {
             Utils.showAlert(title: "Warning", message: "You have reached max limit of quantity.", preferredStyle: .alert, from: self)
         }
-        
         viewModel.getCartProductsList()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
