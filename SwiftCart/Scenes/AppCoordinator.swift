@@ -194,6 +194,12 @@ class AppCoordinator: Coordinator {
         }
     }
     
+    func goToImageZoom(imageURLs: [URL], selectedImageURL: URL?) {
+        let imageZoomVC = ImageZoom(imageURLs: imageURLs, selectedImageURL: selectedImageURL)
+        imageZoomVC.coordinator = self
+        navigationController.pushViewController(imageZoomVC, animated: true)
+    }
+    
     // reachabilty
     func setupReachability() {
         reachability.whenReachable = { reachability in
