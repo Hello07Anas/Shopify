@@ -8,6 +8,8 @@
 import UIKit
 import FirebaseAuth
 import FirebaseFirestore
+import GoogleSignIn
+import FirebaseCore
 
 class Login: UIViewController {
 
@@ -19,6 +21,9 @@ class Login: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        guard let clientID = FirebaseApp.app()?.options.clientID else { return }
+        let config = GIDConfiguration(clientID: clientID)
+        GIDSignIn.sharedInstance.configuration = config
     }
 
     @IBAction func backBtn(_ sender: Any) {
@@ -83,6 +88,55 @@ class Login: UIViewController {
                 }
             }
         }
+    }
+    
+    @IBAction func loginWithGoogle(_ sender: Any) {
+        GIDSignIn.sharedInstance.signIn(withPresenting: self) { [unowned self] result, error in
+            guard error == nil else {
+                print("Error signing in with Google: \(error!.localizedDescription)")
+                return
+            }
+            
+            guard let user = result?.user,
+                  let idToken = user.idToken?.tokenString else {
+                return
+            }
+            
+            let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: user.accessToken.tokenString)
+            Auth.auth().signIn(with: credential) { authResult, error in
+                if let error = error {
+                    print("Firebase sign in error: \(error.localizedDescription)")
+                } else {
+                    guard let uid = authResult?.user.uid else { return }
+                    let email = user.profile?.email ?? ""
+                    let name = user.profile?.name ?? ""
+                    
+                    self.fetchUserDataFromFirestore(email: email) { userData in
+                        if let userData = userData {
+                            UserDefaultsHelper.shared.saveUserData(
+                                email: email,
+                                name: userData["name"] as? String ?? "",
+                                uid: userData["uid"] as? String ?? "",
+                                shopifyCustomerID: userData["shopifyCustomerID"] as? String ?? "",
+                                cartID: userData["cartID"] as? String ?? "",
+                                favID: userData["favID"] as? String ?? ""
+                            )
+                            
+                            print("========")
+                            UserDefaultsHelper.shared.printUserDefaults()
+                            print("========")
+                            self.coordinator?.gotoHome(isThereConnection: true)
+                            
+                        } else {
+                            Utils.showAlert(title: "Error", message: "User data not found. Please sign up first.", preferredStyle: .alert, from: self)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    @IBAction func loginWIthX(_ sender: Any) {
     }
     
     // Helper methods

@@ -108,10 +108,34 @@
                         </button>
                     </subviews>
                 </stackView>
+                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="99" translatesAutoresizingMaskIntoConstraints="NO" id="6xV-iF-Fgh">
+                    <rect key="frame" x="16" y="491" width="398" height="64"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SRe-Vw-ZUC" userLabel="Google">
+                            <rect key="frame" x="0.0" y="0.0" width="149.66666666666666" height="64"/>
+                            <state key="normal" title="Button"/>
+                            <buttonConfiguration key="configuration" style="plain" image="google-icon"/>
+                            <connections>
+                                <action selector="loginWithGoogle:" destination="-1" eventType="touchUpInside" id="VJl-XJ-s9A"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tQc-fe-Sr2" userLabel="X">
+                            <rect key="frame" x="248.66666666666669" y="0.0" width="149.33333333333331" height="64"/>
+                            <state key="normal" title="Button"/>
+                            <buttonConfiguration key="configuration" style="plain" image="x-icon"/>
+                            <connections>
+                                <action selector="loginWIthX:" destination="-1" eventType="touchUpInside" id="KsU-35-C3T"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                </stackView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
+                <constraint firstItem="6xV-iF-Fgh" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="0LT-VF-Cpp"/>
+                <constraint firstItem="6xV-iF-Fgh" firstAttribute="top" secondItem="ZvK-9s-plZ" secondAttribute="bottom" constant="24" id="6Qr-bs-cGi"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="6xV-iF-Fgh" secondAttribute="trailing" constant="16" id="81n-3h-DgQ"/>
                 <constraint firstItem="TOG-DB-zcg" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="8" id="Bzj-CG-cKh"/>
                 <constraint firstItem="ZvK-9s-plZ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="DQz-2p-Fxo"/>
                 <constraint firstAttribute="trailing" secondItem="ZvK-9s-plZ" secondAttribute="trailing" constant="16" id="Ehc-6K-SUT"/>
@@ -129,11 +153,13 @@
                 <constraint firstItem="i9v-Vd-Rkb" firstAttribute="top" secondItem="57G-10-I8M" secondAttribute="bottom" constant="16" id="xQM-Ej-hJ1"/>
                 <constraint firstItem="Flu-oE-C2Q" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="y3p-uB-ltg"/>
             </constraints>
-            <point key="canvasLocation" x="132" y="-11"/>
+            <point key="canvasLocation" x="131.16279069767441" y="-11.587982832618026"/>
         </view>
     </objects>
     <resources>
         <image name="chevron.backward" catalog="system" width="97" height="128"/>
+        <image name="google-icon" width="48" height="48"/>
+        <image name="x-icon" width="50" height="50"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

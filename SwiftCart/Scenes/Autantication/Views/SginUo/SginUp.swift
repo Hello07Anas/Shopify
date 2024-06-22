@@ -8,6 +8,8 @@
 import UIKit
 import FirebaseAuth
 import FirebaseFirestore
+import GoogleSignIn
+import FirebaseCore
 
 class SginUp: UIViewController { // TODO: fix routation in Sgin UP
     
@@ -22,6 +24,9 @@ class SginUp: UIViewController { // TODO: fix routation in Sgin UP
         super.viewDidLoad()
 
         //self.navigationController?.navigationBar.isHidden = true
+        guard let clientID = FirebaseApp.app()?.options.clientID else { return }
+        let config = GIDConfiguration(clientID: clientID)
+        GIDSignIn.sharedInstance.configuration = config
     }
     
     @IBAction func backBtn(_ sender: Any) {
@@ -101,11 +106,93 @@ class SginUp: UIViewController { // TODO: fix routation in Sgin UP
         }
     }
     
-    @IBAction func sginUpWithGoogle(_ sender: Any) { }
+    @IBAction func sginUpWithGoogle(_ sender: Any) {
+        
+        GIDSignIn.sharedInstance.signIn(withPresenting: self) { [unowned self] result, error in
+            guard error == nil else {
+                print("Error signing in with Google: \(error!.localizedDescription)")
+                return
+            }
+            
+            guard let user = result?.user,
+                  let idToken = user.idToken?.tokenString else {
+                return
+            }
+            
+            let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: user.accessToken.tokenString)
+            Auth.auth().signIn(with: credential) { authResult, error in
+                if let error = error {
+                    print("Firebase sign in error: \(error.localizedDescription)")
+                } else {
+                    guard let uid = authResult?.user.uid else { return }
+                    let email = user.profile?.email ?? ""
+                    let name = user.profile?.name ?? ""
+                    
+                    self.fetchUserDataFromFirestore(email: email) { userData in
+                        if let userData = userData {
+                            UserDefaultsHelper.shared.saveUserData(
+                                email: email,
+                                name: userData["name"] as? String ?? "",
+                                uid: userData["uid"] as? String ?? "",
+                                shopifyCustomerID: userData["shopifyCustomerID"] as? String ?? "",
+                                cartID: userData["cartID"] as? String ?? "",
+                                favID: userData["favID"] as? String ?? ""
+                            )
+                            
+                            print("========")
+                            UserDefaultsHelper.shared.printUserDefaults()
+                            print("========")
+                            self.coordinator?.gotoHome(isThereConnection: true)
+                            
+                        } else {
+                            ShopifyAPIHelper.shared.createCustomer(email: email, firstName: name, lastName: "") { result in
+                                switch result {
+                                case .success(let shopifyCustomerID):
+                                    self.createDraftOrders(for: shopifyCustomerID) { draftOrderResult in
+                                        switch draftOrderResult {
+                                        case .success(let (cartID, favID)):
+                                            self.storeUserData(uid: uid, shopifyCustomerID: shopifyCustomerID, email: email, name: name, cartID: cartID, favID: favID) {
+                                                print("========")
+                                                UserDefaultsHelper.shared.printUserDefaults()
+                                                print("========")
+                                                self.coordinator?.gotoHome(isThereConnection: true)
+                                            }
+                                        case .failure(let error):
+                                            Utils.showAlert(title: "Error", message: "Failed to create draft orders: \(error.localizedDescription)", preferredStyle: .alert, from: self)
+                                        }
+                                    }
+                                case .failure(let error):
+                                    Utils.showAlert(title: "Error", message: "Failed to create Shopify customer: \(error.localizedDescription)", preferredStyle: .alert, from: self)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
     
     @IBAction func sginUpWithX(_ sender: Any) {}
     
     // Helper Methods:
+    private func fetchUserDataFromFirestore(email: String, completion: @escaping ([String: Any]?) -> Void) {
+        let db = Firestore.firestore()
+        
+        db.collection("users").whereField("email", isEqualTo: email).getDocuments { snapshot, error in
+            if let error = error {
+                print("Error fetching user data from Firestore: \(error.localizedDescription)")
+                completion(nil)
+                return
+            }
+            
+            guard let documents = snapshot?.documents, let userData = documents.first?.data() else {
+                print("No user data found for email: \(email)")
+                completion(nil)
+                return
+            }
+            completion(userData)
+        }
+    }
     
     private func storeUserData(uid: String, shopifyCustomerID: String, email: String, name: String, cartID: String, favID: String, completion: @escaping () -> Void) {
         let numericCustomerID = extractNumericShopifyID(shopifyCustomerID: shopifyCustomerID)
