@@ -22,7 +22,7 @@ extension String {
     private func getCurrencyValue(from userDefaults: UserDefaults, for currencyType: String) -> Double? {
         let value = userDefaults.double(forKey: currencyType)
         print("Retrieved currency value: \(value) for type: \(currencyType)") // Debugging print
-        return value != 0 ? value : nil
+        return value != 0 ? value/2 : 1.0
     }
     
     private func getCurrencySymbol(for currencyType: String) -> String {

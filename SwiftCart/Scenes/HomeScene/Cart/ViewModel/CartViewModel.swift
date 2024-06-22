@@ -20,6 +20,8 @@ class CartViewModel {
     var draftOrder: DraftOrderResponseModel?
     var bindCartProducts: (() -> Void) = {}
     var bindMaxLimitQuantity: (() -> Void) = {}
+    var productAlreadyExist: (() -> Void) = {}
+    var productSoldOut: (() -> Void) = {}
     var updateTotalPrice: ((String) -> Void)?
 
     
@@ -54,8 +56,6 @@ class CartViewModel {
                     self?.cartSubject.onNext(self?.cartProductsList ?? [])
                     self?.bindCartProducts()
                         self?.updateTotalPrice?(response.singleResult?.totalPrice ?? "0.0")
-
-                    print("ViewModel: Number of CartProducts: \(String(describing: self?.cartProductsList))")
                 } else {
                     print("ViewModel: No items in cart")
                 }
@@ -100,7 +100,7 @@ class CartViewModel {
                     }
                     
                     if let inventoryQuantity = variant.inventory_quantity {
-                        let isAvailable = quantity <= (inventoryQuantity / 2)
+                        let isAvailable = (quantity <= (inventoryQuantity / 2) || inventoryQuantity == 1)
                         completion(isAvailable)
                         print("ViewModel: inventory quantity: \(inventoryQuantity) \(isAvailable)")
                     } else {
@@ -156,7 +156,61 @@ class CartViewModel {
         cell.setImage(with: product.properties.first { $0.name == "image" }?.value)
         cell.delegate = self
     }
-}
+    
+    
+    func addNewItemLine(variantID: Int, quantity: Int, imageURLString: String, productID: Int, productTitle: String, productPrice: String) {
+        self.getCartProductsList()
+        
+        if let _ = self.draftOrder?.singleResult?.lineItems.first(where: { $0.variantID == variantID }) {
+            self.productAlreadyExist()
+            return
+        } else{
+            
+            self.checkInventoryQuantity(quantity: quantity, forVariantID: variantID) { [weak self] isAvailable in
+                guard let self = self else { return }
+                
+                if !isAvailable {
+                    self.productSoldOut()
+                } else {
+                    var lineItems = self.draftOrder?.singleResult?.lineItems ?? []
+                    let newLineItem = LineItem(
+                        id: 0,
+                        variantID: variantID,
+                        quantity: quantity,
+                        properties: [LineItem.Property(name: "image", value: imageURLString)],
+                        productID: productID,
+                        productTitle: productTitle,
+                        productVendor: nil,
+                        productPrice: productPrice,
+                        sizeColor: nil
+                    )
+                    lineItems.append(newLineItem)
+                    self.draftOrder?.singleResult?.lineItems = lineItems
+                    
+                    let cartID = UserDefaultsHelper.shared.getUserData().cartID ?? ""
+                    let endpoint = K.endPoints.draftOrders.rawValue.replacingOccurrences(of: "{draft_orders_id}", with: cartID)
+                    
+                    
+                    self.network?.put(endpoint: endpoint, body: self.draftOrder, responseType: DraftOrderResponseModel.self)
+                        .observeOn(MainScheduler.instance)
+                        .subscribe(onNext: { (success, message, response) in
+                            if success {
+                                print("Success: \(String(describing: response))")
+                                self.getCartProductsList()
+                            } else {
+                                print("Failed to update cart: \(message ?? "No error message")")
+                            }
+                        }, onError: { error in
+                            print("Error occurred: \(error.localizedDescription)")
+                        })
+                        .disposed(by: self.disposeBag)
+                }
+            }
+        }
+        
+    }
+    }
+
 
 
 extension CartViewModel: ProductCartCellDelegate {
