@@ -198,7 +198,15 @@ extension ProductInfoVC: UICollectionViewDataSource, UICollectionViewDelegate {
         
         return UICollectionViewCell()
     }
-
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let product = productInfoVM.getProduct() else { return }
+        
+        let imageURLs = product.images?.compactMap { URL(string: $0.src ?? "") } ?? []
+        let selectedImageURL = imageURLs[indexPath.item]
+        
+        coordinator?.goToImageZoom(imageURLs: imageURLs, selectedImageURL: selectedImageURL)
+    }
 }
 
 /*

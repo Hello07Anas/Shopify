@@ -69,6 +69,8 @@
 		4CC0F67F2C1F049C006986A1 /* ShopifyProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CC0F67E2C1F049C006986A1 /* ShopifyProduct.swift */; };
 		4CCFAD5E2C23412B0011B9FC /* Reachability in Frameworks */ = {isa = PBXBuildFile; productRef = 4CCFAD5D2C23412B0011B9FC /* Reachability */; };
 		4CD50D5E2C1B5F6A0016404C /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4CD50D5D2C1B5F6A0016404C /* IQKeyboardManagerSwift */; };
+		4CDD485C2C26484000B50F65 /* ImageZoom.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4CDD485B2C26484000B50F65 /* ImageZoom.xib */; };
+		4CDD485D2C26484000B50F65 /* ImageZoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CDD485A2C26484000B50F65 /* ImageZoom.swift */; };
 		4CE498082C1FA6E90064C2BB /* FavCRUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE498072C1FA6E90064C2BB /* FavCRUD.swift */; };
 		B91DC0852C0E87BF003AE4CC /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = B91DC0842C0E87BF003AE4CC /* SDWebImage */; };
 		B91DC0872C0E87BF003AE4CC /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = B91DC0862C0E87BF003AE4CC /* SDWebImageMapKit */; };
@@ -158,6 +160,8 @@
 		4C806CA12C1368A300413E54 /* Login.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		4C9C39B42C0A2C03003F0769 /* NibViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NibViewController.swift; sourceTree = "<group>"; };
 		4CC0F67E2C1F049C006986A1 /* ShopifyProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopifyProduct.swift; sourceTree = "<group>"; };
+		4CDD485A2C26484000B50F65 /* ImageZoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageZoom.swift; sourceTree = "<group>"; };
+		4CDD485B2C26484000B50F65 /* ImageZoom.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageZoom.xib; sourceTree = "<group>"; };
 		4CE498072C1FA6E90064C2BB /* FavCRUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavCRUD.swift; sourceTree = "<group>"; };
 		B972D5E32C0CA131007E0329 /* HomeStoryboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = HomeStoryboard.storyboard; sourceTree = "<group>"; };
 		B972D5E52C0CA166007E0329 /* HomeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -618,6 +622,8 @@
 				4C1795742C1750A90045E497 /* ProductInfoVC.xib */,
 				4C17956A2C172C200045E497 /* ReviewsCell */,
 				4C1795692C172C110045E497 /* ImgCell */,
+				4CDD485A2C26484000B50F65 /* ImageZoom.swift */,
+				4CDD485B2C26484000B50F65 /* ImageZoom.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -929,6 +935,7 @@
 				4C1795682C17268C0045E497 /* productImgCellCollectionViewCell.xib in Resources */,
 				4C806C942C13635A00413E54 /* GoogleService-Info.plist in Resources */,
 				04715A6D2C08F1D500D8DC3B /* LaunchScreen.storyboard in Resources */,
+				4CDD485C2C26484000B50F65 /* ImageZoom.xib in Resources */,
 				B972D5E42C0CA131007E0329 /* HomeStoryboard.storyboard in Resources */,
 				04715A6A2C08F1D500D8DC3B /* Assets.xcassets in Resources */,
 				0EB1FD792C1FCB7800F4A48D /* ProductCartCell.xib in Resources */,
@@ -967,6 +974,7 @@
 				0EB1FD6C2C1FA1B900F4A48D /* Extension .swift in Sources */,
 				4C1795782C1759190045E497 /* ProductInfoVM.swift in Sources */,
 				04715A8C2C08FD7300D8DC3B /* NetworkManager.swift in Sources */,
+				4CDD485D2C26484000B50F65 /* ImageZoom.swift in Sources */,
 				B9C630282C2514F700C08944 /* OrderDetailsViewController.swift in Sources */,
 				B9C62FFA2C24E99300C08944 /* OrderViewController.swift in Sources */,
 				4C1795732C1742E70045E497 /* Review.swift in Sources */,
@@ -1163,6 +1171,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = N449UXFHA8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SwiftCart/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1189,6 +1198,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = N449UXFHA8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SwiftCart/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
