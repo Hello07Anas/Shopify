@@ -10,6 +10,7 @@ import UIKit
 protocol ProductCollectionCellDelegate: AnyObject {
     func deleteFavoriteTapped(for cell: ProductCollectionCell)
     func saveToFavorite(foe cell: ProductCollectionCell)
+    func goToDetails(item cell: ProductCollectionCell)
 }
 
 class ProductCollectionCell: UICollectionViewCell {
@@ -56,8 +57,9 @@ class ProductCollectionCell: UICollectionViewCell {
         setButtonImage(isFavorited: isFavorited)
     }
     
-    @IBAction func addToCartBtn(_ sender: Any) { // TODO: change this btn name to goToDetails
-        //coordinator?.goToProductInfo(productId: product.id)
+    @IBAction func goToDetails(_ sender: Any) { // TODO:
+        
+        delegate?.goToDetails(item: self)
     }
     
     @IBAction func addToFavBtn(_ sender: Any) {
@@ -94,6 +96,8 @@ class ProductCollectionCell: UICollectionViewCell {
         if let viewController = self.contentView.parentViewController {
             Utils.showAlert(title: "Confirmation", message: "Are you sure you want to remove \(self.ProductName.text!) from your favorites? This action cannot be undone.", preferredStyle: .alert, from: viewController, actions: [yes, no])
         }
+        
+        
     }
     
     func setButtonImage(isFavorited: Bool) {

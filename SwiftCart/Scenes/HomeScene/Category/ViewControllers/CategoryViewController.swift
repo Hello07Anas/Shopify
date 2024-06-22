@@ -29,6 +29,11 @@ class CategoryViewController: UIViewController, UICollectionViewDelegate, UIColl
 
     var viewModel = CategoryViewModel(network: NetworkManager.shared)
     
+    override func viewWillAppear(_ animated: Bool) {
+           super.viewWillAppear(true)
+           fetchFavoriteItems()
+       }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
        // print("viewDidLoad ======================= CategoryViewController")
@@ -173,24 +178,24 @@ class CategoryViewController: UIViewController, UICollectionViewDelegate, UIColl
   
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductCell", for: indexPath) as! ProductCollectionCell
-        
-        let product = viewModel.getProducts()[indexPath.item]
-        if let imageUrl = URL(string: viewModel.getProducts()[indexPath.row].image.src) {
-            cell.img.sd_setImage(with: imageUrl, placeholderImage: UIImage(named: "9"))
-        }
-        cell.ProductName.text = product.title
+            
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductCell", for: indexPath) as! ProductCollectionCell
+            
+            let product = viewModel.getProducts()[indexPath.item]
+            if let imageUrl = URL(string: viewModel.getProducts()[indexPath.row].image.src) {
+                cell.img.sd_setImage(with: imageUrl, placeholderImage: UIImage(named: "9"))
+            }
+            cell.ProductName.text = product.title
         cell.price.text = product.variants[0].price.formatAsCurrency()
-        cell.isCellNowCategorie = true
-        cell.indexPath = indexPath
-        cell.delegate = self
-        
-        cell.isFavorited = favoriteProductIDs.contains(product.id)
-        cell.setButtonImage(isFavorited: cell.isFavorited)
-        
-        return cell
-    }
+            cell.isCellNowCategorie = true
+            cell.indexPath = indexPath
+            cell.delegate = self
+            
+            cell.isFavorited = favoriteProductIDs.contains(product.id)
+            cell.setButtonImage(isFavorited: cell.isFavorited)
+            
+            return cell
+        }
 
 //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
 //        return 8
@@ -207,46 +212,53 @@ class CategoryViewController: UIViewController, UICollectionViewDelegate, UIColl
         10
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        let selectedProduct = viewModel.getProducts()[indexPath.row]
-        let isFavorited = favoriteProductIDs.contains(selectedProduct.id)
-
-        coordinator?.goToProductInfo(productId: selectedProduct.id, isFav: isFavorited)
-        //print("Item Selected")
-    }
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        
+//        let selectedProduct = viewModel.getProducts()[indexPath.row]
+//        let isFavorited = favoriteProductIDs.contains(selectedProduct.id)
+//
+//        coordinator?.goToProductInfo(productId: selectedProduct.id, isFav: isFavorited)
+//        //print("Item Selected")
+//    }
 }
 
 extension CategoryViewController: ProductCollectionCellDelegate {
     func saveToFavorite(foe cell: ProductCollectionCell) {
-        guard let indexPath = cell.indexPath else {
-            print("No index path found for cell")
-            return
+            guard let indexPath = cell.indexPath else {
+                print("No index path found for cell")
+                return
+            }
+            let product = products[indexPath.item]
+            let favId = Int(UserDefaultsHelper.shared.getUserData().favID ?? "0")
+            favCRUD.saveItem(favId: favId!, itemId: product.id, itemImg: product.image.src, itemName: product.title, itemPrice: Double(product.variants[0].price) ?? 70.0)
+            //print("save to favorite for product id: \(product.id)")
+            favoriteProductIDs.insert(product.id)
+            cell.isFavorited = true
         }
-        
-        let product = products[indexPath.item]
-        let favId = Int(UserDefaultsHelper.shared.getUserData().favID ?? "0")
-        favCRUD.saveItem(favId: favId!, itemId: product.id, itemImg: product.image.src, itemName: product.title, itemPrice: Double(product.variants[0].price) ?? 70.0)
-        print("save to favorite for product id: \(product.id)")
 
-    }
+        func deleteFavoriteTapped(for cell: ProductCollectionCell) {
+            guard let indexPath = cell.indexPath else {
+                print("No index path found for cell")
+                return
+            }
+            let product = products[indexPath.item]
+            let favId = Int(UserDefaultsHelper.shared.getUserData().favID ?? "0")
+            favCRUD.deleteItem(favId: favId!, itemId: product.id)
+            favoriteProductIDs.remove(product.id)
+            cell.isFavorited = false
+            //fetchFavoriteItems()
+    //        products.remove(at: indexPath.item)
+    //        collectionView.reloadData()
+            
+           // print("Deleted favorite for product id: \(product.id)")
+        }
     
-
-    func deleteFavoriteTapped(for cell: ProductCollectionCell) {
-        guard let indexPath = cell.indexPath else {
-            print("No index path found for cell")
-            return
-        }
-        
-        let product = products[indexPath.item]
-        let favId = Int(UserDefaultsHelper.shared.getUserData().favID ?? "0")
-        favCRUD.deleteItem(favId: favId!, itemId: product.id)
-        
-//        products.remove(at: indexPath.item)
-//        collectionView.reloadData()
-        
-       // print("Deleted favorite for product id: \(product.id)")
-    }
+    func goToDetails(item cell: ProductCollectionCell){
+        let selectedProduct = viewModel.getProducts()[cell.indexPath?.row ?? 0]
+    let isFavorited = favoriteProductIDs.contains(selectedProduct.id)
+    
+    coordinator?.goToProductInfo(productId: selectedProduct.id, isFav: isFavorited)
+}
 }
 
 extension CategoryViewController: UISearchBarDelegate {

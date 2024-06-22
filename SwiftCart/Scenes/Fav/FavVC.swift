@@ -94,12 +94,12 @@ extension FavVC: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource 
         return CGSize(width: width, height: 150)
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let product = products[indexPath.item]
-        print("Selected product itemId: \(product.itemId)")
-        coordinator?.goToProductInfo(productId: product.itemId, isFav: product.isFavorited)
-        //print("===============");print(product.isFavorited);print("===============")
-    }
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        let product = products[indexPath.item]
+//        print("Selected product itemId: \(product.itemId)")
+//        coordinator?.goToProductInfo(productId: product.itemId, isFav: product.isFavorited)
+//        //print("===============");print(product.isFavorited);print("===============")
+//    }
 }
 
 extension FavVC: ProductCollectionCellDelegate {
@@ -127,6 +127,11 @@ extension FavVC: ProductCollectionCellDelegate {
         //print("ProductCollectionCellDelegate - IndexPath: \(indexPath)")
         //print("===---===ProductCollectionCellDelegate"); print(favId as Any)
         //print("ProductCollectionCellDelegate===---==="); print("ProductCollectionCellDelegate")
+    }
+    func goToDetails(item cell: ProductCollectionCell){
+        let product = products[cell.indexPath?.item ?? 0]
+        print("Selected product itemId: \(product.itemId)")
+        coordinator?.goToProductInfo(productId: product.itemId, isFav: product.isFavorited)
     }
 }
 

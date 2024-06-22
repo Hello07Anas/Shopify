@@ -21,6 +21,52 @@ class OrderViewModel{
     func getOrders() -> [Order] {
         return ordersList ?? []
     }
+    func getFirstOrder() -> Order {
+        let address = Address(
+            id: nil,
+            customerID: nil,
+            firstName: "John",
+            lastName: "Doe",
+            address1: "123 Main St",
+            city: "Cairo",
+            country: "EG",
+            phone: "011123456789",
+            isDefault: true
+        )
+
+        let billingAddress = Address(
+            id: nil,
+            customerID: nil,
+            firstName: "John",
+            lastName: "Doe",
+            address1: "123 Main St",
+            city: "Cairo",
+            country: "EG",
+            phone: "011123456789",
+            isDefault: true
+        )
+
+        let testOrder = Order(
+            id: 1073460025,
+            orderNumber: "#122",
+            productNumber: 2,
+            address: address,
+           // phone: "011123456789",
+            date: "2024-05-14T21:19:37-04:00",
+            currency: .eur,
+            email: UserDefaults.standard.string(forKey: "userEmail") ?? "",
+            totalPrice: "238.47",
+            items: [
+                ItemProductOrder(id: 1071823276, image: "https://cdn.shopify.com/s/files/1/0624/0239/6207/collections/97a3b1227876bf099d279fd38290e567.jpg?v=1716812402", price: "80", quantity: 3, title: "Big Brown Bear Boots"),
+                ItemProductOrder(id: 1081823276, image: "https://cdn.shopify.com/s/files/1/0624/0239/6207/collections/97a3b1227876bf099d279fd38290e567.jpg?v=1716812402", price: "50", quantity: 1, title: " Brown Bear Boots")
+            ],
+            userID: Int(K.Shopify.userID),
+            billingAddress: billingAddress,
+            customer: UserDefaultsHelper.shared.printUserDefaults()
+        )
+
+        return ordersList?[0] ?? testOrder
+    }
     
     func getOrdersCount() -> Int {
         return ordersList?.count ?? 0
