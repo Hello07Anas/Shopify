@@ -27,59 +27,6 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hRj-Rc-mtQ" userLabel="NamePriceRating">
-                    <rect key="frame" x="0.0" y="207.5" width="320" height="80"/>
-                    <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Product Name" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7ay-ji-xTF">
-                            <rect key="frame" x="16" y="16" width="96" height="17"/>
-                            <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="14"/>
-                            <nil key="textColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="871.10 EGP" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J9O-el-gQZ">
-                            <rect key="frame" x="16" y="49" width="85.5" height="20.5"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <nil key="textColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rzh-K8-cfP" customClass="CosmosView" customModule="Cosmos">
-                            <rect key="frame" x="162" y="48" width="150" height="24"/>
-                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="24" id="iB2-wE-bJC"/>
-                                <constraint firstAttribute="width" constant="150" id="poJ-5M-6uf"/>
-                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="sNJ-64-cIT"/>
-                            </constraints>
-                            <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="number" keyPath="totalStars">
-                                    <integer key="value" value="5"/>
-                                </userDefinedRuntimeAttribute>
-                                <userDefinedRuntimeAttribute type="color" keyPath="filledColor">
-                                    <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </userDefinedRuntimeAttribute>
-                                <userDefinedRuntimeAttribute type="color" keyPath="emptyBorderColor">
-                                    <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </userDefinedRuntimeAttribute>
-                                <userDefinedRuntimeAttribute type="color" keyPath="filledBorderColor">
-                                    <color key="value" red="0.97519935300000005" green="0.97369331790000002" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </userDefinedRuntimeAttribute>
-                                <userDefinedRuntimeAttribute type="number" keyPath="fillMode">
-                                    <integer key="value" value="2"/>
-                                </userDefinedRuntimeAttribute>
-                                <userDefinedRuntimeAttribute type="boolean" keyPath="updateOnTouch" value="NO"/>
-                            </userDefinedRuntimeAttributes>
-                        </view>
-                    </subviews>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="80" id="1VF-dm-PKA"/>
-                        <constraint firstAttribute="bottom" secondItem="Rzh-K8-cfP" secondAttribute="bottom" constant="8" id="7EB-gt-mhr"/>
-                        <constraint firstItem="7ay-ji-xTF" firstAttribute="top" secondItem="hRj-Rc-mtQ" secondAttribute="top" constant="16" id="9UW-U1-UOV"/>
-                        <constraint firstItem="J9O-el-gQZ" firstAttribute="top" secondItem="7ay-ji-xTF" secondAttribute="bottom" constant="16" id="Dr0-0V-kJu"/>
-                        <constraint firstAttribute="trailing" secondItem="Rzh-K8-cfP" secondAttribute="trailing" constant="8" id="NgI-3n-ljd"/>
-                        <constraint firstItem="7ay-ji-xTF" firstAttribute="leading" secondItem="hRj-Rc-mtQ" secondAttribute="leading" constant="16" id="Y4t-P0-eCl"/>
-                        <constraint firstItem="J9O-el-gQZ" firstAttribute="leading" secondItem="hRj-Rc-mtQ" secondAttribute="leading" constant="16" id="w1a-wu-UCf"/>
-                    </constraints>
-                </view>
                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="V1j-YC-pX8" userLabel="Buttonts">
                     <rect key="frame" x="16" y="508" width="288" height="44"/>
                     <subviews>
@@ -117,7 +64,7 @@
                             <constraints>
                                 <constraint firstAttribute="height" constant="150" id="avh-qw-yLn"/>
                             </constraints>
-                            <mutableString key="text">You can buy this amazing product sale it will make sales on any store u do just but it now.You can buy this amazing product sale it will make sales on any store u do just but it now.You can buy this amazing product sale it will make sales on any store u do just but it now.You can buy this amazing product sale it will make sales on any store u do just but it now.You can buy this amazing product sale it will make sales on any store u do just but it now.You can buy this amazing product sale it will make sales on any store u do just but it now.</mutableString>
+                            <string key="text">You can buy this amazing product sale it will make sales on any store u do just but it now.You can buy this amazing product sale it will make sales on any store u do just but it now.You can buy this amazing product sale it will make sales on any store u do just but it now.You can buy this amazing product sale it will make sales on any store u do just but it now.You can buy this amazing product sale it will make sales on any store u do just but it now.You can buy this amazing product sale it will make sales on any store u do just but it now.</string>
                             <color key="textColor" systemColor="labelColor"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -192,6 +139,60 @@
                         <action selector="btnBack:" destination="-1" eventType="touchUpInside" id="hWP-uq-8CO"/>
                     </connections>
                 </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hRj-Rc-mtQ" userLabel="NamePriceRating">
+                    <rect key="frame" x="0.0" y="207.5" width="320" height="80"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Product NameProduct NameProduct NameProduct NameProduct NameProduct NameProduct Name" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7ay-ji-xTF">
+                            <rect key="frame" x="16" y="4" width="288" height="50.5"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="14"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rzh-K8-cfP" customClass="CosmosView" customModule="Cosmos">
+                            <rect key="frame" x="162" y="48" width="150" height="24"/>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="24" id="iB2-wE-bJC"/>
+                                <constraint firstAttribute="width" constant="150" id="poJ-5M-6uf"/>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="sNJ-64-cIT"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="totalStars">
+                                    <integer key="value" value="5"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="filledColor">
+                                    <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="emptyBorderColor">
+                                    <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="filledBorderColor">
+                                    <color key="value" red="0.97519935300000005" green="0.97369331790000002" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="fillMode">
+                                    <integer key="value" value="2"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="updateOnTouch" value="NO"/>
+                            </userDefinedRuntimeAttributes>
+                        </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="871.10 EGP" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J9O-el-gQZ">
+                            <rect key="frame" x="16" y="55.5" width="85.5" height="20.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="80" id="1VF-dm-PKA"/>
+                        <constraint firstItem="7ay-ji-xTF" firstAttribute="top" secondItem="hRj-Rc-mtQ" secondAttribute="top" constant="4" id="34a-Te-p28"/>
+                        <constraint firstAttribute="bottom" secondItem="Rzh-K8-cfP" secondAttribute="bottom" constant="8" id="7EB-gt-mhr"/>
+                        <constraint firstItem="7ay-ji-xTF" firstAttribute="leading" secondItem="hRj-Rc-mtQ" secondAttribute="leading" constant="16" id="J6p-rt-viH"/>
+                        <constraint firstAttribute="trailing" secondItem="Rzh-K8-cfP" secondAttribute="trailing" constant="8" id="NgI-3n-ljd"/>
+                        <constraint firstItem="J9O-el-gQZ" firstAttribute="leading" secondItem="hRj-Rc-mtQ" secondAttribute="leading" constant="16" id="Sbs-aj-ifc"/>
+                        <constraint firstAttribute="bottom" secondItem="J9O-el-gQZ" secondAttribute="bottom" constant="4" id="eza-pu-E34"/>
+                        <constraint firstAttribute="trailing" secondItem="7ay-ji-xTF" secondAttribute="trailing" constant="16" id="kZF-BN-N6V"/>
+                    </constraints>
+                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -221,7 +222,7 @@
                 <constraint firstItem="xsC-fc-JXw" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="vmE-nM-fNY"/>
                 <constraint firstItem="55P-FH-aNu" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="yhZ-eK-9b7"/>
             </constraints>
-            <point key="canvasLocation" x="129.76744186046511" y="-11.587982832618026"/>
+            <point key="canvasLocation" x="129.375" y="-11.619718309859156"/>
         </view>
     </objects>
     <resources>
@@ -234,7 +235,7 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray3Color">
-            <color red="0.78039215689999997" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.7803921568627451" green="0.7803921568627451" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
