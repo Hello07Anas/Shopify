@@ -29,6 +29,8 @@ class ProductInfoVC: UIViewController{
     @IBOutlet weak var pageControl: UIPageControl!
     @IBOutlet weak var cosmos: CosmosView!
     @IBOutlet weak var addToFavBtn: UIButton!
+    @IBOutlet weak var setColorOT: UIButton!
+    @IBOutlet weak var setSizeOT: UIButton!
     
     var isFavorited = false
 
@@ -56,38 +58,76 @@ class ProductInfoVC: UIViewController{
             Utils.showAlert(title: "Aleary Exist", message: "go to your cart to update the quantity.", preferredStyle: .alert, from: self)
         }
         cartVM.getCartProductsList()
-    }
+        setupMenuButton(options: K.Arrays.colorNames, for: setColorOT, isColor: true)
+        setupMenuButton(options: K.Arrays.sizes, for: setSizeOT)
 
-    @IBAction func addToFavBtn(_ sender: Any) {
+    }
+    
+    private func setupMenuButton(options: [String], for button: UIButton, isColor: Bool = false) {
+        let menuItems = options.map { option in
+            UIAction(title: option) { _ in
+                button.setTitle(option, for: .normal)
+                if isColor, let color = K.Arrays.colors[option] {
+                    button.tintColor = color
+                }
+            }
+        }
+        
+        let menu = UIMenu(title: button.titleLabel?.text ?? "Options", children: menuItems)
+    
+        button.menu = menu
+        button.showsMenuAsPrimaryAction = true
+    }
+    
+    @IBAction func addToFavBtn(_ sender: UIButton) {
         guard let product = productInfoVM.getProduct() else { return }
         let itemId = product.id
-
-        isFavorited.toggle()
-//        setButtonImage(isFavorited: isFavorited)
+        
+        sender.isEnabled = false
+        sender.configuration?.showsActivityIndicator = true
         
         if isFavorited {
+            let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
+                self.favCRUD.deleteItem(favId: self.favId!, itemId: itemId ?? 0) { success in
+                    DispatchQueue.main.async {
+                        sender.isEnabled = true
+                        sender.configuration?.showsActivityIndicator = false
+                        
+                        if success {
+                            self.setButtonImage(isFavorited: false)
+                            self.isFavorited = false
+                        } else {
+                            // Handle deletion failure
+                        }
+                    }
+                }
+            }
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+                sender.isEnabled = true
+                sender.configuration?.showsActivityIndicator = false
+            }
+            
+            Utils.showAlert(title: "Confirm Deletion", message: "Are you sure you want to remove this item from favorites?", preferredStyle: .alert, from: self, actions: [deleteAction, cancelAction])
+        } else {
+            // Not favorited, so add it
             let itemImg = product.images?.first?.src ?? ""
             let itemName = product.title
             let itemPrice = Double(product.variants?.first?.price ?? "0.0") ?? 0.0
             
-            favCRUD.saveItem(favId: favId!, itemId: itemId!, itemImg: itemImg, itemName: itemName!, itemPrice: itemPrice)
-//            print("favId when save is =========================== \(favId!)")
-//            print("itemId when save is =========================== \(itemId!)")
-            setButtonImage(isFavorited: true)
-        } else {
-            let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
-
-                self.favCRUD.deleteItem(favId: self.favId!, itemId: itemId!)
-                
-//                print("favId when delete is =========================== \(self.favId!)")
-//                print("itemId when delete is =========================== \(itemId!)")
-                
-                self.setButtonImage(isFavorited: false) // Example UI update
+            favCRUD.saveItem(favId: favId!, itemId: itemId!, itemImg: itemImg, itemName: itemName!, itemPrice: itemPrice) { success in
+                DispatchQueue.main.async {
+                    sender.isEnabled = true
+                    sender.configuration?.showsActivityIndicator = false
+                    
+                    if success {
+                        self.setButtonImage(isFavorited: true)
+                        self.isFavorited = true
+                    } else {
+                        // Handle save failure
+                    }
+                }
             }
-            
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-            
-            Utils.showAlert(title: "Confirm Deletion", message: "Are you sure you want to remove this item from favorites?", preferredStyle: .alert, from: self, actions: [deleteAction, cancelAction])
         }
     }
 
@@ -100,6 +140,12 @@ class ProductInfoVC: UIViewController{
     
     @IBAction func btnBack(_ sender: Any) {
         coordinator?.finish()
+    }
+    
+    @IBAction func selectColorBtn(_ sender: Any) {
+    }
+    
+    @IBAction func selectSizeBtn(_ sender: Any) {
     }
     
     // helper Methods

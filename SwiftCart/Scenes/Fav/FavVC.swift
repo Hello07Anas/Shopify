@@ -103,31 +103,34 @@ extension FavVC: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource 
 }
 
 extension FavVC: ProductCollectionCellDelegate {
-    func saveToFavorite(foe cell: ProductCollectionCell) {
+    func saveToFavorite(for cell: ProductCollectionCell, completion: @escaping () -> Void) {
         print("")
+        completion()
     }
     
 
-    func deleteFavoriteTapped(for cell: ProductCollectionCell) {
+    func deleteFavoriteTapped(for cell: ProductCollectionCell, completion: @escaping () -> Void) {
         guard let indexPath = cell.indexPath else {
+            completion()
             return
         }
 
         var product = products[indexPath.item]
         let favId = Int(UserDefaultsHelper.shared.getUserData().favID ?? "0")
         
-        favCRUD.deleteItem(favId: favId!, itemId: product.itemId)
-
-        product.isFavorited.toggle()
-        products[indexPath.item] = product
-        products.remove(at: indexPath.item)
-
-        collectionView.reloadData()
-        
+        favCRUD.deleteItem(favId: favId!, itemId: product.itemId) { success in
+            if success {
+                product.isFavorited = false
+                self.products.remove(at: indexPath.item)
+                self.collectionView.reloadData()
+            }
+            completion()
+        }
         //print("ProductCollectionCellDelegate - IndexPath: \(indexPath)")
         //print("===---===ProductCollectionCellDelegate"); print(favId as Any)
         //print("ProductCollectionCellDelegate===---==="); print("ProductCollectionCellDelegate")
     }
+    
     func goToDetails(item cell: ProductCollectionCell){
         let product = products[cell.indexPath?.item ?? 0]
         print("Selected product itemId: \(product.itemId)")

@@ -227,29 +227,52 @@ class ProductViewController: UIViewController, UICollectionViewDelegate, UIColle
 
 
 extension ProductViewController: ProductCollectionCellDelegate {
-    func saveToFavorite(foe cell: ProductCollectionCell) {
+    func saveToFavorite(for cell: ProductCollectionCell, completion: @escaping () -> Void) {
             guard let indexPath = cell.indexPath else {
                 print("No index path found for cell")
+                completion()
                 return
             }
             
             let product = products[indexPath.item]
             let favId = Int(UserDefaultsHelper.shared.getUserData().favID ?? "0")
-            favCRUD.saveItem(favId: favId!, itemId: product.id, itemImg: product.image.src, itemName: product.title, itemPrice: Double(product.variants[0].price) ?? 70.0)
-            favoriteProductIDs.insert(product.id)
+            
+            favCRUD.saveItem(favId: favId!, itemId: product.id, itemImg: product.image.src, itemName: product.title, itemPrice: Double(product.variants[0].price) ?? 70.0) { success in
+                if success {
+                    DispatchQueue.main.async {
+                        self.favoriteProductIDs.insert(product.id)
+                        completion()
+                    }
+                } else {
+                    // Handle save failure if needed
+                    print("Failed to save item to favorites")
+                    completion()
+                }
+            }
         }
         
-        
-        func deleteFavoriteTapped(for cell: ProductCollectionCell) {
+        func deleteFavoriteTapped(for cell: ProductCollectionCell, completion: @escaping () -> Void) {
             guard let indexPath = cell.indexPath else {
                 print("No index path found for cell")
+                completion()
                 return
             }
             
             let product = products[indexPath.item]
             let favId = Int(UserDefaultsHelper.shared.getUserData().favID ?? "0")
-            favCRUD.deleteItem(favId: favId!, itemId: product.id)
-            favoriteProductIDs.remove(product.id)
+            
+            favCRUD.deleteItem(favId: favId!, itemId: product.id) { success in
+                if success {
+                    DispatchQueue.main.async {
+                        self.favoriteProductIDs.remove(product.id)
+                        completion()
+                    }
+                } else {
+                    // Handle delete failure if needed
+                    print("Failed to delete item from favorites")
+                    completion()
+                }
+            }
         }
     
     

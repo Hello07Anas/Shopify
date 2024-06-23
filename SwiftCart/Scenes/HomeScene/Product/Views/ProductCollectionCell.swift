@@ -8,8 +8,8 @@
 import UIKit
 
 protocol ProductCollectionCellDelegate: AnyObject {
-    func deleteFavoriteTapped(for cell: ProductCollectionCell)
-    func saveToFavorite(foe cell: ProductCollectionCell)
+    func deleteFavoriteTapped(for cell: ProductCollectionCell, completion: @escaping () -> Void)
+    func saveToFavorite(for cell: ProductCollectionCell, completion: @escaping () -> Void)
     func goToDetails(item cell: ProductCollectionCell)
 }
 
@@ -62,43 +62,47 @@ class ProductCollectionCell: UICollectionViewCell {
         delegate?.goToDetails(item: self)
     }
     
-    @IBAction func addToFavBtn(_ sender: Any) {
+    @IBAction func addToFavBtn(_ sender: UIButton) {
+        sender.configuration?.showsActivityIndicator = true
         if isCellNowFav {
-            deleteItemFromFavScreen()
-        } else if isCellNowCategorie {
-            //print("isCellNowCategorie")
-            if isFavorited {
-                deleteItemFromFavScreen()
-            } else {
-                delegate?.saveToFavorite(foe: self)
-                isFavorited = true
-                setButtonImage(isFavorited: isFavorited)
+            deleteItemFromFavScreen {
+                sender.configuration?.showsActivityIndicator = false
             }
-        } else if isCellNowHome {
+        } else if isCellNowCategorie || isCellNowHome {
             if isFavorited {
-                deleteItemFromFavScreen()
+                deleteItemFromFavScreen {
+                    sender.configuration?.showsActivityIndicator = false
+                }
             } else {
-                delegate?.saveToFavorite(foe: self)
-                isFavorited = true
-                setButtonImage(isFavorited: isFavorited)
+                delegate?.saveToFavorite(for: self) {
+                    self.isFavorited = true
+                    self.setButtonImage(isFavorited: self.isFavorited)
+                    sender.configuration?.showsActivityIndicator = false
+                }
             }
         }
     }
     
-    func deleteItemFromFavScreen() {
+    
+    func deleteItemFromFavScreen(completion: @escaping () -> Void) {
         let yes = UIAlertAction(title: "Yes", style: .default, handler: { _ in
-            self.delegate?.deleteFavoriteTapped(for: self)
-            self.isFavorited = false
-            self.setButtonImage(isFavorited: self.isFavorited)
+            self.delegate?.deleteFavoriteTapped(for: self) {
+                self.isFavorited = false
+                self.setButtonImage(isFavorited: self.isFavorited)
+                completion()
+            }
         })
-        let no = UIAlertAction(title: "No", style: .cancel, handler: nil)
+        let no = UIAlertAction(title: "No", style: .cancel, handler: { _ in
+            completion()
+        })
         
         if let viewController = self.contentView.parentViewController {
             Utils.showAlert(title: "Confirmation", message: "Are you sure you want to remove \(self.ProductName.text!) from your favorites? This action cannot be undone.", preferredStyle: .alert, from: viewController, actions: [yes, no])
+        } else {
+            completion()
         }
-        
-        
     }
+
     
     func setButtonImage(isFavorited: Bool) {
         // TODO: Bougs here >><< when scroll the fill reused again
