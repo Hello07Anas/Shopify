@@ -99,7 +99,6 @@
 		B9C630222C250B5400C08944 /* OrderDetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9C630212C250B5400C08944 /* OrderDetailsTableViewCell.swift */; };
 		B9C630282C2514F700C08944 /* OrderDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9C630272C2514F700C08944 /* OrderDetailsViewController.swift */; };
 		B9D88F162C2733920028A407 /* OnBoardingScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D88F152C2733920028A407 /* OnBoardingScreenViewController.swift */; };
-		B9D88F192C27340F0028A407 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = B9D88F182C27340F0028A407 /* Lottie */; };
 		B9E93B132C172C2B007CE79D /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E93B122C172C2B007CE79D /* Product.swift */; };
 		B9F634B82C1754B30073C04D /* ProductCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B9F634B72C1754B30073C04D /* ProductCollectionCell.xib */; };
 		B9F634B92C1754B30073C04D /* ProductCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9F634B62C1754B30073C04D /* ProductCollectionCell.swift */; };
@@ -220,7 +219,6 @@
 				B9A4BB842C0E0A2600DB16E5 /* Cosmos in Frameworks */,
 				B91DC0872C0E87BF003AE4CC /* SDWebImageMapKit in Frameworks */,
 				4CDD48622C266A6700B50F65 /* GoogleSignInSwift in Frameworks */,
-				B9D88F192C27340F0028A407 /* Lottie in Frameworks */,
 				4CCFAD5E2C23412B0011B9FC /* Reachability in Frameworks */,
 				B9A4BB812C0E0A1100DB16E5 /* RxAlamofire in Frameworks */,
 				4C806C992C1364AB00413E54 /* FirebaseFirestoreSwift in Frameworks */,
@@ -276,8 +274,6 @@
 		04715A752C08FB6900D8DC3B /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
-				B9C6301D2C250A4900C08944 /* OrderDetails */,
-				B9C62FEF2C24D13000C08944 /* Order */,
 				04715A662C08F1D100D8DC3B /* Main.storyboard */,
 				04715A6B2C08F1D500D8DC3B /* LaunchScreen.storyboard */,
 				4C3110192C13909D00B88AC5 /* Coordinator.swift */,
@@ -285,6 +281,8 @@
 				B972D5E02C0CA0D2007E0329 /* HomeScene */,
 				0E88FE922C112A8C004E3FA6 /* SettingsScene */,
 				4C8022E32C18774100C7BEBF /* Fav */,
+				B9C62FEF2C24D13000C08944 /* Order */,
+				B9C6301D2C250A4900C08944 /* OrderDetails */,
 				4CC00E7C2C09FD9500DD2758 /* Autantication */,
 				4C6E01D82C166E5B0092E4E0 /* ProductInfo */,
 				4C9C39AE2C0A25CE003F0769 /* NibAssestant */,
@@ -925,7 +923,6 @@
 				4CCFAD5D2C23412B0011B9FC /* Reachability */,
 				4CDD485F2C266A6700B50F65 /* GoogleSignIn */,
 				4CDD48612C266A6700B50F65 /* GoogleSignInSwift */,
-				B9D88F182C27340F0028A407 /* Lottie */,
 			);
 			productName = SwiftCart;
 			productReference = 04715A5D2C08F1D100D8DC3B /* SwiftCart.app */;
@@ -985,7 +982,6 @@
 				4CD50D5C2C1B5F6A0016404C /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
 				4CCFAD5C2C23412B0011B9FC /* XCRemoteSwiftPackageReference "Reachability.swift" */,
 				4CDD485E2C266A6600B50F65 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
-				B9D88F172C27340F0028A407 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			productRefGroup = 04715A5E2C08F1D100D8DC3B /* Products */;
 			projectDirPath = "";
@@ -1452,14 +1448,6 @@
 				minimumVersion = 25.0.1;
 			};
 		};
-		B9D88F172C27340F0028A407 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.4.3;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1512,11 +1500,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B9A4BB822C0E0A2600DB16E5 /* XCRemoteSwiftPackageReference "Cosmos" */;
 			productName = Cosmos;
-		};
-		B9D88F182C27340F0028A407 /* Lottie */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B9D88F172C27340F0028A407 /* XCRemoteSwiftPackageReference "lottie-ios" */;
-			productName = Lottie;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
