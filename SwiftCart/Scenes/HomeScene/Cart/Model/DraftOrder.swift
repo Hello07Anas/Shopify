@@ -21,12 +21,14 @@ struct DraftOrderModel: Codable {
     let id: Int
     let currency: String
     var lineItems: [LineItem]
-    let totalPrice: String
+    let totalPrice, subtotalPrice: String
     
     enum CodingKeys: String, CodingKey {
         case id
         case currency
         case lineItems = "line_items"
         case totalPrice = "total_price"
+        case subtotalPrice = "subtotal_price"
+
     }
 }
