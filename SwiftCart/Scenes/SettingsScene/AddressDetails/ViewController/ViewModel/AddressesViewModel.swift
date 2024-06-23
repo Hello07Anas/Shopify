@@ -8,15 +8,14 @@
 import Foundation
 import RxSwift
 
-class AddressesViewModel{
-    
+class AddressesViewModel {
     private let addressesSubject = PublishSubject<[Address]>()
     var addressesObservable: Observable<[Address]> {
         return addressesSubject.asObservable()
     }
     private let disposeBag = DisposeBag()
-    var addressesList : [Address]?
-    var bindAddresses : (()-> Void) = {}
+    var addressesList: [Address]?
+    var bindAddresses: (() -> Void) = {}
     
     func getAddresses() -> [Address] {
         return addressesList ?? []
@@ -26,18 +25,19 @@ class AddressesViewModel{
         return addressesList?.count ?? 0
     }
     
-    func getAddressByIndex(index:Int) ->  Address{
-        return (addressesList?[index])!
+    func getAddressByIndex(index: Int) -> Address {
+        return addressesList![index]
     }
     
     func getAddressesList() {
-        
         let customerID = K.Shopify.userID
         let endpoint = K.endPoints.getOrPostAddress.rawValue.replacingOccurrences(of: "{customer_id}", with: customerID)
+        
         NetworkManager.shared.get(endpoint: endpoint)
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] (response: userAddress) in
                 self?.addressesList = response.addresses
+                self?.sortAddresses()
                 self?.addressesSubject.onNext(self?.addressesList ?? [])
                 self?.bindAddresses()
                 print("ViewModel: Number of addresses: \(String(describing: self?.addressesList?.count))")
@@ -45,9 +45,6 @@ class AddressesViewModel{
                 print("Error occurred: \(error.localizedDescription)")
             })
             .disposed(by: disposeBag)
-        
-    
-        
     }
     
     func deleteAddress(index: Int) {
@@ -61,6 +58,7 @@ class AddressesViewModel{
             .subscribe(onNext: { [weak self] statusCode in
                 print("Delete request successful with status code: \(statusCode)")
                 self?.addressesList?.remove(at: index)
+                self?.sortAddresses()
                 self?.addressesSubject.onNext(self?.addressesList ?? [])
                 self?.bindAddresses()
             }, onError: { error in
@@ -68,5 +66,8 @@ class AddressesViewModel{
             })
             .disposed(by: disposeBag)
     }
+    
+    private func sortAddresses() {
+        addressesList?.sort { $0.isDefault! && !$1.isDefault! }
     }
-
+}

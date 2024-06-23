@@ -984,12 +984,18 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k9e-ji-13D">
-                                <rect key="frame" x="16" y="402.5" width="382" height="34.5"/>
+                                <rect key="frame" x="16" y="404" width="382" height="36"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="36" id="x20-vv-hc7"/>
+                                </constraints>
                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" image="applelogo" catalog="system" title="Apple Pay" imagePadding="8">
                                     <color key="baseBackgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </buttonConfiguration>
+                                <connections>
+                                    <action selector="applePay:" destination="Llt-iW-bT0" eventType="touchUpInside" id="blt-9j-Ffn"/>
+                                </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="emt-3r-Zzj">
                                 <rect key="frame" x="16" y="117" width="382" height="219"/>
@@ -1041,6 +1047,9 @@
                                                 <buttonConfiguration key="configuration" style="filled" title="Apply">
                                                     <color key="baseBackgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </buttonConfiguration>
+                                                <connections>
+                                                    <action selector="allpyPromocode:" destination="Llt-iW-bT0" eventType="touchUpInside" id="DjM-uW-pi8"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
@@ -1098,13 +1107,19 @@
                                 </subviews>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Xo-xP-rix">
-                                <rect key="frame" x="16" y="352" width="382" height="34.5"/>
+                                <rect key="frame" x="16" y="352" width="382" height="36"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="36" id="i2g-mv-Mv7"/>
+                                </constraints>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="tinted" title="Cash On Delivery" imagePadding="8">
                                     <imageReference key="image" image="backpack" catalog="system" symbolScale="default"/>
                                     <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <color key="baseBackgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </buttonConfiguration>
+                                <connections>
+                                    <action selector="cashOndelivery:" destination="Llt-iW-bT0" eventType="touchUpInside" id="Wje-Du-hTq"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CheckOut" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cao-kI-neD">
                                 <rect key="frame" x="83" y="53" width="248" height="48"/>
@@ -1149,6 +1164,15 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Checkout" id="cZM-wi-NGy"/>
+                    <connections>
+                        <outlet property="AddressTextField" destination="Art-MB-3B5" id="uak-V8-Igj"/>
+                        <outlet property="applyBtn" destination="Xtk-k3-Y9i" id="KZV-lg-Ecn"/>
+                        <outlet property="cashBtn" destination="6Xo-xP-rix" id="lnb-a8-khU"/>
+                        <outlet property="discountPercentage" destination="jcV-uA-3Po" id="JDL-Cu-WDL"/>
+                        <outlet property="grandTotalPrice" destination="5GL-xq-7fR" id="PUK-fh-YlO"/>
+                        <outlet property="promocodeTextField" destination="Lxd-iv-rC6" id="d0e-hQ-9A6"/>
+                        <outlet property="subTotalLabel" destination="5kd-ZI-pJM" id="ofc-1o-cz3"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8B3-V8-16m" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1170,10 +1194,10 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray5Color">
-            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
-            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

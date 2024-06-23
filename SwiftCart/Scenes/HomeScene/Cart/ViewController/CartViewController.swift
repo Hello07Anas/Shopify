@@ -50,7 +50,7 @@ class CartViewController: UIViewController {
     }
     
     @IBAction func goToFav(_ sender: Any) {
-        coordinator?.goToFav()
+        //coordinator?.goToFav()
     }
     
 }

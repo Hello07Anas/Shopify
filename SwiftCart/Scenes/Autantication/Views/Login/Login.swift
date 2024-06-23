@@ -77,8 +77,7 @@ class Login: UIViewController {
                             favID: userData["favID"] as? String ?? ""
                         )
                         
-                        print("========")
-                        UserDefaultsHelper.shared.printUserDefaults()
+                        print("========\(String(describing: UserDefaultsHelper.shared.getUserData().cartID))")
                         print("========")
                         self.coordinator?.gotoHome(isThereConnection: true)
                         

@@ -113,8 +113,6 @@ class AppCoordinator: Coordinator {
                         from: navigationController)
         }
     }
- 
-    
     
     func goToOrders() {
         if isNetworkReachable() {
@@ -206,11 +204,11 @@ class AppCoordinator: Coordinator {
         imageZoomVC.coordinator = self
         navigationController.pushViewController(imageZoomVC, animated: true)
     }
-    
+ 
     func goToShipping() {
         let storyboard = UIStoryboard(name: K.Settings.Settings_Storyboard_Name, bundle: nil)
         let shippingVC = storyboard.instantiateViewController(withIdentifier: K.Settings.shipping_View_Name) as! ShippingViewController
-        shippingVC.coordinator = self
+        shippingVC.coordinator = SettingsCoordinator(navigationController: navigationController, parentCoordinator: self)
         navigationController.pushViewController(shippingVC, animated: true)
     }
     
