@@ -64,20 +64,24 @@ class ProductCollectionCell: UICollectionViewCell {
     
     @IBAction func addToFavBtn(_ sender: UIButton) {
         sender.configuration?.showsActivityIndicator = true
+        sender.isEnabled = false
         if isCellNowFav {
             deleteItemFromFavScreen {
                 sender.configuration?.showsActivityIndicator = false
+                sender.isEnabled = true
             }
         } else if isCellNowCategorie || isCellNowHome {
             if isFavorited {
                 deleteItemFromFavScreen {
                     sender.configuration?.showsActivityIndicator = false
+                    sender.isEnabled = true
                 }
             } else {
                 delegate?.saveToFavorite(for: self) {
                     self.isFavorited = true
                     self.setButtonImage(isFavorited: self.isFavorited)
                     sender.configuration?.showsActivityIndicator = false
+                    sender.isEnabled = true
                 }
             }
         }
