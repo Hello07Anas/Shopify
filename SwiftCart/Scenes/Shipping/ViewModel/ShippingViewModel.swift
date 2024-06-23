@@ -12,10 +12,10 @@ class ShippingViewModel {
     let network: NetworkManager?
     private let disposeBag = DisposeBag()
     var draftOrder: DraftOrderResponseModel?
+    var bindShipping: (() -> Void) = {}
 
-    var priceBeforeDiscount = BehaviorSubject<String?>(value: nil)
-    var GrandPrice = BehaviorSubject<String?>(value: nil)
-
+    var priceBeforeDiscount : String!
+    var GrandPrice : String!
     init(network: NetworkManager?) {
         self.network = network
     }
@@ -31,12 +31,9 @@ class ShippingViewModel {
                         return item.variantID != nil
                     }
                     self?.draftOrder = response
-                    if let subtotalPrice = response.singleResult?.subtotalPrice {
-                        self?.priceBeforeDiscount.onNext(subtotalPrice.formatAsCurrency())
-                    }
-                    if let grandTotal = response.singleResult?.totalPrice {
-                        self?.GrandPrice.onNext(grandTotal.formatAsCurrency())
-                    }
+                    self?.GrandPrice = response.singleResult?.totalPrice ?? ""
+                    self?.priceBeforeDiscount = response.singleResult?.subtotalPrice ?? ""
+                    self?.bindShipping()
                 } else {
                     print("ViewModel: No items in cart")
                 }

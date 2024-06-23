@@ -25,22 +25,16 @@ class ShippingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         AddressTextField.delegate = self
-        
-        bindViewModel()
         viewModel.getCartProductsList()
+        viewModel.bindShipping = { [weak self] in
+            DispatchQueue.main.async {
+                self?.subTotalLabel.text = self?.viewModel.priceBeforeDiscount.formatAsCurrency()
+                self?.grandTotalPrice.text = self?.viewModel.GrandPrice.formatAsCurrency()
+                
+            }
+        }
     }
-    
-    private func bindViewModel() {
-        viewModel.GrandPrice
-            .asDriver(onErrorJustReturn: nil)
-            .drive(grandTotalPrice.rx.text)
-            .disposed(by: disposeBag)
-        
-        viewModel.priceBeforeDiscount
-            .asDriver(onErrorJustReturn: nil)
-            .drive(subTotalLabel.rx.text)
-            .disposed(by: disposeBag)
-    }
+
 
     @IBAction func applyPromocode(_ sender: Any) {
         // Implement promo code application logic here
@@ -48,22 +42,36 @@ class ShippingViewController: UIViewController {
     
     @IBAction func cashOnDelivery(_ sender: Any) {
         // Implement cash on delivery logic here
-        checkAddressSelected()
+        if checkAddressSelected() {
+            let totalPrice = Double(viewModel.priceBeforeDiscount)!
+            if  totalPrice > K.Shopify.CART_LIMIT_PRICE {
+                noCashOnDeliveryAvailable()
+            }else{
+                
+            }
+        }
     }
     
     @IBAction func applePay(_ sender: Any) {
         // Implement Apple Pay logic here
-        checkAddressSelected()
+        if checkAddressSelected() {
+        }
     }
     
     @IBAction func backBtn(_ sender: Any) {
         coordinator?.finish()
     }
     
-    func checkAddressSelected() {
+   private func checkAddressSelected() -> Bool {
         if AddressTextField.text?.isEmpty == true {
-            Utils.showAlert(title: "Shipping Address", message: "Please select address before continue!", preferredStyle: .alert, from: self)
+            Utils.showAlert(title: "Shipping Address", message: "Please, select address before continue!", preferredStyle: .alert, from: self)
+            return false
         }
+        return true
+    }
+    
+    private func noCashOnDeliveryAvailable() {
+        Utils.showAlert(title: "Reached Price Limit", message: "Cash on delivery is not allowed on orders of total price higher than \(String (K.Shopify.CART_LIMIT_PRICE).formatAsCurrency()). Use Apple Pay instead.", preferredStyle: .alert, from: self)
     }
 }
 

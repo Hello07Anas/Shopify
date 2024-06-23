@@ -994,7 +994,7 @@
                                     <color key="baseBackgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </buttonConfiguration>
                                 <connections>
-                                    <action selector="applePay:" destination="Llt-iW-bT0" eventType="touchUpInside" id="blt-9j-Ffn"/>
+                                    <action selector="applyPromocode:" destination="Llt-iW-bT0" eventType="touchUpInside" id="m87-hs-U5Z"/>
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="emt-3r-Zzj">
@@ -1118,7 +1118,7 @@
                                     <color key="baseBackgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </buttonConfiguration>
                                 <connections>
-                                    <action selector="cashOndelivery:" destination="Llt-iW-bT0" eventType="touchUpInside" id="Wje-Du-hTq"/>
+                                    <action selector="cashOnDelivery:" destination="Llt-iW-bT0" eventType="touchUpInside" id="LDu-O2-584"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CheckOut" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cao-kI-neD">
@@ -1167,7 +1167,7 @@
                     <connections>
                         <outlet property="AddressTextField" destination="Art-MB-3B5" id="uak-V8-Igj"/>
                         <outlet property="applyBtn" destination="Xtk-k3-Y9i" id="KZV-lg-Ecn"/>
-                        <outlet property="cashBtn" destination="6Xo-xP-rix" id="lnb-a8-khU"/>
+                        <outlet property="cashBtn" destination="6Xo-xP-rix" id="BWZ-iE-Lbj"/>
                         <outlet property="discountPercentage" destination="jcV-uA-3Po" id="JDL-Cu-WDL"/>
                         <outlet property="grandTotalPrice" destination="5GL-xq-7fR" id="PUK-fh-YlO"/>
                         <outlet property="promocodeTextField" destination="Lxd-iv-rC6" id="d0e-hQ-9A6"/>
