@@ -46,7 +46,7 @@ class CartViewController: UIViewController {
     }
     
     @IBAction func checkoutBtn(_ sender: Any) {
-        // Checkout button logic
+        coordinator?.goToShipping()
     }
     
     @IBAction func goToFav(_ sender: Any) {

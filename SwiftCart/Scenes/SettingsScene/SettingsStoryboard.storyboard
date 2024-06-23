@@ -978,7 +978,7 @@
         <!--Checkout-->
         <scene sceneID="BD9-cA-2rW">
             <objects>
-                <viewController id="Llt-iW-bT0" customClass="CheckoutViewController" customModule="testDesign" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ShippingViewController" id="Llt-iW-bT0" customClass="ShippingViewController" customModule="SwiftCart" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="9Dc-oK-qLm">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -990,9 +990,6 @@
                                 <buttonConfiguration key="configuration" style="filled" image="applelogo" catalog="system" title="Apple Pay" imagePadding="8">
                                     <color key="baseBackgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </buttonConfiguration>
-                                <connections>
-                                    <action selector="applePayBtn:" destination="Llt-iW-bT0" eventType="touchUpInside" id="WCl-C8-xe3"/>
-                                </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="emt-3r-Zzj">
                                 <rect key="frame" x="16" y="117" width="382" height="219"/>
@@ -1044,9 +1041,6 @@
                                                 <buttonConfiguration key="configuration" style="filled" title="Apply">
                                                     <color key="baseBackgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </buttonConfiguration>
-                                                <connections>
-                                                    <action selector="applyPromoBtnTapped:" destination="Llt-iW-bT0" eventType="touchUpInside" id="1eb-dn-3WM"/>
-                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
@@ -1111,9 +1105,6 @@
                                     <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <color key="baseBackgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </buttonConfiguration>
-                                <connections>
-                                    <action selector="cashOnDeliveryBtn:" destination="Llt-iW-bT0" eventType="touchUpInside" id="LKf-Vh-qVs"/>
-                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CheckOut" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cao-kI-neD">
                                 <rect key="frame" x="83" y="53" width="248" height="48"/>
@@ -1134,6 +1125,7 @@
                                 <buttonConfiguration key="configuration" style="plain" image="chevron.backward" catalog="system" title=""/>
                                 <connections>
                                     <action selector="backBtn:" destination="qRW-w5-hUC" eventType="touchUpInside" id="7Oy-HK-pjT"/>
+                                    <action selector="backBtn:" destination="Llt-iW-bT0" eventType="touchUpInside" id="sqc-mn-bLQ"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -1157,11 +1149,6 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Checkout" id="cZM-wi-NGy"/>
-                    <connections>
-                        <outlet property="discountLabel" destination="jcV-uA-3Po" id="uA5-Je-SYM"/>
-                        <outlet property="subtotalLabel" destination="5kd-ZI-pJM" id="7l8-uo-O1a"/>
-                        <outlet property="totalLabel" destination="5GL-xq-7fR" id="5Hx-3D-fuJ"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8B3-V8-16m" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

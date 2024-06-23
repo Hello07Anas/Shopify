@@ -207,6 +207,13 @@ class AppCoordinator: Coordinator {
         navigationController.pushViewController(imageZoomVC, animated: true)
     }
     
+    func goToShipping() {
+        let storyboard = UIStoryboard(name: K.Settings.Settings_Storyboard_Name, bundle: nil)
+        let shippingVC = storyboard.instantiateViewController(withIdentifier: K.Settings.shipping_View_Name) as! ShippingViewController
+        shippingVC.coordinator = self
+        navigationController.pushViewController(shippingVC, animated: true)
+    }
+    
     // reachabilty
     func setupReachability() {
         reachability.whenReachable = { reachability in
