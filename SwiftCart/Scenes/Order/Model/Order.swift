@@ -17,9 +17,9 @@ struct OrderResponse: Codable {
 
 // MARK: - Order
 struct Order: Codable {
-    var id:Int64
-    var orderNumber: String?
-    var productNumber: Int?
+    var id:Int64?
+    var orderNumber: Int?
+    var productNumber: String
     var address: Address?
    // var phone: String?
     var date: String
@@ -33,8 +33,8 @@ struct Order: Codable {
 
     enum CodingKeys: String, CodingKey {
         case id
-        case orderNumber = "name"
-        case productNumber = "number"
+        case orderNumber = "number"
+        case productNumber = "name"
         case address = "shipping_address"
         //case phone
         case date = "created_at"

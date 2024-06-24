@@ -17,6 +17,7 @@ struct LineItem: Codable {
     let productVendor: String?
     let productPrice: String
     let sizeColor: String?
+
     enum CodingKeys: String, CodingKey {
         case id
         case variantID = "variant_id"

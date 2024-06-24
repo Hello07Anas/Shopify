@@ -12,24 +12,26 @@ import PassKit
 
 
 class ShippingViewController: UIViewController {
+    @IBOutlet weak var applyBtn: UIButton!
     @IBOutlet weak var discountPercentage: UILabel!
     @IBOutlet weak var cashBtn: UIButton!
     @IBOutlet weak var grandTotalPrice: UILabel!
-    @IBOutlet weak var AddressTextField: UITextField!
     @IBOutlet weak var subTotalLabel: UILabel!
+    @IBOutlet weak var AddressTextField: UITextField!
     @IBOutlet weak var promocodeTextField: UITextField!
     var coordinator: SettingsCoordinator?
     var selectedAddress: Address?
     var viewModel = ShippingViewModel(network: NetworkManager.shared)
+    var orderViewModel = OrderViewModel()
     private let disposeBag = DisposeBag()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         AddressTextField.delegate = self
         viewModel.getCartProductsList()
+    
         viewModel.bindShipping = { [weak self] in
             DispatchQueue.main.async {
-                self?.subTotalLabel.text = self?.viewModel.priceBeforeDiscount.formatAsCurrency()
                 self?.grandTotalPrice.text = self?.viewModel.GrandPrice.formatAsCurrency()
             }
         }
@@ -42,6 +44,7 @@ class ShippingViewController: UIViewController {
         }
         
         viewModel.getPriceRuleDetails(promocode: promocode)
+        self.setPrice(viewModel.draftOrder!)
     }
     func createPaymentRequest() -> PKPaymentRequest {
         let request = PKPaymentRequest()
@@ -54,6 +57,34 @@ class ShippingViewController: UIViewController {
         return request
     }
     
+    func setPrice(_ order: DraftOrderResponseModel) {
+        if let discount = order.singleResult?.appliedDiscount {
+            let type: String
+            var totalPrice: Double
+            let discountValue = Double(discount.value)!
+            
+            if discount.valueType == "fixed_amount" {
+                type = ""
+                totalPrice = Double(order.singleResult?.totalPrice ?? "0")! - discountValue
+                if totalPrice < 0 { totalPrice = 0 }
+                
+            } else {
+                type = "%"
+                let discountAmount = (discountValue / 100) * Double(order.singleResult?.subtotalPrice ?? "0")!
+                totalPrice = Double(order.singleResult?.subtotalPrice ?? "0")! - discountAmount
+                if totalPrice < 0 { totalPrice = 0 }
+            }
+            
+            DispatchQueue.main.async {
+                      self.grandTotalPrice.text = String(totalPrice).formatAsCurrency()
+                      self.discountPercentage.text = "\(discountValue) \(type)"
+                self.applyBtn.isEnabled = false
+                self.promocodeTextField.isEnabled = false
+                self.promocodeTextField.textColor = .gray
+                self.applyBtn.setTitle("Verified", for: .normal)
+                  }
+        }
+    }
     func createItemsSummary() -> [PKPaymentSummaryItem] {
         guard let draftOrder = viewModel.draftOrder?.singleResult else {
             return []
@@ -83,21 +114,21 @@ class ShippingViewController: UIViewController {
     
     
     @IBAction func cashOnDelivery(_ sender: Any) {
-        // Implement cash on delivery logic here
         if checkAddressSelected() {
-            let totalPrice = Double(viewModel.priceBeforeDiscount)!
+            let totalPrice = Double(viewModel.GrandPrice)!
             if  totalPrice > K.Shopify.CART_LIMIT_PRICE {
                 noCashOnDeliveryAvailable()
             }else{
-                
+                createAndAddOrder()
+                viewModel.deleteLineItems()
             }
         }
     }
     
     @IBAction func applePay(_ sender: Any) {
-        // Implement Apple Pay logic here
         if checkAddressSelected() {
             if let paymentVC = PKPaymentAuthorizationViewController(paymentRequest: createPaymentRequest()) {
+                createAndAddOrder()
                 paymentVC.delegate = self
                 present(paymentVC, animated: true, completion: nil)
             }
@@ -122,6 +153,50 @@ class ShippingViewController: UIViewController {
     private func noCashOnDeliveryAvailable() {
         Utils.showAlert(title: "Reached Price Limit", message: "Cash on delivery is not allowed on orders of total price higher than \(String (K.Shopify.CART_LIMIT_PRICE).formatAsCurrency()). Use Apple Pay instead.", preferredStyle: .alert, from: self)
     }
+    
+    private func createAndAddOrder() {
+        guard let selectedAddress = selectedAddress else { return }
+        var prouductNum = viewModel.draftOrder?.singleResult?.lineItems.count ?? 1
+        let newOrder = Order(
+            id: nil,
+            orderNumber: viewModel.draftOrder?.singleResult?.id,
+            productNumber: "\(String(describing: (prouductNum-1)))",
+            address: selectedAddress,
+            date: getCurrentDateString(),
+            currency: MyCurrency(rawValue: (viewModel.draftOrder?.singleResult?.currency)!) ?? MyCurrency.eur,
+            email: UserDefaults.standard.string(forKey: "userEmail") ?? "",
+            totalPrice: viewModel.GrandPrice ?? "0.0",
+            items: viewModel.draftOrder?.singleResult?.lineItems.dropFirst().map { lineItem in
+                let imageUrl: String? = {
+                    if !lineItem.properties.isEmpty, lineItem.properties[0].name == "image" {
+                        return lineItem.properties[0].value
+                    }
+                    return nil
+                }()
+
+                return ItemProductOrder(
+                    id: lineItem.id,
+                    image: imageUrl,
+                    price: lineItem.productPrice,
+                    quantity: lineItem.quantity,
+                    title: lineItem.productTitle
+                )
+            } ?? [],
+            userID: Int(K.Shopify.userID),
+            billingAddress: selectedAddress,
+            customer: UserDefaultsHelper.shared.printUserDefaults()
+        )
+
+        orderViewModel.addNewOrder(newOrder: newOrder)
+    }
+
+    
+    func getCurrentDateString() -> String {
+        let dateFormatter = ISO8601DateFormatter()
+        dateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        let currentDate = Date()
+        return dateFormatter.string(from: currentDate)
+    }
 }
 
 extension ShippingViewController: UITextFieldDelegate {
@@ -142,6 +217,8 @@ extension ShippingViewController: PKPaymentAuthorizationViewControllerDelegate {
     func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController, didAuthorizePayment payment: PKPayment, handler completion: @escaping (PKPaymentAuthorizationResult) -> Void) {
         completion(PKPaymentAuthorizationResult(status: .success, errors: nil))
         // place order --> Elham Entry Point
+        
+        viewModel.deleteLineItems()
     }
     
     
