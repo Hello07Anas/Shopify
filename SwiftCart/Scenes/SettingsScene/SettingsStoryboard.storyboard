@@ -1040,7 +1040,7 @@
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
-                                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xtk-k3-Y9i">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xtk-k3-Y9i">
                                                 <rect key="frame" x="314" y="0.0" width="68" height="34.5"/>
                                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" title="Button"/>
@@ -1048,7 +1048,7 @@
                                                     <color key="baseBackgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </buttonConfiguration>
                                                 <connections>
-                                                    <action selector="allpyPromocode:" destination="Llt-iW-bT0" eventType="touchUpInside" id="DjM-uW-pi8"/>
+                                                    <action selector="applyPromocode:" destination="Llt-iW-bT0" eventType="touchUpInside" id="zId-as-EoC"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -1166,7 +1166,6 @@
                     <navigationItem key="navigationItem" title="Checkout" id="cZM-wi-NGy"/>
                     <connections>
                         <outlet property="AddressTextField" destination="Art-MB-3B5" id="uak-V8-Igj"/>
-                        <outlet property="applyBtn" destination="Xtk-k3-Y9i" id="KZV-lg-Ecn"/>
                         <outlet property="cashBtn" destination="6Xo-xP-rix" id="BWZ-iE-Lbj"/>
                         <outlet property="discountPercentage" destination="jcV-uA-3Po" id="JDL-Cu-WDL"/>
                         <outlet property="grandTotalPrice" destination="5GL-xq-7fR" id="PUK-fh-YlO"/>

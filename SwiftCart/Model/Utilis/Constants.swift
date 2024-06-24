@@ -71,6 +71,8 @@ public enum K {
         case defaultAddress = "/customers/{customer_id}/addresses/{address_id}/default.json"
         case draftOrders = "/draft_orders/{draft_orders_id}.json"
         case variants = "/variants/{variant_id}.json"
+        case discountLocation = "/discount_codes/lookup.json?code={discount_code}"
+        case priceRule = "/price_rules/{price_rule_id}.json"
         
     }
     
@@ -81,7 +83,8 @@ public enum K {
         case egp = "EGP"
         case USD = "USD"
         case SAR = "SAR"
-    }
+    } 
+
     
     enum customRadioButton : String {
         case filled = "circle.inset.filled"

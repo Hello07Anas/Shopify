@@ -44,6 +44,8 @@
 		0EC5CD4D2C18D6C400C65BB8 /* AddressDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC5CD4C2C18D6C400C65BB8 /* AddressDetailsViewModel.swift */; };
 		0ED60C232C1ACAA100490A59 /* CitiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ED60C222C1ACAA100490A59 /* CitiesViewController.swift */; };
 		0EEB505F2C28B7130001BB7E /* ShippingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EEB505E2C28B7130001BB7E /* ShippingViewModel.swift */; };
+		0EEB50642C293C2E0001BB7E /* DiscountCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EEB50632C293C2E0001BB7E /* DiscountCode.swift */; };
+		0EEB50662C293C980001BB7E /* PriceRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EEB50652C293C980001BB7E /* PriceRule.swift */; };
 		0EF541EF2C226B0000B9E877 /* Variant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF541EE2C226B0000B9E877 /* Variant.swift */; };
 		4C0C0E582C26E7BF0034039E /* SwiftCartTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0C0E572C26E7BF0034039E /* SwiftCartTests.swift */; };
 		4C0C0E662C26EBBF0034039E /* ShopifyAPIHelperTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0C0E652C26EBBF0034039E /* ShopifyAPIHelperTest.swift */; };
@@ -157,6 +159,8 @@
 		0ED60C222C1ACAA100490A59 /* CitiesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CitiesViewController.swift; sourceTree = "<group>"; };
 		0EEB505E2C28B7130001BB7E /* ShippingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShippingViewModel.swift; sourceTree = "<group>"; };
 		0EEB50602C28FD800001BB7E /* SwiftCart.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SwiftCart.entitlements; sourceTree = "<group>"; };
+		0EEB50632C293C2E0001BB7E /* DiscountCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscountCode.swift; sourceTree = "<group>"; };
+		0EEB50652C293C980001BB7E /* PriceRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceRule.swift; sourceTree = "<group>"; };
 		0EF541EE2C226B0000B9E877 /* Variant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Variant.swift; sourceTree = "<group>"; };
 		4C0C0E552C26E7BF0034039E /* SwiftCartTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftCartTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C0C0E572C26E7BF0034039E /* SwiftCartTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftCartTests.swift; sourceTree = "<group>"; };
@@ -281,6 +285,7 @@
 		04715A752C08FB6900D8DC3B /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				0EEB50612C293C150001BB7E /* Copouns */,
 				04715A662C08F1D100D8DC3B /* Main.storyboard */,
 				04715A6B2C08F1D500D8DC3B /* LaunchScreen.storyboard */,
 				4C3110172C13904F00B88AC5 /* AppCoordinator.swift */,
@@ -635,6 +640,23 @@
 				0EEB505E2C28B7130001BB7E /* ShippingViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		0EEB50612C293C150001BB7E /* Copouns */ = {
+			isa = PBXGroup;
+			children = (
+				0EEB50622C293C1F0001BB7E /* Model */,
+			);
+			path = Copouns;
+			sourceTree = "<group>";
+		};
+		0EEB50622C293C1F0001BB7E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0EEB50632C293C2E0001BB7E /* DiscountCode.swift */,
+				0EEB50652C293C980001BB7E /* PriceRule.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		4C0C0E562C26E7BF0034039E /* SwiftCartTests */ = {
@@ -1065,6 +1087,7 @@
 				0EF541EF2C226B0000B9E877 /* Variant.swift in Sources */,
 				4C6E01D72C1660BB0092E4E0 /* UserDefaultsHelper.swift in Sources */,
 				4C9C39B52C0A2C03003F0769 /* NibViewController.swift in Sources */,
+				0EEB50662C293C980001BB7E /* PriceRule.swift in Sources */,
 				4C8022EA2C187A7000C7BEBF /* FavVC.swift in Sources */,
 				04715A842C08FCD000D8DC3B /* ViewData.swift in Sources */,
 				04715A8E2C08FD7D00D8DC3B /* Local.swift in Sources */,
@@ -1083,6 +1106,7 @@
 				B972D5E82C0CA19D007E0329 /* BrandCollectionViewCell.swift in Sources */,
 				04CC142C2C17D9E2009BB5D4 /* AddressesViewModel.swift in Sources */,
 				B9C62FF42C24D19500C08944 /* Order.swift in Sources */,
+				0EEB50642C293C2E0001BB7E /* DiscountCode.swift in Sources */,
 				0EB1FD6C2C1FA1B900F4A48D /* Extension .swift in Sources */,
 				4C1795782C1759190045E497 /* ProductInfoVM.swift in Sources */,
 				04715A8C2C08FD7300D8DC3B /* NetworkManager.swift in Sources */,

@@ -17,7 +17,6 @@ class ShippingViewController: UIViewController {
     @IBOutlet weak var grandTotalPrice: UILabel!
     @IBOutlet weak var AddressTextField: UITextField!
     @IBOutlet weak var subTotalLabel: UILabel!
-    @IBOutlet weak var applyBtn: UIButton!
     @IBOutlet weak var promocodeTextField: UITextField!
     var coordinator: SettingsCoordinator?
     var selectedAddress: Address?
@@ -32,9 +31,17 @@ class ShippingViewController: UIViewController {
             DispatchQueue.main.async {
                 self?.subTotalLabel.text = self?.viewModel.priceBeforeDiscount.formatAsCurrency()
                 self?.grandTotalPrice.text = self?.viewModel.GrandPrice.formatAsCurrency()
-                
             }
         }
+    }
+    
+    @IBAction func applyPromocode(_ sender: Any) {
+        guard let promocode = promocodeTextField.text, !promocode.isEmpty else {
+            Utils.showAlert(title: "Invalid Promo Code", message: "Please enter a valid promo code.", preferredStyle: .alert, from: self)
+            return
+        }
+        
+        viewModel.applyPromoCode(promocode: promocode)
     }
     func createPaymentRequest() -> PKPaymentRequest {
         let request = PKPaymentRequest()
@@ -74,10 +81,6 @@ class ShippingViewController: UIViewController {
     }
 
     
-
-    @IBAction func applyPromocode(_ sender: Any) {
-        // Implement promo code application logic here
-    }
     
     @IBAction func cashOnDelivery(_ sender: Any) {
         // Implement cash on delivery logic here
