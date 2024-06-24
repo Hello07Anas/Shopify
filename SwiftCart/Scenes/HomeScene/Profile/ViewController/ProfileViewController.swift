@@ -129,10 +129,6 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout, UICollectio
         return CGSize(width: width, height: 150)
     }
 
-    func saveToFavorite(for cell: ProductCollectionCell, completion: @escaping () -> Void) {
-        completion()
-    }
-
     func deleteFavoriteTapped(for cell: ProductCollectionCell, completion: @escaping () -> Void) {
         guard let indexPath = cell.indexPath else { return }
         

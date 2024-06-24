@@ -18,6 +18,7 @@ class ProductInfoVC: UIViewController{
     var id: Int = 0
     let favId = Int(UserDefaultsHelper.shared.getUserData().favID ?? "0")
     let cartVM = CartViewModel(network: NetworkManager.shared)
+    var customIndicator: CustomIndicator?
 
     @IBOutlet weak var productImageCollectionView: UICollectionView!
     @IBOutlet weak var productReviesCollectionView: UICollectionView!
@@ -41,12 +42,19 @@ class ProductInfoVC: UIViewController{
         setupProductImageCollectionView()
         setupProductReviesCollectionView()
         
+        customIndicator = CustomIndicator(containerView: self.view)
+
         productInfoVM.productObservable
             .subscribe(onNext: { [weak self] product in
                 self?.updateProductDetails(product)
+                    self?.customIndicator?.stop()
+            }, onError: { [weak self] error in
+                self?.customIndicator?.stop()
             })
             .disposed(by: disposeBag)
         
+        customIndicator?.start()
+
         productInfoVM.fetchProduct(with: id)
         
         cosmos.rating = getRandomRating()
@@ -97,7 +105,7 @@ class ProductInfoVC: UIViewController{
                             self.setButtonImage(isFavorited: false)
                             self.isFavorited = false
                         } else {
-                            // Handle deletion failure
+                            // TODO: Handle save failure
                         }
                     }
                 }
@@ -124,7 +132,7 @@ class ProductInfoVC: UIViewController{
                         self.setButtonImage(isFavorited: true)
                         self.isFavorited = true
                     } else {
-                        // Handle save failure
+                        // TODO: Handle save failure
                     }
                 }
             }

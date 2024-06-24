@@ -103,12 +103,6 @@ extension FavVC: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource 
 }
 
 extension FavVC: ProductCollectionCellDelegate {
-    func saveToFavorite(for cell: ProductCollectionCell, completion: @escaping () -> Void) {
-        print("")
-        completion()
-    }
-    
-
     func deleteFavoriteTapped(for cell: ProductCollectionCell, completion: @escaping () -> Void) {
         guard let indexPath = cell.indexPath else {
             completion()
