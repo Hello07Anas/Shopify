@@ -78,6 +78,8 @@ class ShippingViewController: UIViewController {
                       self.discountPercentage.text = "\(discountValue) \(type)"
                 self.applyBtn.isEnabled = false
                 self.promocodeTextField.isEnabled = false
+                self.promocodeTextField.textColor = .gray
+                self.applyBtn.setTitle("Verified", for: .normal)
                   }
         }
     }
@@ -110,19 +112,17 @@ class ShippingViewController: UIViewController {
     
     
     @IBAction func cashOnDelivery(_ sender: Any) {
-        // Implement cash on delivery logic here
         if checkAddressSelected() {
             let totalPrice = Double(viewModel.GrandPrice)!
             if  totalPrice > K.Shopify.CART_LIMIT_PRICE {
                 noCashOnDeliveryAvailable()
             }else{
-                
+                viewModel.deleteLineItems()
             }
         }
     }
     
     @IBAction func applePay(_ sender: Any) {
-        // Implement Apple Pay logic here
         if checkAddressSelected() {
             if let paymentVC = PKPaymentAuthorizationViewController(paymentRequest: createPaymentRequest()) {
                 paymentVC.delegate = self
@@ -169,6 +169,8 @@ extension ShippingViewController: PKPaymentAuthorizationViewControllerDelegate {
     func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController, didAuthorizePayment payment: PKPayment, handler completion: @escaping (PKPaymentAuthorizationResult) -> Void) {
         completion(PKPaymentAuthorizationResult(status: .success, errors: nil))
         // place order --> Elham Entry Point
+        
+        viewModel.deleteLineItems()
     }
     
     

@@ -98,4 +98,60 @@ class ShippingViewModel {
                 })
                 .disposed(by: disposeBag)
         }
+    
+    
+    func deleteLineItems() {
+        guard let cartID = UserDefaultsHelper.shared.getUserData().cartID else {
+            print("Error: Cart ID is nil")
+            return
+        }
+        
+        let endpoint = K.endPoints.draftOrders.rawValue.replacingOccurrences(of: "{draft_orders_id}", with: cartID)
+        
+        let newLineItem = LineItem(
+            id: 0,
+            variantID: nil,
+            quantity: 1, 
+            properties: [LineItem.Property(name: "image", value: "")],
+            productID: nil,
+            productTitle: "Default Title",
+            productVendor: "Default Vendor",
+            productPrice: "0.00",
+            sizeColor: "Default Size/Color"
+        )
+        
+        draftOrder?.singleResult?.lineItems.removeAll()
+        
+        draftOrder?.singleResult?.lineItems.append(newLineItem)
+            if let draftOrder = draftOrder {
+            do {
+                let jsonData = try JSONEncoder().encode(draftOrder)
+                if let jsonString = String(data: jsonData, encoding: .utf8) {
+                    print("Request Payload: \(jsonString)")
+                }
+            } catch {
+                print("Failed to encode draftOrder: \(error.localizedDescription)")
+                return
+            }
+        } else {
+            print("Error: draftOrder is nil")
+            return
+        }
+        
+        network?.put(endpoint: endpoint, body: draftOrder, responseType: DraftOrderResponseModel.self)
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] (success, message, response) in
+                if success {
+                    print("Success: \(String(describing: response))")
+                } else {
+                    print("Failed to delete cart: \(message ?? "No error message")")
+                    if let response = response {
+                        print("Response details: \(response)")
+                    }
+                }
+            }, onError: { error in
+                print("Error occurred: \(error.localizedDescription)")
+            })
+            .disposed(by: disposeBag)
+    }
     }
