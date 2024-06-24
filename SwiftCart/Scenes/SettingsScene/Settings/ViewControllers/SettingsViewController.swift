@@ -100,7 +100,7 @@ extension SettingsViewController : UITableViewDataSource, UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         switch indexPath.row{
         case 0:
-            coordinator?.goToAddresses()
+            coordinator?.goToAddresses(mode: .manage)
         case 1:
             coordinator?.goToCurrency()
         case 2:

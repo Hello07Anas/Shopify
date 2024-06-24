@@ -36,6 +36,7 @@ public enum K {
         static let Currency_View_Name = "CurrencyViewController"
         static let Order_View_Name = "OrderViewController"
         static let OrderDetails_View_Name = "OrderDetailsViewController"
+        static let shipping_View_Name = "ShippingViewController"
     }
     
     enum Shopify {
@@ -45,7 +46,8 @@ public enum K {
         static let Access_Token = "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"
         static let Base_URL = "https://mad44-sv-iost1.myshopify.com/admin/api/2024-04/"
         static var userID =  UserDefaultsHelper.shared.getUserData().shopifyCustomerID ?? "6930899632175"
-
+        static  let CART_LIMIT_PRICE = 1000.0
+        static let MERCHANT_ID = "merchant.com.isra.swiftCart"
     }
     
     enum HTTPMethod {
@@ -69,6 +71,8 @@ public enum K {
         case defaultAddress = "/customers/{customer_id}/addresses/{address_id}/default.json"
         case draftOrders = "/draft_orders/{draft_orders_id}.json"
         case variants = "/variants/{variant_id}.json"
+        case discountLocation = "/discount_codes/lookup.json?code={discount_code}"
+        case priceRule = "/price_rules.json"
         
     }
     
@@ -79,7 +83,8 @@ public enum K {
         case egp = "EGP"
         case USD = "USD"
         case SAR = "SAR"
-    }
+    } 
+
     
     enum customRadioButton : String {
         case filled = "circle.inset.filled"
