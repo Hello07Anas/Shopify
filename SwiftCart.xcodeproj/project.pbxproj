@@ -156,6 +156,7 @@
 		0EC5CD4C2C18D6C400C65BB8 /* AddressDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressDetailsViewModel.swift; sourceTree = "<group>"; };
 		0ED60C222C1ACAA100490A59 /* CitiesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CitiesViewController.swift; sourceTree = "<group>"; };
 		0EEB505E2C28B7130001BB7E /* ShippingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShippingViewModel.swift; sourceTree = "<group>"; };
+		0EEB50602C28FD800001BB7E /* SwiftCart.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SwiftCart.entitlements; sourceTree = "<group>"; };
 		0EF541EE2C226B0000B9E877 /* Variant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Variant.swift; sourceTree = "<group>"; };
 		4C0C0E552C26E7BF0034039E /* SwiftCartTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftCartTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C0C0E572C26E7BF0034039E /* SwiftCartTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftCartTests.swift; sourceTree = "<group>"; };
@@ -261,8 +262,10 @@
 		04715A5F2C08F1D100D8DC3B /* SwiftCart */ = {
 			isa = PBXGroup;
 			children = (
+				0EEB50602C28FD800001BB7E /* SwiftCart.entitlements */,
 				B9D88F1B2C273B910028A407 /* SwiftCart.json */,
 				B9D88F1C2C273B980028A407 /* tes.json */,
+				4C3110192C13909D00B88AC5 /* Coordinator.swift */,
 				B9D88F1A2C273B830028A407 /* test.json */,
 				04715A872C08FD4300D8DC3B /* Model */,
 				04715A752C08FB6900D8DC3B /* Scenes */,
@@ -280,7 +283,6 @@
 			children = (
 				04715A662C08F1D100D8DC3B /* Main.storyboard */,
 				04715A6B2C08F1D500D8DC3B /* LaunchScreen.storyboard */,
-				4C3110192C13909D00B88AC5 /* Coordinator.swift */,
 				4C3110172C13904F00B88AC5 /* AppCoordinator.swift */,
 				B972D5E02C0CA0D2007E0329 /* HomeScene */,
 				0E88FE922C112A8C004E3FA6 /* SettingsScene */,
@@ -1298,6 +1300,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = SwiftCart/SwiftCart.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = N449UXFHA8;
@@ -1325,6 +1328,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = SwiftCart/SwiftCart.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = N449UXFHA8;
