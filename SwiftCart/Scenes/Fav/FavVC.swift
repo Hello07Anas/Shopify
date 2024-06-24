@@ -28,7 +28,9 @@ class FavVC: UIViewController {
     var coordinator: AppCoordinator?
     var products: [ProductDumy] = []
     let favCRUD = FavCRUD()
+    var productCount = 0
     
+    @IBOutlet weak var emptyImage: UIImageView!
     @IBOutlet weak var collectionView: UICollectionView!
     
     override func viewWillAppear(_ animated: Bool) {
@@ -61,9 +63,20 @@ class FavVC: UIViewController {
                     let isFavorited = true
                     return ProductDumy(name: lineItem.title, price: lineItem.price, imageName: image, isFavorited: isFavorited, itemId: lineItem.id!)
                 }
-                self?.collectionView.reloadData()
+                self?.updateUI()
             }
         }
+    }
+    
+    private func updateUI() {
+        if products.isEmpty {
+            emptyImage.isHidden = false
+            collectionView.isHidden = true
+        } else {
+            emptyImage.isHidden = true
+            collectionView.isHidden = false
+        }
+        collectionView.reloadData()
     }
 
 }
@@ -82,7 +95,7 @@ extension FavVC: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource 
         cell.delegate = self
         cell.indexPath = indexPath
         cell.setBtnImg()
-
+        
         return cell
     }
     
@@ -117,6 +130,7 @@ extension FavVC: ProductCollectionCellDelegate {
                 product.isFavorited = false
                 self.products.remove(at: indexPath.item)
                 self.collectionView.reloadData()
+                self.updateUI()
             }
             completion()
         }
@@ -130,6 +144,8 @@ extension FavVC: ProductCollectionCellDelegate {
         print("Selected product itemId: \(product.itemId)")
         coordinator?.goToProductInfo(productId: product.itemId, isFav: product.isFavorited)
     }
+    
+    
 }
 
 

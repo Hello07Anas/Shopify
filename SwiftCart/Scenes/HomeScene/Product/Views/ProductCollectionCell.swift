@@ -76,28 +76,36 @@ class ProductCollectionCell: UICollectionViewCell {
     }
     
     @IBAction func addToFavBtn(_ sender: UIButton) {
-        sender.configuration?.showsActivityIndicator = true
-        sender.isEnabled = false
-        if isCellNowFav {
-            deleteItemFromFavScreen {
-                sender.configuration?.showsActivityIndicator = false
-                sender.isEnabled = true
-            }
-        } else if isCellNowCategorie || isCellNowHome {
-            if isFavorited {
+        if UserDefaultsHelper.shared.getUserData().name != nil {
+            sender.configuration?.showsActivityIndicator = true
+            sender.isEnabled = false
+            if isCellNowFav {
                 deleteItemFromFavScreen {
                     sender.configuration?.showsActivityIndicator = false
                     sender.isEnabled = true
                 }
-            } else {
-                delegate?.saveToFavorite(for: self) {
-                    self.isFavorited = true
-                    self.setButtonImage(isFavorited: self.isFavorited)
-                    sender.configuration?.showsActivityIndicator = false
-                    sender.isEnabled = true
+            } else if isCellNowCategorie || isCellNowHome {
+                if isFavorited {
+                    deleteItemFromFavScreen {
+                        sender.configuration?.showsActivityIndicator = false
+                        sender.isEnabled = true
+                    }
+                } else {
+                    delegate?.saveToFavorite(for: self) {
+                        self.isFavorited = true
+                        self.setButtonImage(isFavorited: self.isFavorited)
+                        sender.configuration?.showsActivityIndicator = false
+                        sender.isEnabled = true
+                    }
                 }
             }
+        } else {
+            Utils.showAlert(title: "Sorry, you don't have an account",
+                            message: "Please log in first to use this feature.",
+                            preferredStyle: .alert,
+                            from: self.parentViewController!)
         }
+
     }
     
     
