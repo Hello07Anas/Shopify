@@ -14,8 +14,6 @@ class ShippingViewModel {
     var cartProductsList: [LineItem]?
     let disposeBag = DisposeBag()
     var bindShipping: (() -> Void) = {}
-    
-    var priceBeforeDiscount : String!
     var GrandPrice : String!
     init(network: NetworkManager?) {
         self.network = network
@@ -33,7 +31,6 @@ class ShippingViewModel {
                     }
                     self?.draftOrder = response
                     self?.GrandPrice = response.singleResult?.totalPrice ?? ""
-                    self?.priceBeforeDiscount = response.singleResult?.subtotalPrice ?? ""
                     self?.bindShipping()
                 } else {
                     print("ViewModel: No items in cart")
@@ -92,7 +89,7 @@ class ShippingViewModel {
                 .subscribe(onNext: { [weak self] (success, message, response) in
                     if success {
                         print("Success: \(String(describing: response))")
-                        self?.bindShipping()
+                        self?.draftOrder = response
                     } else {
                         print("Failed to update cart: \(message ?? "No error message")")
                     }

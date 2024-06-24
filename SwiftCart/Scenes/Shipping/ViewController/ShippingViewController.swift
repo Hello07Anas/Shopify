@@ -12,11 +12,11 @@ import PassKit
 
 
 class ShippingViewController: UIViewController {
+    @IBOutlet weak var applyBtn: UIButton!
     @IBOutlet weak var discountPercentage: UILabel!
     @IBOutlet weak var cashBtn: UIButton!
     @IBOutlet weak var grandTotalPrice: UILabel!
     @IBOutlet weak var AddressTextField: UITextField!
-    @IBOutlet weak var subTotalLabel: UILabel!
     @IBOutlet weak var promocodeTextField: UITextField!
     var coordinator: SettingsCoordinator?
     var selectedAddress: Address?
@@ -27,9 +27,9 @@ class ShippingViewController: UIViewController {
         super.viewDidLoad()
         AddressTextField.delegate = self
         viewModel.getCartProductsList()
+    
         viewModel.bindShipping = { [weak self] in
             DispatchQueue.main.async {
-                self?.subTotalLabel.text = self?.viewModel.priceBeforeDiscount.formatAsCurrency()
                 self?.grandTotalPrice.text = self?.viewModel.GrandPrice.formatAsCurrency()
             }
         }
@@ -42,6 +42,7 @@ class ShippingViewController: UIViewController {
         }
         
         viewModel.getPriceRuleDetails(promocode: promocode)
+        self.setPrice(viewModel.draftOrder!)
     }
     func createPaymentRequest() -> PKPaymentRequest {
         let request = PKPaymentRequest()
@@ -54,6 +55,32 @@ class ShippingViewController: UIViewController {
         return request
     }
     
+    func setPrice(_ order: DraftOrderResponseModel) {
+        if let discount = order.singleResult?.appliedDiscount {
+            let type: String
+            var totalPrice: Double
+            let discountValue = Double(discount.value)!
+            
+            if discount.valueType == "fixed_amount" {
+                type = ""
+                totalPrice = Double(order.singleResult?.totalPrice ?? "0")! - discountValue
+                if totalPrice < 0 { totalPrice = 0 }
+                
+            } else {
+                type = "%"
+                let discountAmount = (discountValue / 100) * Double(order.singleResult?.subtotalPrice ?? "0")!
+                totalPrice = Double(order.singleResult?.subtotalPrice ?? "0")! - discountAmount
+                if totalPrice < 0 { totalPrice = 0 }
+            }
+            
+            DispatchQueue.main.async {
+                      self.grandTotalPrice.text = String(totalPrice).formatAsCurrency()
+                      self.discountPercentage.text = "\(discountValue) \(type)"
+                self.applyBtn.isEnabled = false
+                self.promocodeTextField.isEnabled = false
+                  }
+        }
+    }
     func createItemsSummary() -> [PKPaymentSummaryItem] {
         guard let draftOrder = viewModel.draftOrder?.singleResult else {
             return []
@@ -85,7 +112,7 @@ class ShippingViewController: UIViewController {
     @IBAction func cashOnDelivery(_ sender: Any) {
         // Implement cash on delivery logic here
         if checkAddressSelected() {
-            let totalPrice = Double(viewModel.priceBeforeDiscount)!
+            let totalPrice = Double(viewModel.GrandPrice)!
             if  totalPrice > K.Shopify.CART_LIMIT_PRICE {
                 noCashOnDeliveryAvailable()
             }else{
