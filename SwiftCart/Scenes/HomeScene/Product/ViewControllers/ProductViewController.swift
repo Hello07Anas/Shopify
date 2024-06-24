@@ -36,7 +36,7 @@ class ProductViewController: UIViewController, UICollectionViewDelegate, UIColle
         sliderPrice.isHidden = isFilterHidden
         subCategoriesView.isHidden = isFilterHidden
         topconstrensinCollectionView.constant = 8
-        
+        setupCollectionViewLayout()
         collectionView.dataSource = self
         collectionView.delegate = self
         
@@ -119,7 +119,7 @@ class ProductViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     func updateSliderRange() {
-        let prices = products.compactMap { Float($0.variants[0].price) }
+        let prices = products.compactMap { Float($0.variants?[0]?.price ?? "0") }
         if let minPrice = prices.min(), let maxPrice = prices.max() {
             sliderPrice.minimumValue = minPrice - 30
             sliderPrice.maximumValue = maxPrice + 30
@@ -149,62 +149,37 @@ class ProductViewController: UIViewController, UICollectionViewDelegate, UIColle
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductCell", for: indexPath) as! ProductCollectionCell
            let product = products[indexPath.item]
-           if let imageUrl = URL(string: product.image.src) {
+        if let imageUrl = URL(string: product.image?.src ?? "") {
                cell.img.sd_setImage(with: imageUrl, placeholderImage: UIImage(named: "9"))
            }
            cell.ProductName.text = product.title
-        cell.price.text = product.variants[0].price.formatAsCurrency()
+        cell.price.text = product.variants?[0]?.price?.formatAsCurrency()
            
            cell.isCellNowHome = true
            cell.indexPath = indexPath
            cell.delegate = self
-           cell.isFavorited = favoriteProductIDs.contains(product.id)
+        cell.isFavorited = favoriteProductIDs.contains(product.id ?? 0)
            cell.setButtonImage(isFavorited: cell.isFavorited)
            
            return cell
        }
     
-    
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        
-//        let selectedProduct = viewModel.getProducts()[indexPath.row]
-//        let isFavorited = favoriteProductIDs.contains(selectedProduct.id)
-//
-//        coordinator?.goToProductInfo(productId: selectedProduct.id, isFav: isFavorited) //TODO: change flase to be dynamic
-//        //print("Item Selected")
-//    }
-//    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 10
-    }
-    
-    
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let padding: CGFloat = 20
-        let collectionViewSize = collectionView.frame.size.width - padding
-        return CGSize(width: collectionViewSize / 2, height: ( collectionViewSize / 2))
-    }
-    
     func createProductsSectionLayout() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalWidth(0.5))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 10)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing:10)
         
-        let horizontalGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(200))
+        let horizontalGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.5))
         let horizontalGroup = NSCollectionLayoutGroup.horizontal(layoutSize: horizontalGroupSize, subitems: [item])
         
-        let verticalGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(200))
+        let verticalGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension:.fractionalWidth(0.5))
         let verticalGroup = NSCollectionLayoutGroup.vertical(layoutSize: verticalGroupSize, subitems: [horizontalGroup])
         
         let section = NSCollectionLayoutSection(group: verticalGroup)
         section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 4, bottom: 2, trailing: 4)
         section.interGroupSpacing = 10
         
-        let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(50))
-        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerFooterSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-        section.boundarySupplementaryItems = [sectionHeader]
-        
+       
         return section
     }
     
@@ -235,8 +210,8 @@ extension ProductViewController: ProductCollectionCellDelegate {
             
             let product = products[indexPath.item]
             let favId = Int(UserDefaultsHelper.shared.getUserData().favID ?? "0")
-            favCRUD.saveItem(favId: favId!, itemId: product.id, itemImg: product.image.src, itemName: product.title, itemPrice: Double(product.variants[0].price) ?? 70.0)
-            favoriteProductIDs.insert(product.id)
+        favCRUD.saveItem(favId: favId!, itemId: product.id ?? 0, itemImg: product.image?.src ?? "https://cdn.shopify.com/s/files/1/0624/0239/6207/collections/97a3b1227876bf099d279fd38290e567.jpg?v=1716812402", itemName: product.title ?? "", itemPrice: Double(product.variants?[0]?.price ?? "0") ?? 70.0)
+        favoriteProductIDs.insert(product.id ?? 0)
         }
         
         
@@ -248,16 +223,16 @@ extension ProductViewController: ProductCollectionCellDelegate {
             
             let product = products[indexPath.item]
             let favId = Int(UserDefaultsHelper.shared.getUserData().favID ?? "0")
-            favCRUD.deleteItem(favId: favId!, itemId: product.id)
-            favoriteProductIDs.remove(product.id)
+            favCRUD.deleteItem(favId: favId!, itemId: product.id ?? 0)
+            favoriteProductIDs.remove(product.id ?? 0)
         }
     
     
     func goToDetails(item cell: ProductCollectionCell){
         let selectedProduct = viewModel.getProducts()[cell.indexPath?.row ?? 0]
-        let isFavorited = favoriteProductIDs.contains(selectedProduct.id)
+        let isFavorited = favoriteProductIDs.contains(selectedProduct.id ?? 0)
 
-        coordinator?.goToProductInfo(productId: selectedProduct.id, isFav: isFavorited)
+        coordinator?.goToProductInfo(productId: selectedProduct.id ?? 0, isFav: isFavorited)
     }
     
 }

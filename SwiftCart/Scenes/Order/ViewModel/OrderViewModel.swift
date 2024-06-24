@@ -17,7 +17,8 @@ class OrderViewModel{
     private let disposeBag = DisposeBag()
     var ordersList : [Order]?
     var bindOrder : (()-> Void) = {}
-    
+    var ordersUpdated: ((Bool) -> Void)?
+
     func getOrders() -> [Order] {
         return ordersList ?? []
     }
@@ -76,25 +77,43 @@ class OrderViewModel{
         return (ordersList?[index])!
     }
     
-    func getOrdersList() {
-        
-        let customerID = K.Shopify.userID
-        let endpoint = "orders.json?customer_id=\(customerID)"
-        NetworkManager.shared.get(endpoint: endpoint)
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [weak self] (response: OrdersResponse) in
-                self?.ordersList = response.orders
-                self?.ordersSubject.onNext(self?.ordersList ?? [])
-                self?.bindOrder()
-                print("ViewModel: Number of orders: \(String(describing: self?.ordersList?.count))")
-            }, onError: { (error: Error) in
-                print("Error occurred: \(error.localizedDescription)")
-            })
-            .disposed(by: disposeBag)
-        
-        
-        
-    }
+//    func getOrdersList() {
+//        
+//        let customerID = K.Shopify.userID
+//        let endpoint = "orders.json?customer_id=\(customerID)"
+//        NetworkManager.shared.get(endpoint: endpoint)
+//            .observeOn(MainScheduler.instance)
+//            .subscribe(onNext: { [weak self] (response: OrdersResponse) in
+//                self?.ordersList = response.orders
+//                self?.ordersSubject.onNext(self?.ordersList ?? [])
+//                self?.bindOrder()
+//                print("ViewModel: Number of orders: \(String(describing: self?.ordersList?.count))")
+//            }, onError: { (error: Error) in
+//                print("Error occurred: \(error.localizedDescription)")
+//            })
+//            .disposed(by: disposeBag)
+//        
+//        
+//        
+//    }
+    
+    func getOrdersList(completion: @escaping (Int?) -> Void) {
+            let customerID = K.Shopify.userID
+            let endpoint = "orders.json?customer_id=7105857716271"
+            NetworkManager.shared.get(endpoint: endpoint)
+                .observeOn(MainScheduler.instance)
+                .subscribe(onNext: { [weak self] (response: OrdersResponse) in
+                    self?.ordersList = response.orders
+                    self?.ordersSubject.onNext(self?.ordersList ?? [])
+                    self?.bindOrder()
+                    self?.ordersUpdated?(self?.ordersList?.isEmpty == false)
+                    print("ViewModel: Number of orders: \(String(describing: self?.ordersList?.count))")
+                }, onError: { (error: Error) in
+                    print("Error occurred: \(error.localizedDescription)")
+                })
+                .disposed(by: disposeBag)
+        }
+
     
     
 //    func addNewOrder(newOrder:OrderResponse){

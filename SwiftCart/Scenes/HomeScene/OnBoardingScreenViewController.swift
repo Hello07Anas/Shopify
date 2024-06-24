@@ -10,7 +10,7 @@ import UIKit
 class OnBoardingScreenViewController: UIViewController, OnBoardingScreenCell {
     var currentCellIndex = 0
     var timer: Timer?
-
+   
     @IBOutlet weak var pageControl: UIPageControl!
     private let sliders: [Slide] = Slide.collection
 
@@ -21,7 +21,7 @@ class OnBoardingScreenViewController: UIViewController, OnBoardingScreenCell {
         super.viewDidLoad()
         setupCollectionView()
         setupPageControl()
-       // startTimer()
+        startTimer()
     }
 
     func setupCollectionView() {
@@ -31,8 +31,8 @@ class OnBoardingScreenViewController: UIViewController, OnBoardingScreenCell {
         collectionView.collectionViewLayout = layout
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.contentInsetAdjustmentBehavior = .never
-        collectionView.isPagingEnabled = true
+     //  collectionView.contentInsetAdjustmentBehavior = .never
+     //  collectionView.isPagingEnabled = true
     }
 
     func setupPageControl() {
@@ -48,12 +48,16 @@ class OnBoardingScreenViewController: UIViewController, OnBoardingScreenCell {
         timer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(moveToNext), userInfo: nil, repeats: true)
     }
 
+    func stopTimer() {
+        timer?.invalidate()
+        timer = nil
+    }
+
     @objc func moveToNext() {
         if currentCellIndex < sliders.count - 1 {
             currentCellIndex += 1
-        } else {
-            currentCellIndex = 0
-        }
+        } 
+        
         collectionView.scrollToItem(at: IndexPath(item: currentCellIndex, section: 0), at: .centeredHorizontally, animated: true)
         pageControl.currentPage = currentCellIndex
         updatePageControlVisibility()
@@ -76,10 +80,6 @@ extension OnBoardingScreenViewController: UICollectionViewDataSource, UICollecti
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "onBoardingCell", for: indexPath) as! OnBoardingCollectionViewCell
         cell.delegate = self
-        currentCellIndex = indexPath.row
-        updatePageControlVisibility()
-        pageControl.currentPage = currentCellIndex
-        
         cell.configer(with: sliders[indexPath.row])
         return cell
     }
@@ -110,11 +110,12 @@ class OnBoardingCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var actionButton: UIButton!
     @IBOutlet weak var animationView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
-    
+    @IBOutlet weak var discrebtion: UILabel!
     weak var delegate: OnBoardingScreenCell?
     
     func configer(with slide: Slide) {
         titleLabel.text = slide.title
+        discrebtion.text = slide.dec
         actionButton.setTitle(slide.buttonTitle, for: .normal)
         actionButton.tintColor = slide.buttonColor
         
@@ -137,16 +138,15 @@ class OnBoardingCollectionViewCell: UICollectionViewCell {
 
 struct Slide {
     let title: String
+    let dec: String
     let animationName: String
     let buttonColor: UIColor
     let buttonTitle: String
     
     static var collection: [Slide] = [
-        Slide(title: "Hello", animationName: "1", buttonColor: .systemRed, buttonTitle: "Next"),
-        Slide(title: "Welcome", animationName: "2", buttonColor: .systemGreen, buttonTitle: "Next"),
-        Slide(title: "Welcome", animationName: "3", buttonColor: .systemPink, buttonTitle: "Next"),
-        Slide(title: "Welcome", animationName: "4", buttonColor: .systemBlue, buttonTitle: "Next"),
-        Slide(title: "Welcome", animationName: "5", buttonColor: .systemGray2, buttonTitle: "Next"),
-        Slide(title: "Welcome", animationName: "6", buttonColor: .black, buttonTitle: "Get Started")
+        Slide(title: "Your Own Style", dec: "Explore our smart, cool, and fashionable collections to make you stand out.", animationName: "onBoarding1", buttonColor: .systemRed, buttonTitle: "Next"),
+        Slide(title: "Seamless Shopping Experience", dec: "Navigate through categories and brands effortlessly. Enjoy a seamless, intuitive shopping journey designed just for you.", animationName: "onBoarding2", buttonColor: .systemGreen, buttonTitle: "Next"),
+        Slide(title: "Choose the Preferred Product", dec: "When you purchase items, we will provide you with exclusive coupons, special offers, and rewards.", animationName: "onBoarding3", buttonColor: .systemPink, buttonTitle: "Next"),
+        Slide(title: "Get Your Order", dec: "Find your perfect products easily. Enter your address and let us do the rest.", animationName: "onBoarding4", buttonColor: .black, buttonTitle: "Get Started")
     ]
 }

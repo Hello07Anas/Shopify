@@ -38,11 +38,13 @@ class AppCoordinator: Coordinator {
     
     func getStarted(){
        
-        if UserDefaultsHelper.shared.getUserData().email == nil {
-            gotoLogin(pushToStack: true)
-        } else if UserDefaultsHelper.shared.getUserData().email != nil {
-            gotoHome(isThereConnection: isNetworkReachable())
-        }
+            if UserDefaultsHelper.shared.getUserData().email == nil {
+                gotoLogin(pushToStack: true)
+            } else if UserDefaultsHelper.shared.getUserData().email != nil {
+                gotoHome(isThereConnection: Utils.isNetworkReachableTest() )
+            }
+        
+       
     }
     
     func gotoLogin(pushToStack: Bool) {
@@ -66,20 +68,24 @@ class AppCoordinator: Coordinator {
         }
     }
     
-    func gotoHome(isThereConnection: Bool) {
+    func gotoHome( isThereConnection:  Bool) {
+       // isThereConnection = isNetworkReachable()
         if let homeVC = navigationController.viewControllers.last(where: { $0 is HomeViewController }) { // TODO: Bougs here we not remove from stack we have to handle it
             navigationController.popToViewController(homeVC, animated: true)
         } else {
             let storyboard = UIStoryboard(name: K.Home.Home_Storyboard_Name, bundle: Bundle.main)
             let settingsStoryboard = UIStoryboard(name: K.Settings.Settings_Storyboard_Name, bundle: Bundle.main)
             let homeVc = storyboard.instantiateViewController(withIdentifier: K.Home.Home_View_Name) as! HomeViewController
+            
             let categoryVc = storyboard.instantiateViewController(withIdentifier: K.Home.Category_View_Name) as! CategoryViewController
             let myCartVC = settingsStoryboard.instantiateViewController(withIdentifier: K.Settings.Cart_View_Name) as! CartViewController
             let profileVC = settingsStoryboard.instantiateViewController(withIdentifier: K.Settings.Profile_View_Name) as! ProfileViewController
             
            
             homeVc.coordinator = self
+         //   homeVc.isInternetConnection = isNetworkReachable()
             categoryVc.coordinator = self
+           // categoryVc.isInternetConnection = isNetworkReachable()
             myCartVC.coordinator = self
             profileVC.coordinator = self
             
@@ -98,7 +104,7 @@ class AppCoordinator: Coordinator {
     }
     
     func goToProducts(brandID:Int) {
-        if isNetworkReachable() {
+        if Utils.isNetworkReachableTest()  {
             let storyboard = UIStoryboard(name: K.Home.Home_Storyboard_Name, bundle: Bundle.main)
             let productVc = storyboard.instantiateViewController(withIdentifier: K.Home.Product_View_Name) as! ProductViewController
             
@@ -117,7 +123,7 @@ class AppCoordinator: Coordinator {
     
     
     func goToOrders() {
-        if isNetworkReachable() {
+        if Utils.isNetworkReachableTest()  {
             let storyboard = UIStoryboard(name: K.Home.Home_Storyboard_Name, bundle: Bundle.main)
             let orderVc = storyboard.instantiateViewController(withIdentifier: K.Settings.Order_View_Name) as! OrderViewController
             
@@ -150,7 +156,7 @@ class AppCoordinator: Coordinator {
     }
  
     func goToProductInfo(productId: Int, isFav: Bool) {
-        if isNetworkReachable() {
+        if Utils.isNetworkReachableTest()  {
             let productInfoVC = ProductInfoVC(nibName: "ProductInfoVC", bundle: Bundle.main)
             productInfoVC.coordinator = self
             productInfoVC.id = productId
@@ -170,7 +176,7 @@ class AppCoordinator: Coordinator {
     }
 
     func goToFav() {
-        if isNetworkReachable() {
+        if Utils.isNetworkReachableTest() {
             if UserDefaultsHelper.shared.getUserData().name == nil {
                 let sginUp = UIAlertAction(title: "Oki, i want creaet acc", style: .default, handler: { _ in self.gotoSignUp(pushToStack: true)
                 })
@@ -194,7 +200,7 @@ class AppCoordinator: Coordinator {
     }
         
     func finish() {
-        if isNetworkReachable() {
+        if Utils.isNetworkReachableTest(){
             navigationController.popViewController(animated: true)
         } else {
             gotoHome(isThereConnection: isNetworkReachable())

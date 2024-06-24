@@ -8,11 +8,14 @@
 import UIKit
 import SDWebImage
 import RxSwift
+import Reachability
 
 class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
+    @IBOutlet weak var InternetConnectionView: UIView!
+    var isInternetConnection:Bool?
     weak var coordinator: AppCoordinator?
     
+  
     var viewModel = HomeViewModel(network: NetworkManager.shared)
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var searchBar: UISearchBar!
@@ -23,8 +26,26 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     private let disposeBag = DisposeBag()
     
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        isInternetConnection = Utils.isNetworkReachableTest()
+        print(isInternetConnection!)
+        if isInternetConnection == true {
+            InternetConnectionView.isHidden = true
+            viewModel.loadData()
+        }else {
+            InternetConnectionView.isHidden = false
+
+        }
+       
+    }
+    
     override func viewDidLoad() {
+        
         super.viewDidLoad()
+        
         self.navigationItem.title = "Home"
          
         guard let collectionView = collectionView else {
@@ -41,6 +62,17 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         viewModel.loadData()
     }
     
+   
+    @IBAction func tryAgain(_ sender: Any) {
+        isInternetConnection = Utils.isNetworkReachableTest()
+        if isInternetConnection == false {
+            InternetConnectionView.isHidden = true
+            viewModel.loadData()
+        }else {
+            InternetConnectionView.isHidden = false
+
+        }
+    }
     
     @IBAction func favBtn(_ sender: Any) {
         coordinator?.goToFav()
@@ -121,9 +153,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     func createDiscountSectionLayout() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(180))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.5))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(180))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.5))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 32)
         let section = NSCollectionLayoutSection(group: group)
@@ -146,14 +178,14 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     func createBrandSectionLayout() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .absolute(100))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalWidth(0.5))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing:10)
         
-        let horizontalGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(100))
+        let horizontalGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.5))
         let horizontalGroup = NSCollectionLayoutGroup.horizontal(layoutSize: horizontalGroupSize, subitems: [item])
         
-        let verticalGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(100))
+        let verticalGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension:.fractionalWidth(0.5))
         let verticalGroup = NSCollectionLayoutGroup.vertical(layoutSize: verticalGroupSize, subitems: [horizontalGroup])
         
         let section = NSCollectionLayoutSection(group: verticalGroup)
