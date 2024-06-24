@@ -104,7 +104,7 @@ struct FavCRUD {
 
 
 
-    private func getDraftOrder(favId: Int, completion: @escaping (DraftOrder?) -> Void) {
+    func getDraftOrder(favId: Int, completion: ((DraftOrder?) -> Void)? = nil) {
         let endpoint = "/\(favId).json"
         AF.request(baseUrl + endpoint, method: .get, headers: ["X-Shopify-Access-Token": accessToken])
             .validate()
@@ -119,19 +119,19 @@ struct FavCRUD {
                         let decoder = JSONDecoder()
                         decoder.dateDecodingStrategy = .iso8601
                         let draftOrderResponse = try decoder.decode(DraftOrderResponse.self, from: data)
-                        completion(draftOrderResponse.draft_order)
+                        completion?(draftOrderResponse.draft_order)
                     } catch {
                         print("Failed to decode draft order:", error)
-                        completion(nil)
+                        completion?(nil)
                     }
                 case .failure(let error):
                     print("Failed to fetch draft order:", error)
-                    completion(nil)
+                    completion?(nil)
                 }
             }
     }
-
-    private func updateDraftOrder(favId: Int, updateRequest: DraftOrderUpdateRequest, completion: @escaping (Bool) -> Void) {
+    
+    func updateDraftOrder(favId: Int, updateRequest: DraftOrderUpdateRequest, completion: ((Bool) -> Void)? = nil) {
         let endpoint = "/\(favId).json"
         AF.request(baseUrl + endpoint, method: .put, parameters: updateRequest, encoder: JSONParameterEncoder.default, headers: ["X-Shopify-Access-Token": accessToken])
             .validate()
@@ -143,14 +143,14 @@ struct FavCRUD {
                         decoder.dateDecodingStrategy = .iso8601
                         let updatedDraftOrder = try decoder.decode(DraftOrderResponse.self, from: data)
                         print("Successfully updated draft order:", updatedDraftOrder.draft_order)
-                        completion(true)
+                        completion?(true)
                     } catch {
                         print("Failed to decode updated draft order:", error)
-                        completion(false)
+                        completion?(false)
                     }
                 case .failure(let error):
                     print("Failed to update draft order:", error)
-                    completion(false)
+                    completion?(false)
                 }
             }
     }
