@@ -13,6 +13,19 @@ protocol ProductCollectionCellDelegate: AnyObject {
     func goToDetails(item cell: ProductCollectionCell)
 }
 
+extension ProductCollectionCellDelegate {
+    func deleteFavoriteTapped(for cell: ProductCollectionCell, completion: @escaping () -> Void) {
+        completion()
+    }
+
+    func saveToFavorite(for cell: ProductCollectionCell, completion: @escaping () -> Void) {
+        completion()
+    }
+
+    func goToDetails(item cell: ProductCollectionCell) {
+    }
+}
+
 class ProductCollectionCell: UICollectionViewCell {
     
     @IBOutlet weak var price: UILabel!
