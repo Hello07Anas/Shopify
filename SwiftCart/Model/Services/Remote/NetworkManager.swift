@@ -47,7 +47,7 @@ class NetworkManager : Networking {
 
     func get<T: Decodable>(url: String = K.Shopify.Base_URL, endpoint: String, parameters: [String: Any]? = nil, headers: HTTPHeaders? = nil) -> Observable<T> {
         let (url, combinedHeaders) = createRequestDetails(url: url, endpoint: endpoint, headers: headers)
-
+print(url)
         return RxAlamofire
             .requestData(.get, url, parameters: parameters, encoding: URLEncoding.default, headers: combinedHeaders)
             .flatMap { response, data -> Observable<T> in

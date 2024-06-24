@@ -72,7 +72,7 @@ public enum K {
         case draftOrders = "/draft_orders/{draft_orders_id}.json"
         case variants = "/variants/{variant_id}.json"
         case discountLocation = "/discount_codes/lookup.json?code={discount_code}"
-        case priceRule = "/price_rules/{price_rule_id}.json"
+        case priceRule = "/price_rules.json"
         
     }
     

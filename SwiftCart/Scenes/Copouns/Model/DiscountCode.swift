@@ -7,16 +7,27 @@
 
 import Foundation
 
-struct DiscountCode: Codable {
-    let id: Int
-    let price_rule_id: Int
-    let code: String
-    let usage_count: Int
-    let created_at: String
-    let updated_at: String
+struct DiscountCodeResponse: Codable {
+    let discountCodes: [DiscountCode]
+
+    enum CodingKeys: String, CodingKey {
+        case discountCodes = "discount_codes"
+    }
 }
 
-struct DiscountCodesResponse: Codable {
-    let discount_codes: [DiscountCode]
+// MARK: - DiscountCode
+struct DiscountCode: Codable {
+    let id, priceRuleID: Int
+    let code: String
+    let usageCount: Int
+    let createdAt, updatedAt: String
 
+    enum CodingKeys: String, CodingKey {
+        case id
+        case priceRuleID = "price_rule_id"
+        case code
+        case usageCount = "usage_count"
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+    }
 }

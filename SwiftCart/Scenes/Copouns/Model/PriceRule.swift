@@ -6,7 +6,13 @@
 //
 
 import Foundation
+struct PriceRulesResponse: Codable {
+    let priceRules: [PriceRule]
 
+    enum CodingKeys: String, CodingKey {
+        case priceRules = "price_rules"
+    }
+}
 struct PriceRule: Codable {
     let id: Int
     let valueType: String
@@ -17,7 +23,7 @@ struct PriceRule: Codable {
     let allocationMethod: String
     let usageLimit: Int?
     let startsAt: String
-    let endsAt: String
+    let endsAt: String?
     let createdAt: String
     let updatedAt: String
     let title: String
@@ -39,10 +45,4 @@ struct PriceRule: Codable {
     }
 }
 
-struct PriceRuleResponse: Codable {
-    let priceRule: PriceRule
 
-    enum CodingKeys: String, CodingKey {
-        case priceRule = "price_rule"
-    }
-}

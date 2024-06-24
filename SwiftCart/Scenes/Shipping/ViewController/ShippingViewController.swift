@@ -41,7 +41,7 @@ class ShippingViewController: UIViewController {
             return
         }
         
-        viewModel.applyPromoCode(promocode: promocode)
+        viewModel.getPriceRuleDetails(promocode: promocode)
     }
     func createPaymentRequest() -> PKPaymentRequest {
         let request = PKPaymentRequest()

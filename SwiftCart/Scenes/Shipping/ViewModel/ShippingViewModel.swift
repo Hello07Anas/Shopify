@@ -45,55 +45,39 @@ class ShippingViewModel {
             .disposed(by: disposeBag)
     }
     
-    func applyPromoCode(promocode: String) {
-            let endpoint = K.endPoints.discountLocation.rawValue.replacingOccurrences(of: "{discount_code}", with: promocode)
+
+        func getPriceRuleDetails(promocode: String) {
+            let endpoint = K.endPoints.priceRule.rawValue
             
             network?.get(endpoint: endpoint)
                 .observeOn(MainScheduler.instance)
-                .subscribe(onNext: { [weak self] (response: DiscountCodesResponse) in
-                    guard let discountCode = response.discount_codes.first else {
-                        print("No discount codes found")
-                        return
+                .subscribe(onNext: { [weak self] (response: PriceRulesResponse) in
+    
+                    for discount in response.priceRules {
+                        if promocode == discount .title {
+                            self?.applyDiscount(priceRule: discount)
+                        }
                     }
-                    
-                    self?.getPriceRuleDetails(priceRuleId: discountCode.price_rule_id, promocode: promocode)
-                    
                 }, onError: { (error: Error) in
                     print("Error occurred: \(error.localizedDescription)")
                 })
                 .disposed(by: disposeBag)
         }
         
-        private func getPriceRuleDetails(priceRuleId: Int, promocode: String) {
-            let endpoint = K.endPoints.priceRule.rawValue.replacingOccurrences(of: "{price_rule_id}", with: String(priceRuleId))
-            
-            network?.get(endpoint: endpoint)
-                .observeOn(MainScheduler.instance)
-                .subscribe(onNext: { [weak self] (response: PriceRuleResponse) in
-                    self?.applyDiscount(priceRule: response.priceRule, promocode: promocode)
-                    
-                }, onError: { (error: Error) in
-                    print("Error occurred: \(error.localizedDescription)")
-                })
-                .disposed(by: disposeBag)
-        }
-        
-        private func applyDiscount(priceRule: PriceRule, promocode: String) {
+        private func applyDiscount(priceRule: PriceRule) {
             guard var draftOrder = draftOrder?.singleResult else { return }
             
-            let discountValue = Double(priceRule.value) ?? 0.0
-            let totalPrice = Double(draftOrder.totalPrice) ?? 0.0
-            let discountedPrice = totalPrice + discountValue // Assuming the discount value is negative
-            
+            var value = priceRule.value
+            if value.hasPrefix("-") { value.removeFirst() }
             let appliedDiscount = AppliedDiscount(
-                description: priceRule.title,
-                value: priceRule.value,
-                title: promocode,
-                amount: String(discountValue),
+                description: "Custom",
+                value: value,
+                title: priceRule.title,
+                amount: value,
                 valueType: priceRule.valueType
             )
             
-            draftOrder.totalPrice = String(discountedPrice)
+
             draftOrder.appliedDiscount = appliedDiscount
             
             updateDraftOrder(draftOrder: draftOrder)
