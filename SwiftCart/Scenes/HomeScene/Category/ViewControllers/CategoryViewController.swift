@@ -8,12 +8,14 @@
 import UIKit
 import RxSwift
 
-class CategoryViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-     var testViewModel = OrderViewModel()
+class CategoryViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    @IBOutlet weak var InternetConnectionView: UIView!
+    var isInternetConnection:Bool?
+    var testViewModel = OrderViewModel()
     
     @IBOutlet weak var categoriesSegmented: UISegmentedControl!
     @IBOutlet weak var collectionView: UICollectionView!
-
+    
     @IBOutlet weak var subCategoriesView: UISegmentedControl!
     
     @IBOutlet weak var topconstrensinCollectionView: NSLayoutConstraint!
@@ -26,17 +28,29 @@ class CategoryViewController: UIViewController, UICollectionViewDelegate, UIColl
     private let disposeBag = DisposeBag()
     private var products: [Product] = []
     private var favoriteProductIDs: Set<Int> = [] // TODO: s
-
+    
     var viewModel = CategoryViewModel(network: NetworkManager.shared)
     
     override func viewWillAppear(_ animated: Bool) {
-           super.viewWillAppear(true)
-           fetchFavoriteItems()
-       }
+        super.viewWillAppear(true)
+        isInternetConnection = Utils.isNetworkReachableTest()
+        print(isInternetConnection ?? false)
+        if isInternetConnection == true {
+            InternetConnectionView.isHidden = true
+            viewModel.getAllProducts()
+            fetchFavoriteItems()
+        }else {
+            InternetConnectionView.isHidden = false
+
+        }
+       
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       // print("viewDidLoad ======================= CategoryViewController")
+        // print("viewDidLoad ======================= CategoryViewController")
+        
+         setupCollectionViewLayout()
         subCategoriesView.isHidden = isFilterHidden
         topconstrensinCollectionView.constant = 8
         
@@ -50,11 +64,9 @@ class CategoryViewController: UIViewController, UICollectionViewDelegate, UIColl
         }
         
         setupBindings()
-        viewModel.getAllProducts()
-        fetchFavoriteItems()
         setupSearchBar()
     }
- 
+    
     private func fetchFavoriteItems() {
         let favId = Int(UserDefaultsHelper.shared.getUserData().favID ?? "0") ?? 0
         favCRUD.readItems(favId: favId) { [weak self] lineItems in
@@ -65,6 +77,16 @@ class CategoryViewController: UIViewController, UICollectionViewDelegate, UIColl
         }
     }
     
+    @IBAction func tryAgain(_ sender: Any) {
+        isInternetConnection = Utils.isNetworkReachableTest()
+        if isInternetConnection == true {
+            InternetConnectionView.isHidden = true
+            viewModel.getAllProducts()
+            fetchFavoriteItems()
+        }else {
+            InternetConnectionView.isHidden = false
+
+        }    }
     @IBAction func filter(_ sender: Any) {
         let address = Address(
             id: nil,
@@ -77,7 +99,7 @@ class CategoryViewController: UIViewController, UICollectionViewDelegate, UIColl
             phone: "011123456789",
             isDefault: true
         )
-
+        
         let billingAddress = Address(
             id: nil,
             customerID: nil,
@@ -89,13 +111,13 @@ class CategoryViewController: UIViewController, UICollectionViewDelegate, UIColl
             phone: "011123456789",
             isDefault: true
         )
-
+        
         let testOrder = Order(
             id: 1073460025,
             orderNumber: "#122",
             productNumber: 2,
             address: address,
-           // phone: "011123456789",
+            // phone: "011123456789",
             date: "2024-05-14T21:19:37-04:00",
             currency: .eur,
             email: UserDefaults.standard.string(forKey: "userEmail") ?? "",
@@ -108,9 +130,9 @@ class CategoryViewController: UIViewController, UICollectionViewDelegate, UIColl
             billingAddress: billingAddress,
             customer: UserDefaultsHelper.shared.printUserDefaults()
         )
-
+        
         testViewModel.addNewOrder(newOrder: testOrder)
-
+        
         
         isFilterHidden = !isFilterHidden
         UIView.animate(withDuration: 0.5) {
@@ -123,15 +145,17 @@ class CategoryViewController: UIViewController, UICollectionViewDelegate, UIColl
     }
     
     
-       func setupBindings() {
-           viewModel.categoriesObservable?
-               .observeOn(MainScheduler.instance)
-               .subscribe(onNext: { [weak self] products in
-                   self?.products = products
-                   self?.collectionView.reloadData()
-               })
-               .disposed(by: disposeBag)
-       }
+    func setupBindings() {
+        viewModel.categoriesObservable?
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] products in
+                self?.products = products
+                self?.collectionView.reloadData()
+            })
+            .disposed(by: disposeBag)
+    }
+    
+   
     
     @IBAction func segmentedControlChanged(_ sender: UISegmentedControl) {
         viewModel.clearFilter()  // Clear any previous filters
@@ -163,63 +187,89 @@ class CategoryViewController: UIViewController, UICollectionViewDelegate, UIColl
         }
     }
     
-
+    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.getProductsCount()
     }
-
+    
     @IBAction func goToFav(_ sender: Any) {
         coordinator?.goToFav()
     }
-  
+    
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-            
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductCell", for: indexPath) as! ProductCollectionCell
-            
-            let product = viewModel.getProducts()[indexPath.item]
-            if let imageUrl = URL(string: viewModel.getProducts()[indexPath.row].image.src) {
-                cell.img.sd_setImage(with: imageUrl, placeholderImage: UIImage(named: "9"))
-            }
-            cell.ProductName.text = product.title
-        cell.price.text = product.variants[0].price.formatAsCurrency()
-            cell.isCellNowCategorie = true
-            cell.indexPath = indexPath
-            cell.delegate = self
-            
-            cell.isFavorited = favoriteProductIDs.contains(product.id)
-            cell.setButtonImage(isFavorited: cell.isFavorited)
-            
-            return cell
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductCell", for: indexPath) as! ProductCollectionCell
+        
+        let product = viewModel.getProducts()[indexPath.item]
+        if let imageUrl = URL(string: viewModel.getProducts()[indexPath.row].image?.src ?? "https://cdn.shopify.com/s/files/1/0624/0239/6207/collections/97a3b1227876bf099d279fd38290e567.jpg?v=1716812402") {
+            cell.img.sd_setImage(with: imageUrl, placeholderImage: UIImage(named: "9"))
         }
-
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-//        return 8
-//    }
+        cell.ProductName.text = product.title
+        cell.price.text = product.variants?[0]?.price?.formatAsCurrency()
+        cell.isCellNowCategorie = true
+        cell.indexPath = indexPath
+        cell.delegate = self
+        
+        cell.isFavorited = favoriteProductIDs.contains(product.id ?? 0)
+        cell.setButtonImage(isFavorited: cell.isFavorited)
+        
+        return cell
+    }
+    
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let padding: CGFloat = 20
-        let collectionViewSize = collectionView.frame.size.width - padding
-        return CGSize(width: collectionViewSize / 2, height: ( collectionViewSize / 2))
+            let spacing: CGFloat = 10
+            let sectionInsets: CGFloat = 24
+            let totalSpacing = spacing + sectionInsets * 2
+            let width = (collectionView.frame.width - totalSpacing) / 2
+            return CGSize(width: width, height: 150)
+        }
+    
+    func createProductsSectionLayout() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalWidth(0.5))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing:10)
+        
+        let horizontalGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.5))
+        let horizontalGroup = NSCollectionLayoutGroup.horizontal(layoutSize: horizontalGroupSize, subitems: [item])
+        
+        let verticalGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension:.fractionalWidth(0.5))
+        let verticalGroup = NSCollectionLayoutGroup.vertical(layoutSize: verticalGroupSize, subitems: [horizontalGroup])
+        
+        let section = NSCollectionLayoutSection(group: verticalGroup)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 4, bottom: 2, trailing: 4)
+        section.interGroupSpacing = 10
+        
+    
+        
+        return section
     }
     
+    func setupCollectionViewLayout() {
+        let layout = UICollectionViewCompositionalLayout { sectionIndex, _ in
+            switch sectionIndex {
+            case 0:
+                return self.createProductsSectionLayout()
+           
+            default:
+                return nil
+            }
+        }
+        collectionView.collectionViewLayout = layout
+    }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        10
-    }
-    
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        
-//        let selectedProduct = viewModel.getProducts()[indexPath.row]
-//        let isFavorited = favoriteProductIDs.contains(selectedProduct.id)
+//        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+//            return 10
+//        }
 //
-//        coordinator?.goToProductInfo(productId: selectedProduct.id, isFav: isFavorited)
-//        //print("Item Selected")
-//    }
+//        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+//            return 10
+//        }
 }
 
 extension CategoryViewController: ProductCollectionCellDelegate {
@@ -236,6 +286,13 @@ extension CategoryViewController: ProductCollectionCellDelegate {
                 self.favoriteProductIDs.insert(product.id)
                 cell.isFavorited = true
             }
+            let product = products[indexPath.item]
+            let favId = Int(UserDefaultsHelper.shared.getUserData().favID ?? "0")
+        favCRUD.saveItem(favId: favId!, itemId: product.id ?? 0, itemImg: product.image?.src ?? "https://cdn.shopify.com/s/files/1/0624/0239/6207/collections/97a3b1227876bf099d279fd38290e567.jpg?v=1716812402", itemName: product.title ?? "", itemPrice: Double(product.variants?[0]?.price ?? "") ?? 70.0)
+            //print("save to favorite for product id: \(product.id)")
+        favoriteProductIDs.insert(product.id ?? 0)
+            cell.isFavorited = true
+            
             completion()
         }
         //print("save to favorite for product id: \(product.id)")
@@ -254,6 +311,16 @@ extension CategoryViewController: ProductCollectionCellDelegate {
                 self.favoriteProductIDs.remove(product.id)
                 cell.isFavorited = false
             }
+            let product = products[indexPath.item]
+            let favId = Int(UserDefaultsHelper.shared.getUserData().favID ?? "0")
+            favCRUD.deleteItem(favId: favId!, itemId: product.id ?? 0)
+            favoriteProductIDs.remove(product.id ?? 0)
+            cell.isFavorited = false
+            //fetchFavoriteItems()
+    //        products.remove(at: indexPath.item)
+    //        collectionView.reloadData()
+            
+           // print("Deleted favorite for product id: \(product.id)")
             completion()
         }
         //fetchFavoriteItems()
@@ -265,10 +332,12 @@ extension CategoryViewController: ProductCollectionCellDelegate {
     
     func goToDetails(item cell: ProductCollectionCell){
         let selectedProduct = viewModel.getProducts()[cell.indexPath?.row ?? 0]
-        let isFavorited = favoriteProductIDs.contains(selectedProduct.id)
-        
-        coordinator?.goToProductInfo(productId: selectedProduct.id, isFav: isFavorited)
-    }
+
+        let isFavorited = favoriteProductIDs.contains(selectedProduct.id ?? 0)
+    
+        coordinator?.goToProductInfo(productId: selectedProduct.id ?? 0, isFav: isFavorited)
+}
+
 }
 
 extension CategoryViewController: UISearchBarDelegate {

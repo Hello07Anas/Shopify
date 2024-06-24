@@ -15,6 +15,8 @@ import RxAlamofire
 protocol Networking{
     func getApiData(url: String) -> Observable<Data>
     
+    
+    
 }
 
 class NetworkManager : Networking {

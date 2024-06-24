@@ -35,7 +35,7 @@ class CategoryViewModel {
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] data in
                // print("ViewModel: Received ALL Products response !!!!")
-                if let productsResponse: ProductsResponse = Utils.convertTo(from: data) {
+                if let productsResponse: ProductResponse = Utils.convertTo(from: data) {
                     self?.productsArray = productsResponse.products ?? []
                     self?.categoriesSubject.onNext(self?.productsArray ?? [])
                   //  print("ViewModel: Number of products: \(self?.productsArray.count ?? 0) image :: \(self?.productsArray.first?.image.src ?? "")")
@@ -55,7 +55,7 @@ class CategoryViewModel {
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] data in
                 //print("ViewModel: Received Category Products response")
-                if let productsResponse: ProductsResponse = Utils.convertTo(from: data) {
+                if let productsResponse: ProductResponse = Utils.convertTo(from: data) {
                     self?.productsArray = productsResponse.products ?? []
                     self?.categoriesSubject.onNext(self?.productsArray ?? [])
                    // print("ViewModel: Number of products: \(self?.productsArray.count ?? 0) image :: \(self?.productsArray.first?.image.src ?? "")")
@@ -71,7 +71,7 @@ class CategoryViewModel {
     func filterProductsArray(productType: String) {
         isFiltering = true
         filteredProductsArray = productsArray.filter {product in
-            product.productType.rawValue == productType
+            product.productType == productType
         }
         categoriesSubject.onNext(filteredProductsArray)
     }
@@ -81,7 +81,7 @@ class CategoryViewModel {
         if price != 0.0 {
             isFilteringBrandProducts = true
             filteredBrandProductArray = filterArray.filter {
-                guard let productPrice = Float($0.variants[0].price) else { return false }
+                guard let productPrice = Float($0.variants?[0]?.price ?? "0") else { return false }
                 return productPrice <= price
             }
         } else {
@@ -114,7 +114,7 @@ class CategoryViewModel {
         } else {
             isFiltering = true
             filteredProductsArray = productsArray.filter { product in
-                product.title.lowercased().contains(query.lowercased())
+                product.title?.lowercased().contains(query.lowercased()) ?? false
             }
             categoriesSubject.onNext(filteredProductsArray)
         }

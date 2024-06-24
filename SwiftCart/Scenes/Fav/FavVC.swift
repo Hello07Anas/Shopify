@@ -46,6 +46,7 @@ class FavVC: UIViewController {
         
         collectionView.delegate = self
         collectionView.dataSource = self
+        setupCollectionViewLayout()
         
     }
 
@@ -105,6 +106,38 @@ extension FavVC: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource 
         let totalSpacing = sectionInset * 2 + spacing
         let width = (collectionView.frame.width - totalSpacing) / 2
         return CGSize(width: width, height: 150)
+    }
+    
+    func createProductsSectionLayout() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalWidth(0.5))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing:10)
+        
+        let horizontalGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.5))
+        let horizontalGroup = NSCollectionLayoutGroup.horizontal(layoutSize: horizontalGroupSize, subitems: [item])
+        
+        let verticalGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension:.fractionalWidth(0.5))
+        let verticalGroup = NSCollectionLayoutGroup.vertical(layoutSize: verticalGroupSize, subitems: [horizontalGroup])
+        
+        let section = NSCollectionLayoutSection(group: verticalGroup)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 4, bottom: 2, trailing: 4)
+        section.interGroupSpacing = 10
+        
+        
+        return section
+    }
+    
+    func setupCollectionViewLayout() {
+        let layout = UICollectionViewCompositionalLayout { sectionIndex, _ in
+            switch sectionIndex {
+            case 0:
+                return self.createProductsSectionLayout()
+           
+            default:
+                return nil
+            }
+        }
+        collectionView.collectionViewLayout = layout
     }
     
 //    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
