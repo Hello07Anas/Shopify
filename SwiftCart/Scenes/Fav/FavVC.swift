@@ -28,7 +28,9 @@ class FavVC: UIViewController {
     var coordinator: AppCoordinator?
     var products: [ProductDumy] = []
     let favCRUD = FavCRUD()
+    var productCount = 0
     
+    @IBOutlet weak var emptyImage: UIImageView!
     @IBOutlet weak var collectionView: UICollectionView!
     
     override func viewWillAppear(_ animated: Bool) {
@@ -61,9 +63,20 @@ class FavVC: UIViewController {
                     let isFavorited = true
                     return ProductDumy(name: lineItem.title, price: lineItem.price, imageName: image, isFavorited: isFavorited, itemId: lineItem.id!)
                 }
-                self?.collectionView.reloadData()
+                self?.updateUI()
             }
         }
+    }
+    
+    private func updateUI() {
+        if products.isEmpty {
+            emptyImage.isHidden = false
+            collectionView.isHidden = true
+        } else {
+            emptyImage.isHidden = true
+            collectionView.isHidden = false
+        }
+        collectionView.reloadData()
     }
 
 }
@@ -82,7 +95,7 @@ extension FavVC: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource 
         cell.delegate = self
         cell.indexPath = indexPath
         cell.setBtnImg()
-
+        
         return cell
     }
     
@@ -103,36 +116,36 @@ extension FavVC: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource 
 }
 
 extension FavVC: ProductCollectionCellDelegate {
-    func saveToFavorite(foe cell: ProductCollectionCell) {
-        print("")
-    }
-    
-
-    func deleteFavoriteTapped(for cell: ProductCollectionCell) {
+    func deleteFavoriteTapped(for cell: ProductCollectionCell, completion: @escaping () -> Void) {
         guard let indexPath = cell.indexPath else {
+            completion()
             return
         }
 
         var product = products[indexPath.item]
         let favId = Int(UserDefaultsHelper.shared.getUserData().favID ?? "0")
         
-        favCRUD.deleteItem(favId: favId!, itemId: product.itemId)
-
-        product.isFavorited.toggle()
-        products[indexPath.item] = product
-        products.remove(at: indexPath.item)
-
-        collectionView.reloadData()
-        
+        favCRUD.deleteItem(favId: favId!, itemId: product.itemId) { success in
+            if success {
+                product.isFavorited = false
+                self.products.remove(at: indexPath.item)
+                self.collectionView.reloadData()
+                self.updateUI()
+            }
+            completion()
+        }
         //print("ProductCollectionCellDelegate - IndexPath: \(indexPath)")
         //print("===---===ProductCollectionCellDelegate"); print(favId as Any)
         //print("ProductCollectionCellDelegate===---==="); print("ProductCollectionCellDelegate")
     }
+    
     func goToDetails(item cell: ProductCollectionCell){
         let product = products[cell.indexPath?.item ?? 0]
         print("Selected product itemId: \(product.itemId)")
         coordinator?.goToProductInfo(productId: product.itemId, isFav: product.isFavorited)
     }
+    
+    
 }
 
 

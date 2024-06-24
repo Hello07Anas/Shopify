@@ -105,6 +105,7 @@ class ProfileViewController: UIViewController {
 }
 
 extension ProfileViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, ProductCollectionCellDelegate {
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return products.count
     }
@@ -128,33 +129,34 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout, UICollectio
         return CGSize(width: width, height: 150)
     }
 
-    func saveToFavorite(foe cell: ProductCollectionCell) {
-        // Implement your save to favorite functionality here
-    }
-
-    func deleteFavoriteTapped(for cell: ProductCollectionCell) {
+    func deleteFavoriteTapped(for cell: ProductCollectionCell, completion: @escaping () -> Void) {
         guard let indexPath = cell.indexPath else { return }
-
+        
         var product = products[indexPath.item]
         let favId = Int(UserDefaultsHelper.shared.getUserData().favID ?? "0")
-        favCRUD.deleteItem(favId: favId!, itemId: product.itemId)
-
-        product.isFavorited.toggle()
-        products.remove(at: indexPath.item)
-
-        if let indexInList = productsList.firstIndex(where: { $0.itemId == product.itemId }) {
-                productsList.remove(at: indexInList)
+        
+        favCRUD.deleteItem(favId: favId!, itemId: product.itemId) { success in
+            if success {
+                product.isFavorited.toggle()
+                self.products.remove(at: indexPath.item)
+                
+                if let indexInList = self.productsList.firstIndex(where: { $0.itemId == product.itemId }) {
+                    self.productsList.remove(at: indexInList)
+                }
+                
+                if self.productsList.count >= 2 {
+                    self.products = Array(self.productsList.prefix(2))
+                } else {
+                    self.products = self.productsList
+                }
+                
+                self.FavCollectionView.reloadData()
             }
-        
-        if self.productsList.count  >= 2 {
-            self.products = Array(self.productsList.prefix(2) )
-        } else {
-            self.products = self.productsList
+            
+            completion()
         }
-        
-        self.FavCollectionView.reloadData()
-        
     }
+
 
     func goToDetails(item cell: ProductCollectionCell) {
         let product = products[cell.indexPath?.item ?? 0]
