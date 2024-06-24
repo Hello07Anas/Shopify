@@ -273,10 +273,18 @@ class CategoryViewController: UIViewController, UICollectionViewDataSource, UICo
 }
 
 extension CategoryViewController: ProductCollectionCellDelegate {
-    func saveToFavorite(foe cell: ProductCollectionCell) {
-            guard let indexPath = cell.indexPath else {
-                print("No index path found for cell")
-                return
+    func saveToFavorite(for cell: ProductCollectionCell, completion: @escaping() -> Void) {
+        guard let indexPath = cell.indexPath else {
+            print("No index path found for cell")
+            completion()
+            return
+        }
+        let product = products[indexPath.item]
+        let favId = Int(UserDefaultsHelper.shared.getUserData().favID ?? "0")
+        favCRUD.saveItem(favId: favId!, itemId: product.id, itemImg: product.image.src, itemName: product.title, itemPrice: Double(product.variants[0].price) ?? 70.0) { success in
+            if success {
+                self.favoriteProductIDs.insert(product.id)
+                cell.isFavorited = true
             }
             let product = products[indexPath.item]
             let favId = Int(UserDefaultsHelper.shared.getUserData().favID ?? "0")
@@ -284,12 +292,24 @@ extension CategoryViewController: ProductCollectionCellDelegate {
             //print("save to favorite for product id: \(product.id)")
         favoriteProductIDs.insert(product.id ?? 0)
             cell.isFavorited = true
+            
+            completion()
         }
+        //print("save to favorite for product id: \(product.id)")
+    }
 
-        func deleteFavoriteTapped(for cell: ProductCollectionCell) {
-            guard let indexPath = cell.indexPath else {
-                print("No index path found for cell")
-                return
+    func deleteFavoriteTapped(for cell: ProductCollectionCell, completion: @escaping() -> Void) {
+        guard let indexPath = cell.indexPath else {
+            print("No index path found for cell")
+            completion()
+            return
+        }
+        let product = products[indexPath.item]
+        let favId = Int(UserDefaultsHelper.shared.getUserData().favID ?? "0")
+        favCRUD.deleteItem(favId: favId!, itemId: product.id) { success in
+            if success {
+                self.favoriteProductIDs.remove(product.id)
+                cell.isFavorited = false
             }
             let product = products[indexPath.item]
             let favId = Int(UserDefaultsHelper.shared.getUserData().favID ?? "0")
@@ -301,14 +321,23 @@ extension CategoryViewController: ProductCollectionCellDelegate {
     //        collectionView.reloadData()
             
            // print("Deleted favorite for product id: \(product.id)")
+            completion()
         }
+        //fetchFavoriteItems()
+        //        products.remove(at: indexPath.item)
+        //        collectionView.reloadData()
+        
+        // print("Deleted favorite for product id: \(product.id)")
+    }
     
     func goToDetails(item cell: ProductCollectionCell){
         let selectedProduct = viewModel.getProducts()[cell.indexPath?.row ?? 0]
+
         let isFavorited = favoriteProductIDs.contains(selectedProduct.id ?? 0)
     
         coordinator?.goToProductInfo(productId: selectedProduct.id ?? 0, isFav: isFavorited)
 }
+
 }
 
 extension CategoryViewController: UISearchBarDelegate {

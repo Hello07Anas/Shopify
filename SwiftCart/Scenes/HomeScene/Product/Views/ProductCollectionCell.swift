@@ -8,9 +8,22 @@
 import UIKit
 
 protocol ProductCollectionCellDelegate: AnyObject {
-    func deleteFavoriteTapped(for cell: ProductCollectionCell)
-    func saveToFavorite(foe cell: ProductCollectionCell)
+    func deleteFavoriteTapped(for cell: ProductCollectionCell, completion: @escaping () -> Void)
+    func saveToFavorite(for cell: ProductCollectionCell, completion: @escaping () -> Void)
     func goToDetails(item cell: ProductCollectionCell)
+}
+
+extension ProductCollectionCellDelegate {
+    func deleteFavoriteTapped(for cell: ProductCollectionCell, completion: @escaping () -> Void) {
+        completion()
+    }
+
+    func saveToFavorite(for cell: ProductCollectionCell, completion: @escaping () -> Void) {
+        completion()
+    }
+
+    func goToDetails(item cell: ProductCollectionCell) {
+    }
 }
 
 class ProductCollectionCell: UICollectionViewCell {
@@ -62,43 +75,59 @@ class ProductCollectionCell: UICollectionViewCell {
         delegate?.goToDetails(item: self)
     }
     
-    @IBAction func addToFavBtn(_ sender: Any) {
-        if isCellNowFav {
-            deleteItemFromFavScreen()
-        } else if isCellNowCategorie {
-            //print("isCellNowCategorie")
-            if isFavorited {
-                deleteItemFromFavScreen()
-            } else {
-                delegate?.saveToFavorite(foe: self)
-                isFavorited = true
-                setButtonImage(isFavorited: isFavorited)
+    @IBAction func addToFavBtn(_ sender: UIButton) {
+        if UserDefaultsHelper.shared.getUserData().name != nil {
+            sender.configuration?.showsActivityIndicator = true
+            sender.isEnabled = false
+            if isCellNowFav {
+                deleteItemFromFavScreen {
+                    sender.configuration?.showsActivityIndicator = false
+                    sender.isEnabled = true
+                }
+            } else if isCellNowCategorie || isCellNowHome {
+                if isFavorited {
+                    deleteItemFromFavScreen {
+                        sender.configuration?.showsActivityIndicator = false
+                        sender.isEnabled = true
+                    }
+                } else {
+                    delegate?.saveToFavorite(for: self) {
+                        self.isFavorited = true
+                        self.setButtonImage(isFavorited: self.isFavorited)
+                        sender.configuration?.showsActivityIndicator = false
+                        sender.isEnabled = true
+                    }
+                }
             }
-        } else if isCellNowHome {
-            if isFavorited {
-                deleteItemFromFavScreen()
-            } else {
-                delegate?.saveToFavorite(foe: self)
-                isFavorited = true
-                setButtonImage(isFavorited: isFavorited)
-            }
+        } else {
+            Utils.showAlert(title: "Sorry, you don't have an account",
+                            message: "Please log in first to use this feature.",
+                            preferredStyle: .alert,
+                            from: self.parentViewController!)
         }
+
     }
     
-    func deleteItemFromFavScreen() {
+    
+    func deleteItemFromFavScreen(completion: @escaping () -> Void) {
         let yes = UIAlertAction(title: "Yes", style: .default, handler: { _ in
-            self.delegate?.deleteFavoriteTapped(for: self)
-            self.isFavorited = false
-            self.setButtonImage(isFavorited: self.isFavorited)
+            self.delegate?.deleteFavoriteTapped(for: self) {
+                self.isFavorited = false
+                self.setButtonImage(isFavorited: self.isFavorited)
+                completion()
+            }
         })
-        let no = UIAlertAction(title: "No", style: .cancel, handler: nil)
+        let no = UIAlertAction(title: "No", style: .cancel, handler: { _ in
+            completion()
+        })
         
         if let viewController = self.contentView.parentViewController {
             Utils.showAlert(title: "Confirmation", message: "Are you sure you want to remove \(self.ProductName.text!) from your favorites? This action cannot be undone.", preferredStyle: .alert, from: viewController, actions: [yes, no])
+        } else {
+            completion()
         }
-        
-        
     }
+
     
     func setButtonImage(isFavorited: Bool) {
         // TODO: Bougs here >><< when scroll the fill reused again

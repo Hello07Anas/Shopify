@@ -32,7 +32,7 @@ struct FavCRUD {
         let draft_order: DraftOrder
     }
 
-    func saveItem(favId: Int, itemId: Int, itemImg: String, itemName: String, itemPrice: Double) {
+    func saveItem(favId: Int, itemId: Int, itemImg: String, itemName: String, itemPrice: Double, completion: @escaping (Bool) -> Void) {
         let lineItem = LineItem(id: nil, quantity: 1, price: String(format: "%.2f", itemPrice), title: itemName, properties: [
             ["name": "image", "value": itemImg],
             ["name": "itemId", "value": String(itemId)]
@@ -44,14 +44,17 @@ struct FavCRUD {
 
             let updateRequest = DraftOrderUpdateRequest(draft_order: updatedDraftOrder)
 
-            self.updateDraftOrder(favId: favId, updateRequest: updateRequest)
+            self.updateDraftOrder(favId: favId, updateRequest: updateRequest) { success in
+                completion(success)
+            }
         }
     }
 
-    func deleteItem(favId: Int, itemId: Int) {
+    func deleteItem(favId: Int, itemId: Int, completion: @escaping (Bool) -> Void) {
         getDraftOrder(favId: favId) { draftOrder in
             guard var updatedDraftOrder = draftOrder else {
                 print("No draft order found")
+                completion(false)
                 return
             }
 
@@ -61,12 +64,17 @@ struct FavCRUD {
                 updatedDraftOrder.line_items?.remove(at: index)
             } else {
                 print("Item with id \(itemId) not found in line_items")
+                completion(false)
+                return
             }
 
             let updateRequest = DraftOrderUpdateRequest(draft_order: updatedDraftOrder)
-            self.updateDraftOrder(favId: favId, updateRequest: updateRequest)
+            self.updateDraftOrder(favId: favId, updateRequest: updateRequest) { success in
+                completion(success)
+            }
         }
     }
+
 
     func readItems(favId: Int, completion: @escaping ([LineItem]) -> Void) {
         getDraftOrder(favId: favId) { draftOrder in
@@ -96,7 +104,7 @@ struct FavCRUD {
 
 
 
-    private func getDraftOrder(favId: Int, completion: @escaping (DraftOrder?) -> Void) {
+    func getDraftOrder(favId: Int, completion: ((DraftOrder?) -> Void)? = nil) {
         let endpoint = "/\(favId).json"
         AF.request(baseUrl + endpoint, method: .get, headers: ["X-Shopify-Access-Token": accessToken])
             .validate()
@@ -111,19 +119,19 @@ struct FavCRUD {
                         let decoder = JSONDecoder()
                         decoder.dateDecodingStrategy = .iso8601
                         let draftOrderResponse = try decoder.decode(DraftOrderResponse.self, from: data)
-                        completion(draftOrderResponse.draft_order)
+                        completion?(draftOrderResponse.draft_order)
                     } catch {
                         print("Failed to decode draft order:", error)
-                        completion(nil)
+                        completion?(nil)
                     }
                 case .failure(let error):
                     print("Failed to fetch draft order:", error)
-                    completion(nil)
+                    completion?(nil)
                 }
             }
     }
-
-    private func updateDraftOrder(favId: Int, updateRequest: DraftOrderUpdateRequest) {
+    
+    func updateDraftOrder(favId: Int, updateRequest: DraftOrderUpdateRequest, completion: ((Bool) -> Void)? = nil) {
         let endpoint = "/\(favId).json"
         AF.request(baseUrl + endpoint, method: .put, parameters: updateRequest, encoder: JSONParameterEncoder.default, headers: ["X-Shopify-Access-Token": accessToken])
             .validate()
@@ -135,12 +143,16 @@ struct FavCRUD {
                         decoder.dateDecodingStrategy = .iso8601
                         let updatedDraftOrder = try decoder.decode(DraftOrderResponse.self, from: data)
                         print("Successfully updated draft order:", updatedDraftOrder.draft_order)
+                        completion?(true)
                     } catch {
                         print("Failed to decode updated draft order:", error)
+                        completion?(false)
                     }
                 case .failure(let error):
                     print("Failed to update draft order:", error)
+                    completion?(false)
                 }
             }
     }
+
 }
