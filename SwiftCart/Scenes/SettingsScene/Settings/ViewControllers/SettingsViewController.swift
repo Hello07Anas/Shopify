@@ -104,7 +104,7 @@ extension SettingsViewController : UITableViewDataSource, UITableViewDelegate {
         case 1:
             coordinator?.goToCurrency()
         case 2:
-            // TODO: handle About Us
+            coordinator?.goToAboutUs()
             return
         default:
             coordinator?.goToContactUs()

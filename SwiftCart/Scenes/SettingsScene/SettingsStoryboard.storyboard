@@ -1160,6 +1160,108 @@
             </objects>
             <point key="canvasLocation" x="5193" y="1345"/>
         </scene>
+        <!--About Us-->
+        <scene sceneID="eBs-Kd-4Fo">
+            <objects>
+                <viewController storyboardIdentifier="AboutUsViewController" id="nCE-ep-ZMM" customClass="AboutUsViewController" customModule="SwiftCart" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="hfM-8c-lFr">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="teammembers" translatesAutoresizingMaskIntoConstraints="NO" id="Wtq-QK-QaT">
+                                <rect key="frame" x="16" y="102" width="382" height="224"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hZn-Pf-EcQ">
+                                <rect key="frame" x="16" y="342" width="382" height="54"/>
+                                <string key="text">Our ITI Graduation Project Application. Feel free to open an issue if you found anything wrong, or contribute to add a new feature.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Team Members:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vhi-sm-NNh">
+                                <rect key="frame" x="16" y="412" width="137.5" height="21.5"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="s2V-Be-GNw">
+                                <rect key="frame" x="16" y="441.5" width="382" height="94"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Anas Salah" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ziZ-kH-QYr">
+                                        <rect key="frame" x="0.0" y="0.0" width="382" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ahmed Osman" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ws4-zF-8in">
+                                        <rect key="frame" x="0.0" y="24.5" width="382" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Elham Mohamed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hw5-bh-rjz">
+                                        <rect key="frame" x="0.0" y="49" width="382" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Israa Muhammed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aVq-P2-KX4">
+                                        <rect key="frame" x="0.0" y="73.5" width="382" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About Us" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b61-fE-WkK">
+                                <rect key="frame" x="83" y="64" width="248" height="22"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cy0-N3-bOG">
+                                <rect key="frame" x="16" y="56" width="40" height="38"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="38" id="fSl-Jp-mRq"/>
+                                </constraints>
+                                <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" image="chevron.backward" catalog="system" title=""/>
+                                <connections>
+                                    <action selector="backBtn:" destination="nCE-ep-ZMM" eventType="touchUpInside" id="bfC-Mn-BdF"/>
+                                    <action selector="backBtn:" destination="XCG-cQ-MCB" eventType="touchUpInside" id="f6A-l3-a6w"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="A16-c8-SvF"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Vhi-sm-NNh" firstAttribute="leading" secondItem="A16-c8-SvF" secondAttribute="leading" constant="16" id="0GP-bX-NCG"/>
+                            <constraint firstItem="b61-fE-WkK" firstAttribute="width" secondItem="A16-c8-SvF" secondAttribute="width" multiplier="0.6" id="6Xb-HZ-YY8"/>
+                            <constraint firstItem="s2V-Be-GNw" firstAttribute="leading" secondItem="A16-c8-SvF" secondAttribute="leading" constant="16" id="GfU-vt-c1y"/>
+                            <constraint firstItem="A16-c8-SvF" firstAttribute="trailing" secondItem="Wtq-QK-QaT" secondAttribute="trailing" constant="16" id="JwJ-lr-TZe"/>
+                            <constraint firstItem="b61-fE-WkK" firstAttribute="top" secondItem="A16-c8-SvF" secondAttribute="top" constant="16" id="NLF-Hu-wAY"/>
+                            <constraint firstItem="s2V-Be-GNw" firstAttribute="top" secondItem="Vhi-sm-NNh" secondAttribute="bottom" constant="8" id="Rg8-0I-a0c"/>
+                            <constraint firstItem="A16-c8-SvF" firstAttribute="trailing" secondItem="s2V-Be-GNw" secondAttribute="trailing" constant="16" id="Z7J-cP-S6s"/>
+                            <constraint firstItem="b61-fE-WkK" firstAttribute="centerX" secondItem="A16-c8-SvF" secondAttribute="centerX" id="ZLa-qx-6N8"/>
+                            <constraint firstItem="Cy0-N3-bOG" firstAttribute="leading" secondItem="A16-c8-SvF" secondAttribute="leading" constant="16" id="bpY-9w-cMK"/>
+                            <constraint firstItem="hZn-Pf-EcQ" firstAttribute="top" secondItem="Wtq-QK-QaT" secondAttribute="bottom" constant="16" id="eN0-ph-ews"/>
+                            <constraint firstItem="Wtq-QK-QaT" firstAttribute="leading" secondItem="A16-c8-SvF" secondAttribute="leading" constant="16" id="jgJ-ND-HHZ"/>
+                            <constraint firstItem="A16-c8-SvF" firstAttribute="trailing" secondItem="hZn-Pf-EcQ" secondAttribute="trailing" constant="16" id="mis-Hk-TjR"/>
+                            <constraint firstItem="b61-fE-WkK" firstAttribute="centerY" secondItem="Cy0-N3-bOG" secondAttribute="centerY" id="sqB-wQ-jpm"/>
+                            <constraint firstItem="hZn-Pf-EcQ" firstAttribute="leading" secondItem="A16-c8-SvF" secondAttribute="leading" constant="16" id="uEj-Eh-oYu"/>
+                            <constraint firstItem="Wtq-QK-QaT" firstAttribute="top" secondItem="b61-fE-WkK" secondAttribute="bottom" constant="16" id="voh-bz-hSr"/>
+                            <constraint firstItem="Wtq-QK-QaT" firstAttribute="height" secondItem="hfM-8c-lFr" secondAttribute="height" multiplier="0.25" id="wyE-5o-zMK"/>
+                            <constraint firstItem="Vhi-sm-NNh" firstAttribute="top" secondItem="hZn-Pf-EcQ" secondAttribute="bottom" constant="16" id="xXo-Vh-0yd"/>
+                            <constraint firstItem="Cy0-N3-bOG" firstAttribute="top" secondItem="A16-c8-SvF" secondAttribute="top" constant="8" id="yPy-ar-Tz5"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="About Us" id="YPb-Wn-DSx"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Nuw-Tj-uxx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1967" y="-12"/>
+        </scene>
     </scenes>
     <resources>
         <image name="applelogo" catalog="system" width="105" height="128"/>
@@ -1172,6 +1274,7 @@
         <image name="gearshape.fill" catalog="system" width="128" height="123"/>
         <image name="heart" catalog="system" width="128" height="107"/>
         <image name="phone.fill" catalog="system" width="128" height="114"/>
+        <image name="teammembers" width="2000" height="2000"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

@@ -64,6 +64,12 @@ class SettingsCoordinator: Coordinator {
         currencyVC.coordinator = self
         navigationController.present(currencyVC, animated: false)
     }
+    func goToAboutUs() {
+        let storyboard = UIStoryboard(name: K.Settings.Settings_Storyboard_Name, bundle: nil)
+        let aboutUs = storyboard.instantiateViewController(withIdentifier: K.Settings.aboutUs_View_Name) as! AboutUsViewController
+        aboutUs.coordinator = self
+        navigationController.pushViewController(aboutUs, animated: true)
+    }
     
     func presentCitiesViewController(from viewController: UIViewController, onCitySelected: @escaping (String) -> Void) {
         let citiesVC = CitiesViewController()
