@@ -528,7 +528,7 @@ final class SwiftCartTests: XCTestCase {
     
     
     func testCannotDeleteDefaultAddress() throws {
-        let address = Address(
+        _ = Address(
             id: 8249939197999,
             customerID: 6930899632175,
             firstName: "Israa",
@@ -598,11 +598,11 @@ final class SwiftCartTests: XCTestCase {
 
             let testOrder = Order(
                 id: 1073460025,
-                orderNumber: "#122",
-                productNumber: 2,
+                orderNumber: 122,
+                productNumber: "2",
                 address: address,
                 date: "2024-05-14T21:19:37-04:00",
-                currency: .eur,
+                currency: "EUR",
                 email: UserDefaults.standard.string(forKey: "userEmail") ?? "",
                 totalPrice: "290.00",
                 items: [
@@ -681,12 +681,12 @@ final class SwiftCartTests: XCTestCase {
 
         let testOrder = Order(
             id: 1073460025,
-            orderNumber: "#122",
-            productNumber: 2,
+            orderNumber: 122,
+            productNumber: "2",
             address: address,
            // phone: "011123456789",
             date: "2024-05-14T21:19:37-04:00",
-            currency: .eur,
+            currency: "EUR",
             email: UserDefaults.standard.string(forKey: "userEmail") ?? "",
             totalPrice: "290.00",
             items: [
@@ -726,71 +726,69 @@ final class SwiftCartTests: XCTestCase {
     }
 
     
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//   ///////
+    
+    
+    
+    
+    
 //    func testPutAPI_Success() throws {
-//        // Arrange
-//        let customerID = K.Shopify.userID
-//        let endpoint = K.endPoints.putOrDeleteAddress.rawValue
-//            .replacingOccurrences(of: "{customer_id}", with: customerID)
-//            .replacingOccurrences(of: "{address_id}", with: "8249939197999")
-//        
-//        let address = Address(
-//            firstName: "Israa",
-//            lastName: "Mhmmd",
-//            address1: "13-street",
-//            city: "cairo",
-//            country: "Egypt",
-//            phone: "015515529391"
-//        )
-//        
-//        let jsonData = """
-//        {
-//            "customer_address": {
-//                "id": 8249939197999,
-//                "customer_id": 6930899632175,
-//                "first_name": "Israa",
-//                "last_name": "Mhmmd",
-//                "address1": "13-street",
-//                "city": "cairo",
-//                "country": "Egypt",
-//                "phone": "015515529391",
-//                "is_default": true
-//            }
-//        }
-//        """.data(using: .utf8)!
-//        
-//        // Mock session setup
+//           // Arrange
+//
+//           let endpoint = "customers/6930899632175/addresses/8249939197999/default.json"
+//           
+//           let address = Address(
+//            id: 8249939197999,
+//            customerID: 6930899632175,
+//               firstName: "Israa",
+//               lastName: "Mhmmd",
+//               address1: "13-street",
+//               city: "cairo",
+//               country: "Egypt",
+//               phone: "015515529391",
+//               isDefault: true
+//           )
+//           
+//           let jsonData = """
+//           {
+//               "customer_address": {
+//                   "id": 8249939197999,
+//                   "customer_id": 6930899632175,
+//                   "first_name": "Israa",
+//                   "last_name": "Mhmmd",
+//                   "address1": "13-street",
+//                   "city": "cairo",
+//                   "country": "Egypt",
+//                   "phone": "015515529391",
+//                   "is_default": true
+//               }
+//           }
+//           """.data(using: .utf8)!
+//           
+//           // Stub the network response
+////           stub(condition: isPath(endpoint)) { _ in
+////               return HTTPStubsResponse(data: jsonData, statusCode: 200, headers: nil)
+////           }
 //        mockSession.data = jsonData
-//        let expectation = XCTestExpectation(description: "API call succeeds")
-//        
-//            service.put(endpoint: endpoint, body: ["address": address], responseType: CustomAddress.self)
-//                        .observeOn(MainScheduler.instance)
-//                        .subscribe(onNext: { (success, message, responseAddress) in
-//                            print(success)
-//                            print(message)
-//                            print(responseAddress)
-//                            XCTAssertTrue(success, "Expected successful response, but got: \(message ?? "")")
-//                            XCTAssertEqual(responseAddress?.customer_address.city, address.city)
-//                            XCTAssertEqual(responseAddress?.customer_address.phone, address.phone)
-//                            expectation.fulfill()
-//                        }, onError: { error in
-//                           
-//                XCTFail("Expected successful response, but got error: \(error)")
-//            })
-//            .disposed(by: disposeBag)
-//        
-//        // Wait for the expectation to be fulfilled
-//        wait(for: [expectation], timeout: 100) // Adjust timeout as needed
-//    }
-
-
+//           let expectation = XCTestExpectation(description: "API call succeeds")
+//           
+//           // Act
+//           service.put(endpoint: endpoint, body: ["address": address], responseType: CustomAddress.self)
+//               .observeOn(MainScheduler.instance)
+//               .subscribe(onNext: { (success, message, responseAddress) in
+//                   print(success)
+//                   // Assert
+//                   XCTAssertTrue(success, "Expected successful response, but got: \(message ?? "")")
+//                   XCTAssertEqual(responseAddress?.customer_address.city, address.city)
+//                   XCTAssertEqual(responseAddress?.customer_address.phone, address.phone)
+//                   expectation.fulfill()
+//               }, onError: { error in
+//                   XCTFail("Expected successful response, but got error: \(error)")
+//               })
+//               .disposed(by: disposeBag)
+//           
+//           // Wait for the expectation to be fulfilled
+//           wait(for: [expectation], timeout: 10) // Adjust timeout as needed
+//       }
 }
 
 

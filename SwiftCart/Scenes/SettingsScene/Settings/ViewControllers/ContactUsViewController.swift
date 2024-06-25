@@ -9,7 +9,7 @@ import UIKit
 import MapKit
 
 class ContactUsViewController: UIViewController {
-    weak var coordinator: SettingsCoordinator? // TODO: Dont touch it
+    weak var coordinator: SettingsCoordinator?
 
     @IBOutlet weak var mapView: MKMapView!
     override func viewDidLoad() {

@@ -274,30 +274,23 @@ class CategoryViewController: UIViewController, UICollectionViewDataSource, UICo
 
 extension CategoryViewController: ProductCollectionCellDelegate {
     func saveToFavorite(for cell: ProductCollectionCell, completion: @escaping() -> Void) {
-        guard let indexPath = cell.indexPath else {
-            print("No index path found for cell")
-            completion()
-            return
-        }
-        let product = products[indexPath.item]
-        let favId = Int(UserDefaultsHelper.shared.getUserData().favID ?? "0")
-        favCRUD.saveItem(favId: favId!, itemId: product.id ?? 0, itemImg: product.image?.src ?? "", itemName: product.title ?? "", itemPrice: Double(product.variants?[0]?.price ?? "") ?? 70.0) { success in
-            if success {
-                self.favoriteProductIDs.insert(product.id ?? 0)
-                cell.isFavorited = true
-            }
-            let product = self.products[indexPath.item]
-            let favId = Int(UserDefaultsHelper.shared.getUserData().favID ?? "0")
-            self.favCRUD.saveItem(favId: favId!, itemId: product.id ?? 0, itemImg: product.image?.src ?? "https://cdn.shopify.com/s/files/1/0624/0239/6207/collections/97a3b1227876bf099d279fd38290e567.jpg?v=1716812402", itemName: product.title ?? "", itemPrice: Double(product.variants?[0]?.price ?? "") ?? 70.0, completion: {_ in })
-            //print("save to favorite for product id: \(product.id)")
-            self.favoriteProductIDs.insert(product.id ?? 0)
-            cell.isFavorited = true
-            
-            completion()
-        }
-        //print("save to favorite for product id: \(product.id)")
-    }
-
+           guard let indexPath = cell.indexPath else {
+               print("No index path found for cell")
+               completion()
+               return
+           }
+           
+           let product = products[indexPath.item]
+           let favId = Int(UserDefaultsHelper.shared.getUserData().favID ?? "0")
+           favCRUD.saveItem(favId: favId!, itemId: product.id ?? 0, itemImg: product.image?.src ?? "https://cdn.shopify.com/s/files/1/0624/0239/6207/collections/97a3b1227876bf099d279fd38290e567.jpg?v=1716812402", itemName: product.title ?? "", itemPrice: Double(product.variants?[0]?.price ?? "") ?? 70.0) { success in
+               if success {
+                   self.favoriteProductIDs.insert(product.id ?? 0)
+                   cell.isFavorited = true
+               }
+           completion()
+           }
+           //print("save to favorite for product id: \(product.id)")
+       }
     func deleteFavoriteTapped(for cell: ProductCollectionCell, completion: @escaping() -> Void) {
         guard let indexPath = cell.indexPath else {
             print("No index path found for cell")

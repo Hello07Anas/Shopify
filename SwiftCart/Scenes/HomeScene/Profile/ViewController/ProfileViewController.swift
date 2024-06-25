@@ -16,6 +16,13 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var email: UILabel!
     @IBOutlet weak var userName: UILabel!
     
+    @IBOutlet weak var checkView: UIView!
+    @IBOutlet weak var checkBtn: UIButton!
+    @IBOutlet weak var labelView1: UILabel!
+    @IBOutlet weak var labelView2: UILabel!
+    @IBOutlet weak var imgView: UIImageView!
+    @IBOutlet weak var emptyFavListImg: UIImageView!
+    @IBOutlet weak var emptyOrder: UIImageView!
     @IBOutlet weak var orderNum: UILabel!
     @IBOutlet weak var ProductNum: UILabel!
     @IBOutlet weak var address: UILabel!
@@ -26,21 +33,33 @@ class ProfileViewController: UIViewController {
     var productsList: [ProductDumy] = []
     var products: [ProductDumy] = []
     let favCRUD = FavCRUD()
+    
+    
+    
+    var noConnectionCase = TestPojo(img: "No-Internet--Streamline-Bruxelles", title: "Whooops!", dec: "No internet connection found check your connection.", btnTitle: "TRY AGAIN")
+    var notLoggedInCase = TestPojo(img: "No-Search-Results-Found-2--Streamline-Bruxelles", title: "Not Logged In", dec: "Please log in to access this feature.", btnTitle: "Log In")
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
         orderViewModel.getOrdersList(completion: { [self]_ in
             
             let orderDetails = self.orderViewModel.getFirstOrder()
-            print(orderDetails)
             
-            ProductNum.text = "\(orderDetails?.productNumber ?? "")"
-            orderNum.text = "\(orderDetails?.orderNumber! ?? 0)"
-            self.address.text = "\(String(describing: orderDetails?.address!.address1 ?? "")) \(String(describing: orderDetails?.address!.city ?? ""))"
-            
-            date.text = Utils.extractDate(from:  orderDetails?.date ?? "2024-05-27T08:25:00-04:00")
-            //TODO: formatAsCurrency
-            price.text = "\(orderDetails?.totalPrice ?? "")  \(orderDetails?.currency.rawValue ?? "")"
+            if orderDetails?.address?.city == "" || orderDetails?.address?.city == nil{
+                emptyOrder.isHidden = false
+            }
+            else{
+                emptyOrder.isHidden = true
+                ProductNum.text = "\(orderDetails?.productNumber ?? "")"
+                orderNum.text = "\(orderDetails?.orderNumber! ?? 0)"
+                self.address.text = "\(String(describing: orderDetails?.address!.address1 ?? "")) \(String(describing: orderDetails?.address!.city ?? ""))"
+                
+                date.text = Utils.extractDate(from:  orderDetails?.date ?? "2024-05-27T08:25:00-04:00")
+                //TODO: formatAsCurrency
+                price.text = "\(orderDetails?.totalPrice ?? "")  \(orderDetails?.currency ?? "")"
+            }
         })
         FavCollectionView.register(UINib(nibName: "ProductCollectionCell", bundle: nil), forCellWithReuseIdentifier: "ProductCell")
 
@@ -52,13 +71,45 @@ class ProfileViewController: UIViewController {
         
         
     }
+    @IBAction func checkCase(_ sender: Any) {
+        if !Utils.isNetworkReachableTest(){
+            coordinator?.gotoHome(isThereConnection: Utils.isNetworkReachableTest())
+        }
+        else if(UserDefaultsHelper.shared.getUserData().name == nil){
+            coordinator?.gotoLogin(pushToStack: true)
+        }
+        
+    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        if(!(Utils.isNetworkReachableTest())){
+            checkView.isHidden = false
+            imgView.image = UIImage(named: noConnectionCase.img)
+            labelView1.text = noConnectionCase.title
+            labelView2.text = noConnectionCase.dec
+            checkBtn.setTitle(noConnectionCase.btnTitle, for: .normal)
+            
+        }
+        else if(UserDefaultsHelper.shared.getUserData().name == nil){
+            checkView.isHidden = false
+            imgView.image = UIImage(named: notLoggedInCase.img)
+            labelView1.text = notLoggedInCase.title
+            labelView2.text = notLoggedInCase.dec
+            checkBtn.setTitle(notLoggedInCase.btnTitle, for: .normal)
+            
+        }
+        else{
+            checkView.isHidden = true
+            
+        }
+        
+
         fetchFavoriteItems()
         userName.text = "Welcome, \(String(describing: UserDefaultsHelper.shared.getUserData().name ?? ""))👋"
         email.text = UserDefaultsHelper.shared.getUserData().email
-     
+        
         
     }
 
@@ -78,6 +129,12 @@ class ProfileViewController: UIViewController {
                     self?.products = Array(self?.productsList.prefix(4) ?? [])
                 } else {
                     self?.products = self?.productsList ?? []
+                }
+                if self?.products.count == 0{
+                    self?.emptyFavListImg.isHidden = false
+                }
+                else{
+                    self?.emptyFavListImg.isHidden = true
                 }
                 self?.FavCollectionView.reloadData()
             }
@@ -203,4 +260,16 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout, UICollectio
         coordinator?.goToProductInfo(productId: product.itemId, isFav: product.isFavorited)
     }
 }
+
+struct TestPojo {
+    var img: String
+    var title: String
+    var dec: String
+    var btnTitle: String
+}
+
+
+
+
+
 

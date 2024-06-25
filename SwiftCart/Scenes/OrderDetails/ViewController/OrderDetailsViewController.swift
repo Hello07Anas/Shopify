@@ -34,7 +34,7 @@ class OrderDetailsViewController: UIViewController {
             address.text = "\(orderDetails!.address!.address1!) \(orderDetails!.address!.city!)"
             date.text = Utils.extractDate(from:  orderDetails?.date ?? "2024-05-27T08:25:00-04:00")
             //TODO: formatAsCurrency
-            price.text = "\(orderDetails!.totalPrice)  \(orderDetails!.currency.rawValue)"
+            price.text = "\(orderDetails!.totalPrice)  \(orderDetails!.currency ?? "")"
             
             phone.text = orderDetails?.address!.phone
             
@@ -64,7 +64,7 @@ class OrderDetailsViewController: UIViewController {
             let order = orderDetails?.items[indexPath.section]
             cell?.productTitle.text = order?.title
             //TODO: formatAsCurrency
-            cell?.price.text = "\(order!.price) \(orderDetails!.currency.rawValue)"
+            cell?.price.text = "\(order!.price) \(orderDetails!.currency ?? "")"
             cell?.quantity.text = "\(order!.quantity)"
             if let imageUrl = URL(string: order?.image ?? "9") {
                 cell?.img.sd_setImage(with: imageUrl, placeholderImage: UIImage(named: "9"))

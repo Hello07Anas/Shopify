@@ -16,7 +16,6 @@ class ShippingViewController: UIViewController {
     @IBOutlet weak var discountPercentage: UILabel!
     @IBOutlet weak var cashBtn: UIButton!
     @IBOutlet weak var grandTotalPrice: UILabel!
-    @IBOutlet weak var subTotalLabel: UILabel!
     @IBOutlet weak var AddressTextField: UITextField!
     @IBOutlet weak var promocodeTextField: UITextField!
     var coordinator: SettingsCoordinator?
@@ -121,6 +120,7 @@ class ShippingViewController: UIViewController {
             }else{
                 createAndAddOrder()
                 viewModel.deleteLineItems()
+                coordinator?.finish()
             }
         }
     }
@@ -156,14 +156,14 @@ class ShippingViewController: UIViewController {
     
     private func createAndAddOrder() {
         guard let selectedAddress = selectedAddress else { return }
-        var prouductNum = viewModel.draftOrder?.singleResult?.lineItems.count ?? 1
+        let prouductNum = viewModel.draftOrder?.singleResult?.lineItems.count ?? 1
         let newOrder = Order(
             id: nil,
             orderNumber: viewModel.draftOrder?.singleResult?.id,
             productNumber: "\(String(describing: (prouductNum-1)))",
             address: selectedAddress,
             date: getCurrentDateString(),
-            currency: MyCurrency(rawValue: (viewModel.draftOrder?.singleResult?.currency)!) ?? MyCurrency.eur,
+            currency: UserDefaultsHelper.shared.getCurrencyType() ?? "USD",
             email: UserDefaults.standard.string(forKey: "userEmail") ?? "",
             totalPrice: viewModel.GrandPrice ?? "0.0",
             items: viewModel.draftOrder?.singleResult?.lineItems.dropFirst().map { lineItem in

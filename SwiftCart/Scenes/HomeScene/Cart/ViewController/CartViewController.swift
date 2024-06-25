@@ -12,8 +12,18 @@ class CartViewController: UIViewController {
     weak var coordinator: AppCoordinator?
     let viewModel = CartViewModel(network: NetworkManager.shared)
 
+    @IBOutlet weak var checkView: UIView!
+    @IBOutlet weak var checkBtn: UIButton!
+    @IBOutlet weak var labelView1: UILabel!
+    @IBOutlet weak var labelView2: UILabel!
+    @IBOutlet weak var imgView: UIImageView!
+    @IBOutlet weak var emptyOrdersListImg: UIImageView!
     @IBOutlet weak var cartTableView: UITableView!
     @IBOutlet weak var totalPrice: UILabel!
+    
+    var noConnectionCase = TestPojo(img: "No-Internet--Streamline-Bruxelles", title: "Whooops!", dec: "No internet connection found check your connection.", btnTitle: "TRY AGAIN")
+    var notLoggedInCase = TestPojo(img: "No-Search-Results-Found-2--Streamline-Bruxelles", title: "Not Logged In", dec: "Please log in to access this feature.", btnTitle: "Log In")
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +36,7 @@ class CartViewController: UIViewController {
         viewModel.bindCartProducts = { [weak self] in
             DispatchQueue.main.async {
                 self?.cartTableView.reloadData()
+                self?.emptylist()
             }
         }
         viewModel.updateTotalPrice = { [weak self] totalPriceText in
@@ -40,11 +51,63 @@ class CartViewController: UIViewController {
         
     }
     
+    @IBAction func checkCase(_ sender: Any) {
+        if !Utils.isNetworkReachableTest(){
+            coordinator?.gotoHome(isThereConnection: Utils.isNetworkReachableTest())
+        }
+        else if(UserDefaultsHelper.shared.getUserData().name == nil){
+            coordinator?.gotoLogin(pushToStack: true)
+        }
+        
+    }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        if(!(Utils.isNetworkReachableTest())){
+            checkView.isHidden = false
+            imgView.image = UIImage(named: noConnectionCase.img)
+            labelView1.text = noConnectionCase.title
+            labelView2.text = noConnectionCase.dec
+            checkBtn.setTitle(noConnectionCase.btnTitle, for: .normal)
+            
+        }
+        else if(UserDefaultsHelper.shared.getUserData().name == nil){
+            checkView.isHidden = false
+            imgView.image = UIImage(named: notLoggedInCase.img)
+            labelView1.text = notLoggedInCase.title
+            labelView2.text = notLoggedInCase.dec
+            checkBtn.setTitle(notLoggedInCase.btnTitle, for: .normal)
+            
+        }
+        else{
+            checkView.isHidden = true
+            
+        }
+        viewModel.bindCartProducts = { [weak self] in
+            DispatchQueue.main.async {
+                self?.cartTableView.reloadData()
+                self?.emptylist()
+            }
+        }
         viewModel.getCartProductsList()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        viewModel.bindCartProducts = { [weak self] in
+            DispatchQueue.main.async {
+                self?.emptylist()
+                self?.cartTableView.reloadData()
+            }
+        }
+        viewModel.getCartProductsList()
+    }
+    func emptylist(){
+        if viewModel.getCartProductCount() == 0{
+            emptyOrdersListImg.isHidden = false
+        }
+            else{
+                emptyOrdersListImg.isHidden = true
+        }
+    }
     @IBAction func checkoutBtn(_ sender: Any) {
         coordinator?.goToShipping()
     }

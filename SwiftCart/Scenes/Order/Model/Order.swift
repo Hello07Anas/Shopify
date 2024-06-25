@@ -23,7 +23,7 @@ struct Order: Codable {
     var address: Address?
    // var phone: String?
     var date: String
-    var currency: MyCurrency
+    var currency: String?
     var email: String
     var totalPrice: String
     var items: [ItemProductOrder]
@@ -48,9 +48,9 @@ struct Order: Codable {
     }
 }
 
-enum MyCurrency: String, Codable {
-    case eur = "EUR"
-}
+//enum MyCurrency: String, Codable {
+//    case eur = "EUR"
+//}
 
 // MARK: - LineItem
 struct ItemProductOrder: Codable {

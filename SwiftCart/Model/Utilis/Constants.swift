@@ -38,6 +38,7 @@ public enum K {
         static let Order_View_Name = "OrderViewController"
         static let OrderDetails_View_Name = "OrderDetailsViewController"
         static let shipping_View_Name = "ShippingViewController"
+        static let aboutUs_View_Name = "AboutUsViewController"
     }
     
     enum Shopify {

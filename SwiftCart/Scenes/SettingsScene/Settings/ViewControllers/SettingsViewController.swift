@@ -30,7 +30,11 @@ class SettingsViewController: UIViewController {
         if userData.email != nil {
             do {
                 try Auth.auth().signOut()
-                Utils.showAlert(title: "will miss you \(userData.name!)🥹", message: "See you soon!🥲", preferredStyle: .alert, from: self)
+                
+                let okBtn = UIAlertAction(title: "OK", style: .default) { _ in
+                    self.coordinator?.parentCoordinator?.gotoHome(isThereConnection: Utils.isNetworkReachableTest())
+                }
+                Utils.showAlert(title: "will miss you \(userData.name!)🥹", message: "See you soon!🥲", preferredStyle: .alert, from: self, actions: [okBtn])
                 logOutLoginBtn.setTitle("Login", for: .normal)
                 UserDefaultsHelper.shared.clearUserData()
             } catch let signOutError as NSError {
@@ -104,7 +108,7 @@ extension SettingsViewController : UITableViewDataSource, UITableViewDelegate {
         case 1:
             coordinator?.goToCurrency()
         case 2:
-            // TODO: handle About Us
+            coordinator?.goToAboutUs()
             return
         default:
             coordinator?.goToContactUs()
