@@ -23,8 +23,14 @@ class OrderViewModel{
         return ordersList ?? []
     }
     func getFirstOrder() -> Order? {
-        
-        return (ordersList?[0])
+        if getOrdersCount() == 0{
+            return  Order(productNumber: "", date: "", email: "", totalPrice: "", items: [])
+       
+            
+        }
+        else{
+            return (ordersList?[0]) ?? Order(productNumber: "", date: "", email: "", totalPrice: "", items: [])
+        }
     }
     
     func getOrdersCount() -> Int {
@@ -48,7 +54,7 @@ class OrderViewModel{
                 // Remove the first order if the list is not empty
                 var orders = response.orders
                 if !orders.isEmpty {
-                    orders.removeFirst()
+                   // orders.removeFirst()
                 }
                 
                 // Update the ordersList and notify observers

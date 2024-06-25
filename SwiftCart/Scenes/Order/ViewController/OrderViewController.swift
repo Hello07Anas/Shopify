@@ -67,7 +67,7 @@ extension OrderViewController: UITableViewDataSource, UITableViewDelegate {
         cell?.orderNum.text = "\(order!.orderNumber!)"//"\(order!.orderNumber!)"
         cell?.address.text = "\(order!.address!.address1!) \(order!.address!.city!)"
         cell?.date.text = Utils.extractDate(from: order?.date ?? "2024-05-27T08:25:00-04:00")
-        cell?.price.text = "\(order!.totalPrice) \(order!.currency.rawValue)"
+        cell?.price.text = "\(order!.totalPrice) \(order!.currency ?? "")"
         cell?.phone.text = order?.address!.phone
         return cell!
     }
