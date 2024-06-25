@@ -35,6 +35,7 @@ class ProfileViewController: UIViewController {
         FavCollectionView.dataSource = self
         setupOrderView()
         setupUserView()
+        setupCollectionViewLayout()
         
         var orderDetails = orderViewModel.getFirstOrder()
         
@@ -67,8 +68,8 @@ class ProfileViewController: UIViewController {
                 }
                 
                 // Ensure products array is not out of range
-                if self?.productsList.count ?? 0 >= 2 {
-                    self?.products = Array(self?.productsList.prefix(2) ?? [])
+                if self?.productsList.count ?? 0 >= 4 {
+                    self?.products = Array(self?.productsList.prefix(4) ?? [])
                 } else {
                     self?.products = self?.productsList ?? []
                 }
@@ -105,6 +106,7 @@ class ProfileViewController: UIViewController {
 }
 
 extension ProfileViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, ProductCollectionCellDelegate {
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return products.count
     }
@@ -128,33 +130,66 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout, UICollectio
         return CGSize(width: width, height: 150)
     }
 
-    func saveToFavorite(foe cell: ProductCollectionCell) {
-        // Implement your save to favorite functionality here
-    }
-
-    func deleteFavoriteTapped(for cell: ProductCollectionCell) {
+    func deleteFavoriteTapped(for cell: ProductCollectionCell, completion: @escaping () -> Void) {
         guard let indexPath = cell.indexPath else { return }
-
+        
         var product = products[indexPath.item]
         let favId = Int(UserDefaultsHelper.shared.getUserData().favID ?? "0")
-        favCRUD.deleteItem(favId: favId!, itemId: product.itemId)
-
-        product.isFavorited.toggle()
-        products.remove(at: indexPath.item)
-
-        if let indexInList = productsList.firstIndex(where: { $0.itemId == product.itemId }) {
-                productsList.remove(at: indexInList)
-            }
         
-        if self.productsList.count  >= 2 {
-            self.products = Array(self.productsList.prefix(2) )
+
+        favCRUD.deleteItem(favId: favId!, itemId: product.itemId) { success in
+            if success {
+                product.isFavorited.toggle()
+                self.products.remove(at: indexPath.item)
+                
+                if let indexInList = self.productsList.firstIndex(where: { $0.itemId == product.itemId }) {
+                    self.productsList.remove(at: indexInList)
+                }
+                
+               if self.productsList.count  >= 4 {
+            self.products = Array(self.productsList.prefix(4) )
         } else {
             self.products = self.productsList
+                
+                self.FavCollectionView.reloadData()
+            }
+            
+            completion()
+
         }
-        
-        self.FavCollectionView.reloadData()
-        
     }
+    func createProductsSectionLayout() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalWidth(0.5))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing:10)
+        
+        let horizontalGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.5))
+        let horizontalGroup = NSCollectionLayoutGroup.horizontal(layoutSize: horizontalGroupSize, subitems: [item])
+        
+        let verticalGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension:.fractionalWidth(0.5))
+        let verticalGroup = NSCollectionLayoutGroup.vertical(layoutSize: verticalGroupSize, subitems: [horizontalGroup])
+        
+        let section = NSCollectionLayoutSection(group: verticalGroup)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 4, bottom: 2, trailing: 4)
+        section.interGroupSpacing = 10
+        
+    
+        return section
+    }
+    
+    func setupCollectionViewLayout() {
+        let layout = UICollectionViewCompositionalLayout { sectionIndex, _ in
+            switch sectionIndex {
+            case 0:
+                return self.createProductsSectionLayout()
+           
+            default:
+                return nil
+            }
+        }
+        FavCollectionView.collectionViewLayout = layout
+    }
+
 
     func goToDetails(item cell: ProductCollectionCell) {
         let product = products[cell.indexPath?.item ?? 0]

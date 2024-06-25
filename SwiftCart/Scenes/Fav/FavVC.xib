@@ -11,6 +11,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FavVC" customModule="SwiftCart" customModuleProvider="target">
             <connections>
                 <outlet property="collectionView" destination="w4d-4b-6TB" id="UgV-cN-6if"/>
+                <outlet property="emptyImage" destination="Q8I-yK-6EK" id="5x1-ZG-Hfh"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -19,6 +20,9 @@
             <rect key="frame" x="0.0" y="0.0" width="430" height="932"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="Q8I-yK-6EK">
+                    <rect key="frame" x="0.0" y="59" width="430" height="873"/>
+                </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O9c-ih-e0N">
                     <rect key="frame" x="16" y="67" width="398" height="45"/>
                     <subviews>
@@ -61,18 +65,23 @@
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Q8I-yK-6EK" secondAttribute="trailing" id="22A-HU-SiS"/>
                 <constraint firstItem="O9c-ih-e0N" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="8" id="6oI-3X-SkC"/>
                 <constraint firstItem="w4d-4b-6TB" firstAttribute="top" secondItem="O9c-ih-e0N" secondAttribute="bottom" constant="4" id="Caa-p5-acP"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="O9c-ih-e0N" secondAttribute="trailing" constant="16" id="HbR-SR-7Rv"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="w4d-4b-6TB" secondAttribute="trailing" constant="16" id="KjI-Hi-ttP"/>
+                <constraint firstAttribute="bottom" secondItem="Q8I-yK-6EK" secondAttribute="bottom" id="M0w-cV-U8H"/>
+                <constraint firstItem="Q8I-yK-6EK" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="N7G-xf-wg2"/>
                 <constraint firstItem="w4d-4b-6TB" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="azQ-5X-hGM"/>
                 <constraint firstItem="O9c-ih-e0N" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="tU7-Sp-VZs"/>
+                <constraint firstItem="Q8I-yK-6EK" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="tgp-x6-gtZ"/>
                 <constraint firstItem="w4d-4b-6TB" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" constant="16" id="zsS-QV-IjW"/>
             </constraints>
             <point key="canvasLocation" x="122.79069767441861" y="-8.3690987124463518"/>
         </view>
     </objects>
     <resources>
+        <image name="0" width="275" height="183"/>
         <image name="chevron.backward" catalog="system" width="97" height="128"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

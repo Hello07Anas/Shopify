@@ -6,9 +6,10 @@
 //
   
 import UIKit
+import Reachability
     
 public struct Utils {
-    
+    let reachabilitTest = try! Reachability()
     static func convertTo<T: Decodable>(from data: Data)-> T?{
         
         do {
@@ -125,6 +126,18 @@ public struct Utils {
         }
         return dateString
     }
+    static  func isNetworkReachableTest() -> Bool {
+        //return reachabilitTest.connection != .unavailable
+        let r = try! Reachability()
+        switch r.connection{
+        case .wifi, .cellular:
+            
+            return true
+        case .unavailable:
+            return false
+        }
+    }
+    
 //  static func getDayOfWeek(from dateString: String) -> String? {
 //        let dateFormatter = DateFormatter()
 //        dateFormatter.dateFormat = "yyyy-MM-dd"

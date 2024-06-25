@@ -9,10 +9,12 @@ import UIKit
 
 class OrderViewController: UIViewController {
 
-    weak var coordinator: AppCoordinator?//SettingsCoordinator?
-    var viewModel : OrderViewModel?
+    weak var coordinator: AppCoordinator? // SettingsCoordinator?
+    var viewModel: OrderViewModel?
 
+    @IBOutlet weak var emotyImage: UIImageView!
     @IBOutlet weak var tableView: UITableView!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel = OrderViewModel()
@@ -21,59 +23,59 @@ class OrderViewController: UIViewController {
         viewModel?.bindOrder = { [weak self] in
             self?.tableView.reloadData()
         }
+        viewModel?.ordersUpdated = { [weak self] hasOrders in
+            self?.emotyImage.isHidden = hasOrders
+        }
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
-        viewModel?.getOrdersList()
+        super.viewWillAppear(animated)
+        viewModel?.getOrdersList { _ in }
     }
-        
+
     @IBAction func goToFav(_ sender: Any) {
         coordinator?.goToFav()
     }
-    
+
     @IBAction func backBtn(_ sender: Any) {
         coordinator?.finish()
     }
-    
-
-    
 }
 
-extension OrderViewController : UITableViewDataSource, UITableViewDelegate {
+extension OrderViewController: UITableViewDataSource, UITableViewDelegate {
+    
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel?.getOrdersCount() ?? 0
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-          guard let selectedOrder = viewModel?.getOrderByIndex(index: indexPath.row) else {
-              return
-          }
+        guard let selectedOrder = viewModel?.getOrderByIndex(index: indexPath.section) else {
+            return
+        }
         coordinator?.goToOrdersDerails(orderDetails: selectedOrder)
     }
 
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "OrderCell", for: indexPath) as? OrderTableViewCell
         let order = viewModel?.getOrderByIndex(index: indexPath.section)
         cell?.ProductNum.text = "\(order!.productNumber!)"
         cell?.orderNum.text = order?.orderNumber
         cell?.address.text = "\(order!.address!.address1!) \(order!.address!.city!)"
-        cell?.date.text =  Utils.extractDate(from:  order?.date ?? "2024-05-27T08:25:00-04:00")
-        print(order?.date ?? "")
-        //TODO: formatAsCurrency
-        cell?.price.text = "\(order!.totalPrice)  \(order!.currency.rawValue)"
+        cell?.date.text = Utils.extractDate(from: order?.date ?? "2024-05-27T08:25:00-04:00")
+        cell?.price.text = "\(order!.totalPrice) \(order!.currency.rawValue)"
         cell?.phone.text = order?.address!.phone
-        
-
         return cell!
     }
+
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 0.1// Adjust the height for the header between sections
-       }
-       
+        return 0.1 // Adjust the height for the header between sections
+    }
+
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         var label = UILabel()
         label.sizeThatFits(CGSize(width: 100.0, height: 8.0))
@@ -81,12 +83,6 @@ extension OrderViewController : UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-           return 100
-        // Set the desired cell height here
-       }
+        return 100 // Set the desired cell height here
     }
-    
-    
-    
-
-
+}
