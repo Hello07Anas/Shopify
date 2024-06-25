@@ -21,6 +21,7 @@ class ShippingViewController: UIViewController {
     var coordinator: SettingsCoordinator?
     var selectedAddress: Address?
     var viewModel = ShippingViewModel(network: NetworkManager.shared)
+    var orderViewModel = OrderViewModel()
     private let disposeBag = DisposeBag()
 
     override func viewDidLoad() {
@@ -117,6 +118,7 @@ class ShippingViewController: UIViewController {
             if  totalPrice > K.Shopify.CART_LIMIT_PRICE {
                 noCashOnDeliveryAvailable()
             }else{
+                createAndAddOrder()
                 viewModel.deleteLineItems()
             }
         }
@@ -125,6 +127,7 @@ class ShippingViewController: UIViewController {
     @IBAction func applePay(_ sender: Any) {
         if checkAddressSelected() {
             if let paymentVC = PKPaymentAuthorizationViewController(paymentRequest: createPaymentRequest()) {
+                createAndAddOrder()
                 paymentVC.delegate = self
                 present(paymentVC, animated: true, completion: nil)
             }
@@ -148,6 +151,50 @@ class ShippingViewController: UIViewController {
     
     private func noCashOnDeliveryAvailable() {
         Utils.showAlert(title: "Reached Price Limit", message: "Cash on delivery is not allowed on orders of total price higher than \(String (K.Shopify.CART_LIMIT_PRICE).formatAsCurrency()). Use Apple Pay instead.", preferredStyle: .alert, from: self)
+    }
+    
+    private func createAndAddOrder() {
+        guard let selectedAddress = selectedAddress else { return }
+        var prouductNum = viewModel.draftOrder?.singleResult?.lineItems.count ?? 1
+        let newOrder = Order(
+            id: nil,
+            orderNumber: viewModel.draftOrder?.singleResult?.id,
+            productNumber: "\(String(describing: (prouductNum-1)))",
+            address: selectedAddress,
+            date: getCurrentDateString(),
+            currency: MyCurrency(rawValue: (viewModel.draftOrder?.singleResult?.currency)!) ?? MyCurrency.eur,
+            email: UserDefaults.standard.string(forKey: "userEmail") ?? "",
+            totalPrice: viewModel.GrandPrice ?? "0.0",
+            items: viewModel.draftOrder?.singleResult?.lineItems.dropFirst().map { lineItem in
+                let imageUrl: String? = {
+                    if !lineItem.properties.isEmpty, lineItem.properties[0].name == "image" {
+                        return lineItem.properties[0].value
+                    }
+                    return nil
+                }()
+
+                return ItemProductOrder(
+                    id: lineItem.id,
+                    image: imageUrl,
+                    price: lineItem.productPrice,
+                    quantity: lineItem.quantity,
+                    title: lineItem.productTitle
+                )
+            } ?? [],
+            userID: Int(K.Shopify.userID),
+            billingAddress: selectedAddress,
+            customer: UserDefaultsHelper.shared.printUserDefaults()
+        )
+
+        orderViewModel.addNewOrder(newOrder: newOrder)
+    }
+
+    
+    func getCurrentDateString() -> String {
+        let dateFormatter = ISO8601DateFormatter()
+        dateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        let currentDate = Date()
+        return dateFormatter.string(from: currentDate)
     }
 }
 

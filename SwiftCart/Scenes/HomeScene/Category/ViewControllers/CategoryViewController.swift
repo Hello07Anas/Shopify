@@ -88,52 +88,52 @@ class CategoryViewController: UIViewController, UICollectionViewDataSource, UICo
 
         }    }
     @IBAction func filter(_ sender: Any) {
-        let address = Address(
-            id: nil,
-            customerID: nil,
-            firstName: "John",
-            lastName: "Doe",
-            address1: "123 Main St",
-            city: "Cairo",
-            country: "EG",
-            phone: "011123456789",
-            isDefault: true
-        )
-        
-        let billingAddress = Address(
-            id: nil,
-            customerID: nil,
-            firstName: "John",
-            lastName: "Doe",
-            address1: "123 Main St",
-            city: "Cairo",
-            country: "EG",
-            phone: "011123456789",
-            isDefault: true
-        )
-        
-        let testOrder = Order(
-            id: 1073460025,
-            orderNumber: "#122",
-            productNumber: 2,
-            address: address,
-            // phone: "011123456789",
-            date: "2024-05-14T21:19:37-04:00",
-            currency: .eur,
-            email: UserDefaults.standard.string(forKey: "userEmail") ?? "",
-            totalPrice: "238.47",
-            items: [
-                ItemProductOrder(id: 1071823276, image: "https://cdn.shopify.com/s/files/1/0624/0239/6207/collections/97a3b1227876bf099d279fd38290e567.jpg?v=1716812402", price: "80", quantity: 3, title: "Big Brown Bear Boots"),
-                ItemProductOrder(id: 1081823276, image: "https://cdn.shopify.com/s/files/1/0624/0239/6207/collections/97a3b1227876bf099d279fd38290e567.jpg?v=1716812402", price: "50", quantity: 1, title: " Brown Bear Boots")
-            ],
-            userID: Int(K.Shopify.userID),
-            billingAddress: billingAddress,
-            customer: UserDefaultsHelper.shared.printUserDefaults()
-        )
-        
-        testViewModel.addNewOrder(newOrder: testOrder)
-        
-        
+//        let address = Address(
+//            id: nil,
+//            customerID: nil,
+//            firstName: "John",
+//            lastName: "Doe",
+//            address1: "123 Main St",
+//            city: "Cairo",
+//            country: "EG",
+//            phone: "011123456789",
+//            isDefault: true
+//        )
+//        
+//        let billingAddress = Address(
+//            id: nil,
+//            customerID: nil,
+//            firstName: "John",
+//            lastName: "Doe",
+//            address1: "123 Main St",
+//            city: "Cairo",
+//            country: "EG",
+//            phone: "011123456789",
+//            isDefault: true
+//        )
+//        
+//        let testOrder = Order(
+//            id: 1073460025,
+//            orderNumber: 122,
+//            productNumber: "2",
+//            address: address,
+//            // phone: "011123456789",
+//            date: "2024-05-14T21:19:37-04:00",
+//            currency: .eur,
+//            email: UserDefaults.standard.string(forKey: "userEmail") ?? "",
+//            totalPrice: "238.47",
+//            items: [
+//                ItemProductOrder(id: 1071823276, image: "https://cdn.shopify.com/s/files/1/0624/0239/6207/collections/97a3b1227876bf099d279fd38290e567.jpg?v=1716812402", price: "80", quantity: 3, title: "Big Brown Bear Boots"),
+//                ItemProductOrder(id: 1081823276, image: "https://cdn.shopify.com/s/files/1/0624/0239/6207/collections/97a3b1227876bf099d279fd38290e567.jpg?v=1716812402", price: "50", quantity: 1, title: " Brown Bear Boots")
+//            ],
+//            userID: Int(K.Shopify.userID),
+//            billingAddress: billingAddress,
+//            customer: UserDefaultsHelper.shared.printUserDefaults()
+//        )
+//        
+//        testViewModel.addNewOrder(newOrder: testOrder)
+//        
+//        
         isFilterHidden = !isFilterHidden
         UIView.animate(withDuration: 0.5) {
             self.subCategoriesView.isHidden = self.isFilterHidden
@@ -281,16 +281,16 @@ extension CategoryViewController: ProductCollectionCellDelegate {
         }
         let product = products[indexPath.item]
         let favId = Int(UserDefaultsHelper.shared.getUserData().favID ?? "0")
-        favCRUD.saveItem(favId: favId!, itemId: product.id, itemImg: product.image.src, itemName: product.title, itemPrice: Double(product.variants[0].price) ?? 70.0) { success in
+        favCRUD.saveItem(favId: favId!, itemId: product.id ?? 0, itemImg: product.image?.src ?? "", itemName: product.title ?? "", itemPrice: Double(product.variants?[0]?.price ?? "") ?? 70.0) { success in
             if success {
-                self.favoriteProductIDs.insert(product.id)
+                self.favoriteProductIDs.insert(product.id ?? 0)
                 cell.isFavorited = true
             }
-            let product = products[indexPath.item]
+            let product = self.products[indexPath.item]
             let favId = Int(UserDefaultsHelper.shared.getUserData().favID ?? "0")
-        favCRUD.saveItem(favId: favId!, itemId: product.id ?? 0, itemImg: product.image?.src ?? "https://cdn.shopify.com/s/files/1/0624/0239/6207/collections/97a3b1227876bf099d279fd38290e567.jpg?v=1716812402", itemName: product.title ?? "", itemPrice: Double(product.variants?[0]?.price ?? "") ?? 70.0)
+            self.favCRUD.saveItem(favId: favId!, itemId: product.id ?? 0, itemImg: product.image?.src ?? "https://cdn.shopify.com/s/files/1/0624/0239/6207/collections/97a3b1227876bf099d279fd38290e567.jpg?v=1716812402", itemName: product.title ?? "", itemPrice: Double(product.variants?[0]?.price ?? "") ?? 70.0, completion: {_ in })
             //print("save to favorite for product id: \(product.id)")
-        favoriteProductIDs.insert(product.id ?? 0)
+            self.favoriteProductIDs.insert(product.id ?? 0)
             cell.isFavorited = true
             
             completion()
@@ -306,15 +306,15 @@ extension CategoryViewController: ProductCollectionCellDelegate {
         }
         let product = products[indexPath.item]
         let favId = Int(UserDefaultsHelper.shared.getUserData().favID ?? "0")
-        favCRUD.deleteItem(favId: favId!, itemId: product.id) { success in
+        favCRUD.deleteItem(favId: favId!, itemId: product.id ??  0) { success in
             if success {
-                self.favoriteProductIDs.remove(product.id)
+                self.favoriteProductIDs.remove(product.id ?? 0)
                 cell.isFavorited = false
             }
-            let product = products[indexPath.item]
+            let product = self.products[indexPath.item]
             let favId = Int(UserDefaultsHelper.shared.getUserData().favID ?? "0")
-            favCRUD.deleteItem(favId: favId!, itemId: product.id ?? 0)
-            favoriteProductIDs.remove(product.id ?? 0)
+            self.favCRUD.deleteItem(favId: favId!, itemId: product.id ?? 0, completion: {_ in })
+            self.favoriteProductIDs.remove(product.id ?? 0)
             cell.isFavorited = false
             //fetchFavoriteItems()
     //        products.remove(at: indexPath.item)

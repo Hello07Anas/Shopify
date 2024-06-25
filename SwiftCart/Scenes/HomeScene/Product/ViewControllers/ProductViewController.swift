@@ -218,7 +218,7 @@ extension ProductViewController: ProductCollectionCellDelegate {
         { success in
                 if success {
                     DispatchQueue.main.async {
-                        self. favoriteProductIDs.insert(product.id ?? 0)
+                        self.favoriteProductIDs.insert(product.id ?? 0)
                         completion()
                     }
                 } else {
