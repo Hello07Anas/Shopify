@@ -29,8 +29,8 @@ class OrderDetailsViewController: UIViewController {
            
             tableView.dataSource = self
             tableView.delegate = self
-            ProductNum.text = "\(orderDetails!.productNumber!)"
-            orderNum.text = orderDetails?.orderNumber
+            ProductNum.text = "\(orderDetails?.productNumber ?? "")"
+            orderNum.text = "\( orderDetails!.orderNumber!)"
             address.text = "\(orderDetails!.address!.address1!) \(orderDetails!.address!.city!)"
             date.text = Utils.extractDate(from:  orderDetails?.date ?? "2024-05-27T08:25:00-04:00")
             //TODO: formatAsCurrency
@@ -84,7 +84,7 @@ class OrderDetailsViewController: UIViewController {
         }
         
         func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-               return 100
+               return 120
            }
         }
         
