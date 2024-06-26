@@ -92,17 +92,6 @@ public enum K {
         case filled = "circle.inset.filled"
         case unFilled = "circle"
     }
-    
-    enum Arrays {
-        static let colorNames = ["Black", "Red", "Green", "Blue"]
-        static let colors: [String: UIColor] = [
-            "Black": .black,
-            "Red": .red,
-            "Green": .green,
-            "Blue": .blue
-        ]
-        static let sizes = ["M", "S", "L", "XL"]
-    }
-    
+        
     //MARK: Add any Const ants u need in a staruct pleas
 }

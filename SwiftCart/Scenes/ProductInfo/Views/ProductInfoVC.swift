@@ -34,8 +34,8 @@ class ProductInfoVC: UIViewController{
     @IBOutlet weak var setSizeOT: UIButton!
     
     var isFavorited = false
+    private var productVariants: [ShopifyProductVariant] = []
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -45,13 +45,26 @@ class ProductInfoVC: UIViewController{
         customIndicator = CustomIndicator(containerView: self.view)
 
         productInfoVM.productObservable
-            .subscribe(onNext: { [weak self] product in
-                self?.updateProductDetails(product)
-                    self?.customIndicator?.stop()
-            }, onError: { [weak self] error in
-                self?.customIndicator?.stop()
+                    .subscribe(onNext: { [weak self] product in
+                        self?.updateProductDetails(product)
+                        self?.productVariants = product.variants ?? []
+                        self?.customIndicator?.stop()
+                    }, onError: { [weak self] error in
+                        self?.customIndicator?.stop()
+                    })
+                    .disposed(by: disposeBag)
+        
+        productInfoVM.colorsObservable
+            .subscribe(onNext: { [weak self] colors in
+                self?.setupMenuButton(options: colors, for: self?.setColorOT ?? UIButton(), isColor: true)
             })
             .disposed(by: disposeBag)
+
+                productInfoVM.sizesObservable
+                    .subscribe(onNext: { [weak self] sizes in
+                        self?.setupMenuButton(options: sizes, for: self?.setSizeOT ?? UIButton())
+                    })
+                    .disposed(by: disposeBag)
         
         customIndicator?.start()
 
@@ -61,25 +74,35 @@ class ProductInfoVC: UIViewController{
         setButtonImage(isFavorited: isFavorited)
         
         cartVM.getCartProductsList()
-        setupMenuButton(options: K.Arrays.colorNames, for: setColorOT, isColor: true)
-        setupMenuButton(options: K.Arrays.sizes, for: setSizeOT)
-
     }
     
     private func setupMenuButton(options: [String], for button: UIButton, isColor: Bool = false) {
+        print("Setting up menu for button: \(button.titleLabel?.text ?? "Unknown")")
         let menuItems = options.map { option in
-            UIAction(title: option) { _ in
+            UIAction(title: option) { [weak self] _ in
                 button.setTitle(option, for: .normal)
-                if isColor, let color = K.Arrays.colors[option] {
+                if isColor, let color = self?.productInfoVM.colorsDictionary[option] {
                     button.tintColor = color
+                    print("Updated button tint color to \(color) for option: \(option)")
+                }
+                if !isColor {
+                    self?.printVariantId(for: option)
                 }
             }
         }
         
         let menu = UIMenu(title: button.titleLabel?.text ?? "Options", children: menuItems)
-    
+        
         button.menu = menu
         button.showsMenuAsPrimaryAction = true
+    }
+
+    private func printVariantId(for size: String) {
+        if let selectedColor = setColorOT.title(for: .normal) {
+            if let variant = productVariants.first(where: { $0.option1 == size && $0.option2 == selectedColor }) {
+                print("Selected Variant ID: \(variant.id ?? 0)")
+            }
+        }
     }
     
     @IBAction func addToFavBtn(_ sender: UIButton) {
@@ -151,48 +174,51 @@ class ProductInfoVC: UIViewController{
         sender.isEnabled = false
         sender.configuration?.showsActivityIndicator = true
         
-        guard let product = productInfoVM.getProduct() else { 
-            
-            Utils.showAlert(title: " Check Internet Connection", message: "Sorry, you can't add this product to your cart.", preferredStyle: .alert, from: self)
-            
+        guard let product = productInfoVM.getProduct() else {
+            Utils.showAlert(title: "Check Internet Connection", message: "Sorry, you can't add this product to your cart.", preferredStyle: .alert, from: self)
+            sender.isEnabled = true
+            sender.configuration?.showsActivityIndicator = false
             return
         }
+        
         let okBtn = UIAlertAction(title: "OK", style: .default) { _ in
             sender.isEnabled = true
             sender.configuration?.showsActivityIndicator = false
         }
+        
         cartVM.productSoldOut = {
             Utils.showAlert(title: "Sold Out", message: "Sorry, you can't add this product to your cart.", preferredStyle: .alert, from: self, actions: [okBtn])
         }
         
         cartVM.productAlreadyExist = {
-            Utils.showAlert(title: "Aleary Exist", message: "go to your cart to update the quantity.", preferredStyle: .alert, from: self, actions: [okBtn])
+            Utils.showAlert(title: "Already Exist", message: "Go to your cart to update the quantity.", preferredStyle: .alert, from: self, actions: [okBtn])
         }
+        
         cartVM.bindDoneOperation = {
-            Utils.showAlert(title: "Successfully Added",message: "",preferredStyle: .alert,from: self, actions: [okBtn])
+            Utils.showAlert(title: "Successfully Added", message: "", preferredStyle: .alert, from: self, actions: [okBtn])
         }
+        
         cartVM.bindErrorOperation = {
             Utils.showAlert(title: "Error", message: "Sorry, you can't add this product to your cart.", preferredStyle: .alert, from: self, actions: [okBtn])
         }
-       
         
-        if UserDefaultsHelper.shared.getUserData().email == nil {
-            Utils.showAlert(title: "Sorry, you don't have an account",
-                            message: "Please log in first to use this feature.",
-                            preferredStyle: .alert,
-                            from: self, actions: [okBtn])
+        guard let selectedSize = setSizeOT.title(for: .normal),
+              let selectedColor = setColorOT.title(for: .normal),
+              let variantId = getSelectedVariantId(for: selectedSize, color: selectedColor)
+        else {
+            Utils.showAlert(title: "Variant Not Found", message: "Please select a variant.", preferredStyle: .alert, from: self, actions: [okBtn])
+            return
         }
-        else{
-            self.cartVM.addNewItemLine(variantID: product.variants?.first?.id ?? 0, quantity: 1, imageURLString: product.images?.first?.src ?? "", productID: 0, productTitle: product.title ?? "No title", productPrice: product.variants?.first?.price ?? "")
-            
-           
-            
-            print("============== \(product)")
-            
-          
-        }
+        
+        cartVM.addNewItemLine(variantID: variantId, quantity: 1, imageURLString: product.images?.first?.src ?? "", productID: 0, productTitle: product.title ?? "No title", productPrice: product.variants?.first?.price ?? "")
     }
-    
+
+    private func getSelectedVariantId(for size: String, color: String) -> Int? {
+        guard let variants = productInfoVM.getProduct()?.variants else { return nil }
+        
+        return variants.first { $0.option1 == size && $0.option2 == color }?.id
+    }
+
     
     @IBAction func btnBack(_ sender: Any) {
         coordinator?.finish()
