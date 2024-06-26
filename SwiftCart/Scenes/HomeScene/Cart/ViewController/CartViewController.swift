@@ -11,6 +11,7 @@ class CartViewController: UIViewController {
     
     weak var coordinator: AppCoordinator?
     let viewModel = CartViewModel(network: NetworkManager.shared)
+    var indecator: CustomIndicator?
 
     @IBOutlet weak var checkView: UIView!
     @IBOutlet weak var checkBtn: UIButton!
@@ -28,7 +29,10 @@ class CartViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        indecator = CustomIndicator(containerView: view.self)
+        indecator?.start()
+        
         cartTableView.dataSource = self
         cartTableView.delegate = self
         let cellNib = UINib(nibName: "ProductCartCell", bundle: nil)
@@ -48,7 +52,9 @@ class CartViewController: UIViewController {
         viewModel.bindMaxLimitQuantity = {
             Utils.showAlert(title: "Warning", message: "You have reached max limit of quantity.", preferredStyle: .alert, from: self)
         }
-        viewModel.getCartProductsList()
+        viewModel.getCartProductsList(completion: {_ in
+            self.indecator?.stop()
+        })
         
     }
     
@@ -89,8 +95,9 @@ class CartViewController: UIViewController {
               
             }
         }
-        viewModel.getCartProductsList()
-    }
+        viewModel.getCartProductsList(completion: {_ in
+            self.indecator?.stop()
+        })    }
     
     override func viewDidAppear(_ animated: Bool) {
         viewModel.bindCartProducts = { [weak self] in
@@ -99,7 +106,9 @@ class CartViewController: UIViewController {
                 self?.cartTableView.reloadData()
             }
         }
-        viewModel.getCartProductsList()
+        viewModel.getCartProductsList(completion: {_ in
+            self.indecator?.stop()
+        })
     }
 
     @IBAction func checkoutBtn(_ sender: Any) {
@@ -114,15 +123,32 @@ class CartViewController: UIViewController {
 }
 
 extension CartViewController: UITableViewDataSource, UITableViewDelegate, ProductCartCellDelegate {
-    func didUpdateProductQuantity(forCellID id: Int, with quantity: Int) {
+
+    
+
+    func didUpdateProductQuantity(forCellID id: Int, with quantity: Int, completion: ((Bool) -> Void)? = nil) {
+        indecator?.start()
+        print("didUpdateProductQuantity IN")
+
         if quantity < 1 {
-            let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+            print("if quantity < 1")
+            let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: { [weak self] _ in
+                self?.indecator?.stop()
+                completion?(false)
+            })
             let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
-                self?.viewModel.deleteProduct(id: id)
+                self?.viewModel.deleteProduct(id: id, completion: {_ in
+                    self?.indecator?.stop()
+                })
             }
             Utils.showAlert(title: "Delete", message: "Are you sure you want to delete this item?", preferredStyle: .alert, from: self, actions: [deleteAction, cancelAction])
         } else {
-            viewModel.updateLineItemQuantity(variantID: id, newQuantity: quantity)
+            print("} else {")
+            viewModel.updateLineItemQuantity(variantID: id, newQuantity: quantity) { success in
+                print("viewModel.updateLineItemQuantity(variantID: id, newQuantity: quantity)is ....  \(success)")
+                self.indecator?.stop()
+                completion?(success)
+            }
         }
     }
     
@@ -130,6 +156,7 @@ extension CartViewController: UITableViewDataSource, UITableViewDelegate, Produc
         let cell = cartTableView.dequeueReusableCell(withIdentifier: "ProductCartCell", for: indexPath) as! ProductCartCell
         cell.delegate = self
         viewModel.configCell(cell, at: indexPath.section)
+        
         return cell
     }
     
@@ -160,10 +187,15 @@ extension CartViewController: UITableViewDataSource, UITableViewDelegate, Produc
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         guard editingStyle == .delete else { return }
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+        self.indecator?.start()
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: {_ in
+            self.indecator?.stop()
+        })
         let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
-            self?.viewModel.deleteProduct(id: self?.viewModel.getCartProductByIndex(index: indexPath.section).variantID ?? -1)
+            self?.viewModel.deleteProduct(id: self?.viewModel.getCartProductByIndex(index: indexPath.section).variantID ?? -1, completion: {_ in
+                self?.indecator?.stop()
+            })
         }
         Utils.showAlert(title: "Delete", message: "Are you sure you want to delete this item?", preferredStyle: .alert, from: self, actions: [deleteAction, cancelAction])
     }

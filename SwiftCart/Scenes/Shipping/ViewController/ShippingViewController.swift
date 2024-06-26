@@ -24,8 +24,16 @@ class ShippingViewController: UIViewController {
     var orderViewModel = OrderViewModel()
     private let disposeBag = DisposeBag()
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        print("ShippingViewController")
+
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("ShippingViewController")
+
         AddressTextField.delegate = self
         viewModel.getCartProductsList()
     
@@ -33,6 +41,20 @@ class ShippingViewController: UIViewController {
             DispatchQueue.main.async {
                 self?.grandTotalPrice.text = self?.viewModel.GrandPrice.formatAsCurrency()
             }
+        }
+        checkAndSetDefaultAddress()
+    }
+    
+    func checkAndSetDefaultAddress() {
+        let defaultAddress = UserDefaultsHelper.shared.getDefaultAddress()
+        print(defaultAddress.address)
+        if let firstName = defaultAddress.firstName,
+           let lastName = defaultAddress.lastName,
+           let address = defaultAddress.address,
+           let city = defaultAddress.city,
+           let phone = defaultAddress.phone {
+            AddressTextField.text = "\(address) - \(city) \\ Egypt"
+            selectedAddress = Address(firstName: firstName, lastName: lastName, address1: address, city: city, phone: phone, isDefault: true)
         }
     }
     

@@ -18,7 +18,7 @@ class ProductViewController: UIViewController, UICollectionViewDelegate, UIColle
     @IBOutlet weak var topconstrensinCollectionView: NSLayoutConstraint!
     
     @IBOutlet weak var searchBar: UISearchBar!
-    
+    var indecartor: CustomIndicator?
     
     var isFilterHidden = true
     let favCRUD = FavCRUD()
@@ -32,6 +32,9 @@ class ProductViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        indecartor = CustomIndicator(containerView: view.self)
+        
+        indecartor?.start()
         
         sliderPrice.isHidden = isFilterHidden
         subCategoriesView.isHidden = isFilterHidden
@@ -45,10 +48,13 @@ class ProductViewController: UIViewController, UICollectionViewDelegate, UIColle
         setupBindings()
         setUpPriceFilter()
         if let brandID = brandID {
-            viewModel.getCategoryProducts(categoryId: brandID)
+            viewModel.getCategoryProducts(categoryId: brandID, completion: { _ in
+                self.indecartor?.stop()
+            })
         }
         fetchFavoriteItems()
         setupSearchBar()
+        print(UserDefaultsHelper.shared.getCurrencyType())
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -80,7 +86,9 @@ class ProductViewController: UIViewController, UICollectionViewDelegate, UIColle
     @IBAction func SubCategoriesBtn(_ sender: Any) {
         switch subCategoriesView.selectedSegmentIndex {
         case 0:
-            viewModel.getCategoryProducts(categoryId: brandID ?? 0)
+            viewModel.getCategoryProducts(categoryId: brandID ?? 0, completion: {_ in
+                self.indecartor?.stop()
+            })
             viewModel.isFiltering = false
         case 1:
             self.viewModel.filterProductsArray(productType: "SHOES")
@@ -89,7 +97,9 @@ class ProductViewController: UIViewController, UICollectionViewDelegate, UIColle
         case 3:
             self.viewModel.filterProductsArray(productType: "T-SHIRTS")
         default:
-            viewModel.getCategoryProducts(categoryId: brandID ?? 0)
+            viewModel.getCategoryProducts(categoryId: brandID ?? 0, completion: {_ in
+                self.indecartor?.stop()
+            })
         }
     }
     

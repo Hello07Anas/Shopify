@@ -73,7 +73,7 @@ class ProductInfoVC: UIViewController{
         cosmos.rating = getRandomRating()
         setButtonImage(isFavorited: isFavorited)
         
-        cartVM.getCartProductsList()
+        cartVM.getCartProductsList(completion: {_ in})
     }
     
     private func setupMenuButton(options: [String], for button: UIButton, isColor: Bool = false) {

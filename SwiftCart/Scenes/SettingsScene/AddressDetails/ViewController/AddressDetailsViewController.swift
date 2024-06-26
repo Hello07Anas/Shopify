@@ -102,10 +102,15 @@ class AddressDetailsViewController: UIViewController {
         if viewModel?.isUpdate == true {
           viewModel?.updateAddress(firstName: firstName, lastName: lastName, address1: address, city: city, phone: phone)
             if  defaultSwitch.isOn == true {
-                viewModel?.setDefaultAddress(firstName: firstName, lastName: lastName, address1: address, city: city, phone: phone)
+                //viewModel?.setDefaultAddress(firstName: firstName, lastName: lastName, address1: address, city: city, phone: phone)
+                UserDefaultsHelper.shared.saveDefaultAddress(firstName: firstName, lastName: lastName, address: address, city: city, phone: phone)
+
             }
         } else {
             viewModel?.addNewAddress(firstName: firstName, lastName: lastName, address1: address, city: city, phone: phone)
+            if defaultSwitch.isOn == true {
+                UserDefaultsHelper.shared.saveDefaultAddress(firstName: firstName, lastName: lastName, address: address, city: city, phone: phone)
+            }
         }
     }
     

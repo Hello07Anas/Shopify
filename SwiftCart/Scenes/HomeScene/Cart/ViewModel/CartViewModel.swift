@@ -43,7 +43,7 @@ class CartViewModel {
         return (cartProductsList?[index])!
     }
     
-    func getCartProductsList() {
+    func getCartProductsList(completion: @escaping (Bool) -> Void) {
         let cartID = UserDefaultsHelper.shared.getUserData().cartID ?? ""
         let endpoint = K.endPoints.draftOrders.rawValue.replacingOccurrences(of: "{draft_orders_id}", with: cartID)
         network?.get(endpoint: endpoint)
@@ -51,24 +51,27 @@ class CartViewModel {
             .subscribe(onNext: { [weak self] (response: DraftOrderResponseModel) in
                 if let lineItems = response.singleResult?.lineItems {
                     let filteredLineItems = lineItems.filter { item in
+                        completion(true)
                         return item.variantID != nil
                     }
                     self?.draftOrder = response
                     self?.cartProductsList = filteredLineItems
                     self?.cartSubject.onNext(self?.cartProductsList ?? [])
                     self?.bindCartProducts()
-                        self?.updateTotalPrice?(response.singleResult?.totalPrice ?? "0.0")
+                    self?.updateTotalPrice?(response.singleResult?.subtotalPrice ?? "0.0")
                 } else {
                     print("ViewModel: No items in cart")
                 }
+                completion(true)
                                 
             }, onError: { (error: Error) in
                 print("Error occurred: \(error.localizedDescription)")
+                completion(true)
             })
             .disposed(by: disposeBag)
     }
     
-    func deleteProduct(id: Int) {
+    func deleteProduct(id: Int, completion: @escaping (Bool)-> Void) {
         draftOrder?.singleResult?.lineItems.removeAll(where: { $0.variantID == id })
         cartProductsList?.removeAll(where: { $0.variantID == id })
         let cartID = UserDefaultsHelper.shared.getUserData().cartID!
@@ -82,7 +85,9 @@ class CartViewModel {
                 } else {
                     print("Failed to update cart: \(message ?? "No error message")")
                 }
-                self.getCartProductsList()
+                self.getCartProductsList(completion: {_ in
+                    completion(true)
+                })
             }, onError: { error in
                 print("Error occurred: \(error.localizedDescription)")
             })
@@ -102,7 +107,7 @@ class CartViewModel {
                     }
                     
                     if let inventoryQuantity = variant.inventory_quantity {
-                        let isAvailable = (quantity <= (inventoryQuantity / 2) || inventoryQuantity == 1)
+                        let isAvailable = (quantity <= (inventoryQuantity / 2) || (inventoryQuantity == 1 && quantity == 1))
                         completion(isAvailable)
                         print("ViewModel: inventory quantity: \(inventoryQuantity) \(isAvailable)")
                     } else {
@@ -117,34 +122,48 @@ class CartViewModel {
             .disposed(by: disposeBag)
     }
     
-    func updateLineItemQuantity(variantID: Int, newQuantity: Int) {
+    func updateLineItemQuantity(variantID: Int, newQuantity: Int, completion: @escaping (Bool) -> Void) {
+        print(" updateLineItemQuantity before === checkInventoryQuantity")
         self.checkInventoryQuantity(quantity: newQuantity, forVariantID: variantID) { [weak self] isAvailable in
             guard let self = self else { return }
-            
+            print(" updateLineItemQuantity After === guard let ")
+
             if !isAvailable {
+                print("updateLineItemQuantity === if !isAvailable")
+
                 self.bindMaxLimitQuantity()
+                completion(false)
             } else {
+                print("updateLineItemQuantity === Before   if let index = self.cartProductsList?")
+
                 if let index = self.cartProductsList?.firstIndex(where: { $0.variantID == variantID }) {
                     self.cartProductsList?[index].quantity = newQuantity
                     self.draftOrder?.singleResult?.lineItems = self.cartProductsList ?? []
                     
                     let cartID = UserDefaultsHelper.shared.getUserData().cartID!
                     let endpoint = K.endPoints.draftOrders.rawValue.replacingOccurrences(of: "{draft_orders_id}", with: cartID)
-                    
+                    print(" updateLineItemQuantity before self.network?.put")
+
                     self.network?.put(endpoint: endpoint, body: self.draftOrder, responseType: DraftOrderResponseModel.self)
                         .observeOn(MainScheduler.instance)
                         .subscribe(onNext: { (success, message, response) in
                             if success {
                                 print("Success: \(String(describing: response))")
+                                completion(true)
                             } else {
                                 print("Failed to update cart: \(message ?? "No error message")")
+                                completion(false)
                             }
-                            self.getCartProductsList()
+                            DispatchQueue.main.async {
+                                self.getCartProductsList(completion: {_ in })
+                            }
                         }, onError: { error in
                             print("Error occurred: \(error.localizedDescription)")
+                            completion(false)
                         })
                         .disposed(by: self.disposeBag)
                 }
+                
             }
         }
     }
@@ -156,12 +175,12 @@ class CartViewModel {
         cell.setProduct(product)
         cell.setCell(id: product.variantID ?? -1)
         cell.setImage(with: product.properties.first { $0.name == "image" }?.value)
-        cell.delegate = self
+        //cell.delegate = self
     }
     
     
     func addNewItemLine(variantID: Int, quantity: Int, imageURLString: String, productID: Int, productTitle: String, productPrice: String) {
-        self.getCartProductsList()
+        self.getCartProductsList(completion: {_ in})
         
         if let _ = self.draftOrder?.singleResult?.lineItems.first(where: { $0.variantID == variantID }) {
             self.productAlreadyExist()
@@ -197,7 +216,7 @@ class CartViewModel {
                         .observeOn(MainScheduler.instance)
                         .subscribe(onNext: { (success, message, response) in
                                 print("Success: \(String(describing: response))")
-                                self.getCartProductsList()
+                            self.getCartProductsList(completion: {_ in})
                             
                             self.bindDoneOperation()
                         }, onError: { error in
@@ -210,12 +229,12 @@ class CartViewModel {
         }
         
     }
-    }
-
-
+}
 
 extension CartViewModel: ProductCartCellDelegate {
-    func didUpdateProductQuantity(forCellID id: Int, with quantity: Int) {
-        updateLineItemQuantity(variantID: id, newQuantity: quantity)
+    func didUpdateProductQuantity(forCellID id: Int, with quantity: Int, completion: ((Bool) -> Void)? = nil) {
+        updateLineItemQuantity(variantID: id, newQuantity: quantity, completion: {_ in
+            completion!(true)
+        })
     }
 }

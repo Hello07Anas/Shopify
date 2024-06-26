@@ -30,9 +30,9 @@ extension String {
         case "USD":
             return "$"
         case "EGP":
-            return "E£"
+            return "EGP"
         case "SAR":
-            return "﷼"
+            return "SAR"
         default:
             return ""
         }

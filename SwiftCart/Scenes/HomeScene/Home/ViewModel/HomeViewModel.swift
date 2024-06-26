@@ -25,7 +25,7 @@ class HomeViewModel {
         self.network = network
     }
     
-    func loadData() {
+    func loadData(completion: @escaping (Bool) -> Void) {
         network.getApiData(url: url)
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] data in
@@ -35,6 +35,7 @@ class HomeViewModel {
                     self?.filteredBrands = self?.allBrands ?? []
                     self?.brandsSubject.onNext(self?.filteredBrands ?? [])
                     // print("ViewModel: Number of brands: \(self?.brandsArray.count ?? 0) image :: \(self?.brandsArray.first?.image?.src ?? "")")
+                    completion(true)
                 } else {
                     print("loadData else")
                 }

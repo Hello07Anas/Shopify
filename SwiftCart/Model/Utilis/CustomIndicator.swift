@@ -20,7 +20,7 @@ class CustomIndicator {
         guard let containerView = containerView else { return }
         
         activityIndicator = UIActivityIndicatorView(style: .large)
-        activityIndicator?.color = .gray
+        activityIndicator?.color = .black
         activityIndicator?.center = containerView.center
         activityIndicator?.hidesWhenStopped = true
         

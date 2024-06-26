@@ -14,7 +14,7 @@ import FirebaseCore
 class SginUp: UIViewController { // TODO: fix routation in Sgin UP
     
     weak var coordinator: AppCoordinator?
-    
+    var indecator: CustomIndicator? = nil
     @IBOutlet weak var nameTF: UITextField!
     @IBOutlet weak var emailTF: UITextField!
     @IBOutlet weak var passwordTF: UITextField!
@@ -22,8 +22,8 @@ class SginUp: UIViewController { // TODO: fix routation in Sgin UP
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         //self.navigationController?.navigationBar.isHidden = true
+        indecator = CustomIndicator(containerView: self.view)
         guard let clientID = FirebaseApp.app()?.options.clientID else { return }
         let config = GIDConfiguration(clientID: clientID)
         GIDSignIn.sharedInstance.configuration = config
@@ -42,32 +42,39 @@ class SginUp: UIViewController { // TODO: fix routation in Sgin UP
     }
     
     @IBAction func sginUp(_ sender: Any) {
+        self.indecator?.start()
         guard let email = emailTF.text, !email.isEmpty,
               let password = passwordTF.text, !password.isEmpty,
               let rePassword = rePasswordTF.text, !rePassword.isEmpty,
               let name = nameTF.text, !name.isEmpty
         else {
             Utils.showAlert(title: "Error", message: "All fileds should be completed", preferredStyle: .alert, from: self)
+            self.indecator?.stop()
+
             return
         }
         
         guard password == rePassword else {
             Utils.showAlert(title: "Invalid password matching!", message: "Passwords do not match", preferredStyle: .alert, from: self)
+            self.indecator?.stop()
             return
         }
         
         guard AuthHelper.isValidPassword(password: password) else {
             Utils.showAlert(title: "Invalid password", message: "Password must contain one at least uppercase letter, one lowercase letter, one digit, one special character, and be at least 8 characters long.", preferredStyle: .alert, from: self)
+            self.indecator?.stop()
             return
         }
         
         guard AuthHelper.isValidName(name) else {
             Utils.showAlert(title: "Invalid name", message: "pleas enter name between 3 - 20 Character", preferredStyle: .alert, from: self)
+            self.indecator?.stop()
             return
         }
         
         guard AuthHelper.isValidEmail(email) else {
             Utils.showAlert(title: "Invalid email", message: "Please enter a valid email address.", preferredStyle: .alert, from: self)
+            self.indecator?.stop()
             return
         }
         
@@ -75,10 +82,14 @@ class SginUp: UIViewController { // TODO: fix routation in Sgin UP
             DispatchQueue.main.async {
                 if let error = error {
                     Utils.showAlert(title: "Error creating user", message: error.localizedDescription, preferredStyle: .alert, from: self)
+                    self.indecator?.stop()
                     return
                 }
                 
-                guard let uid = authResult?.user.uid else { return }
+                guard let uid = authResult?.user.uid else {
+                    self.indecator?.stop()
+                    return
+                }
                 
                 ShopifyAPIHelper.shared.createCustomer(email: email, firstName: name, lastName: "") { result in
                     switch result {
@@ -87,19 +98,21 @@ class SginUp: UIViewController { // TODO: fix routation in Sgin UP
                             switch draftOrderResult {
                             case .success(let (cartID, favID)):
                                 self.storeUserData(uid: uid, shopifyCustomerID: shopifyCustomerID, email: email, name: name, cartID: cartID, favID: favID) {
-                                    
                                     print("========")
                                     UserDefaultsHelper.shared.printUserDefaults()
                                     print("========")
                 
                                     self.coordinator?.gotoHome(isThereConnection: true)
+                                    self.indecator?.stop()
                                 }
                             case .failure(let error):
                                 Utils.showAlert(title: "Error", message: "Failed to create draft orders: \(error.localizedDescription)", preferredStyle: .alert, from: self)
+                                self.indecator?.stop()
                             }
                         }
                     case .failure(let error):
                         Utils.showAlert(title: "Error", message: "Failed to create Shopify customer: \(error.localizedDescription)", preferredStyle: .alert, from: self)
+                        self.indecator?.stop()
                     }
                 }
             }
@@ -107,15 +120,18 @@ class SginUp: UIViewController { // TODO: fix routation in Sgin UP
     }
     
     @IBAction func sginUpWithGoogle(_ sender: Any) {
-        
+        self.indecator?.start()
+
         GIDSignIn.sharedInstance.signIn(withPresenting: self) { [unowned self] result, error in
             guard error == nil else {
                 print("Error signing in with Google: \(error!.localizedDescription)")
+                self.indecator?.stop()
                 return
             }
             
             guard let user = result?.user,
                   let idToken = user.idToken?.tokenString else {
+                self.indecator?.stop()
                 return
             }
             
@@ -123,6 +139,7 @@ class SginUp: UIViewController { // TODO: fix routation in Sgin UP
             Auth.auth().signIn(with: credential) { authResult, error in
                 if let error = error {
                     print("Firebase sign in error: \(error.localizedDescription)")
+                    self.indecator?.stop()
                 } else {
                     guard let uid = authResult?.user.uid else { return }
                     let email = user.profile?.email ?? ""
@@ -143,7 +160,8 @@ class SginUp: UIViewController { // TODO: fix routation in Sgin UP
                             UserDefaultsHelper.shared.printUserDefaults()
                             print("========")
                             self.coordinator?.gotoHome(isThereConnection: true)
-                            
+                            self.indecator?.stop()
+
                         } else {
                             ShopifyAPIHelper.shared.createCustomer(email: email, firstName: name, lastName: "") { result in
                                 switch result {
@@ -156,13 +174,16 @@ class SginUp: UIViewController { // TODO: fix routation in Sgin UP
                                                 UserDefaultsHelper.shared.printUserDefaults()
                                                 print("========")
                                                 self.coordinator?.gotoHome(isThereConnection: true)
+                                                self.indecator?.stop()
                                             }
                                         case .failure(let error):
                                             Utils.showAlert(title: "Error", message: "Failed to create draft orders: \(error.localizedDescription)", preferredStyle: .alert, from: self)
+                                            self.indecator?.stop()
                                         }
                                     }
                                 case .failure(let error):
                                     Utils.showAlert(title: "Error", message: "Failed to create Shopify customer: \(error.localizedDescription)", preferredStyle: .alert, from: self)
+                                    self.indecator?.stop()
                                 }
                             }
                         }
