@@ -18,11 +18,13 @@ class CartViewModel {
     private let disposeBag = DisposeBag()
     var cartProductsList: [LineItem]?
     var draftOrder: DraftOrderResponseModel?
+    var bindDoneOperation: (() -> Void) = {}
     var bindCartProducts: (() -> Void) = {}
     var bindMaxLimitQuantity: (() -> Void) = {}
     var productAlreadyExist: (() -> Void) = {}
     var productSoldOut: (() -> Void) = {}
     var updateTotalPrice: ((String) -> Void)?
+    var bindErrorOperation:(() -> Void) = {}
 
     
     init(network: NetworkManager?) {
@@ -194,14 +196,13 @@ class CartViewModel {
                     self.network?.put(endpoint: endpoint, body: self.draftOrder, responseType: DraftOrderResponseModel.self)
                         .observeOn(MainScheduler.instance)
                         .subscribe(onNext: { (success, message, response) in
-                            if success {
                                 print("Success: \(String(describing: response))")
                                 self.getCartProductsList()
-                            } else {
-                                print("Failed to update cart: \(message ?? "No error message")")
-                            }
+                            
+                            self.bindDoneOperation()
                         }, onError: { error in
                             print("Error occurred: \(error.localizedDescription)")
+                            self.bindErrorOperation()
                         })
                         .disposed(by: self.disposeBag)
                 }

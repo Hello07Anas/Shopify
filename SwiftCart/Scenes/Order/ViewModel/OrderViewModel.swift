@@ -46,7 +46,7 @@ class OrderViewModel{
 
     
     func getOrdersList(completion: @escaping (Int?) -> Void) {
-        let customerID = K.Shopify.userID
+        let customerID =   UserDefaultsHelper.shared.getUserData().shopifyCustomerID  ?? ""
         let endpoint = "orders.json?customer_id=\(customerID)"
         NetworkManager.shared.get(endpoint: endpoint)
             .observeOn(MainScheduler.instance)

@@ -32,7 +32,6 @@
 		0EA286402C21332E00179A17 /* CartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EA2863F2C21332E00179A17 /* CartViewModel.swift */; };
 		0EA286422C21B39400179A17 /* DraftOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EA286412C21B39400179A17 /* DraftOrder.swift */; };
 		0EA286442C21B3E300179A17 /* LineItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EA286432C21B3E300179A17 /* LineItem.swift */; };
-		0EB0818F2C27D23000C73B42 /* ShippingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB0818E2C27D23000C73B42 /* ShippingViewController.swift */; };
 		0EB1FD6C2C1FA1B900F4A48D /* Extension .swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB1FD6B2C1FA1B900F4A48D /* Extension .swift */; };
 		0EB1FD742C1FC27100F4A48D /* CartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB1FD732C1FC27100F4A48D /* CartViewController.swift */; };
 		0EB1FD782C1FCB7800F4A48D /* ProductCartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB1FD762C1FCB7800F4A48D /* ProductCartCell.swift */; };
@@ -83,6 +82,7 @@
 		4CDD48622C266A6700B50F65 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4CDD48612C266A6700B50F65 /* GoogleSignInSwift */; };
 		4CDD48642C266D9F00B50F65 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4CDD48632C266D9E00B50F65 /* GoogleService-Info.plist */; };
 		4CE498082C1FA6E90064C2BB /* FavCRUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE498072C1FA6E90064C2BB /* FavCRUD.swift */; };
+		B91C59C52C2BE7C9004C05D4 /* ShippingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB0818E2C27D23000C73B42 /* ShippingViewController.swift */; };
 		B91DC0852C0E87BF003AE4CC /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = B91DC0842C0E87BF003AE4CC /* SDWebImage */; };
 		B91DC0872C0E87BF003AE4CC /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = B91DC0862C0E87BF003AE4CC /* SDWebImageMapKit */; };
 		B972D5E42C0CA131007E0329 /* HomeStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B972D5E32C0CA131007E0329 /* HomeStoryboard.storyboard */; };
@@ -1105,6 +1105,7 @@
 				0EEB505F2C28B7130001BB7E /* ShippingViewModel.swift in Sources */,
 				0EA286422C21B39400179A17 /* DraftOrder.swift in Sources */,
 				4C1795672C17268C0045E497 /* productImgCellCollectionViewCell.swift in Sources */,
+				B91C59C52C2BE7C9004C05D4 /* ShippingViewController.swift in Sources */,
 				04715A802C08FCB800D8DC3B /* ViewControllerTest.swift in Sources */,
 				B972D5E62C0CA166007E0329 /* HomeCollectionViewCell.swift in Sources */,
 				04CC142D2C17D9F0009BB5D4 /* Address.swift in Sources */,
@@ -1147,7 +1148,6 @@
 				0EC5CD342C16B93E00C65BB8 /* SettingsCoordinator.swift in Sources */,
 				0E5332A02C253A04009DA9EF /* CurrencyViewModel.swift in Sources */,
 				4CE498082C1FA6E90064C2BB /* FavCRUD.swift in Sources */,
-				0EB0818F2C27D23000C73B42 /* ShippingViewController.swift in Sources */,
 				0EFB7B192C2A4490003DDB88 /* AboutUsViewController.swift in Sources */,
 				4C6E01DC2C166EA70092E4E0 /* ProductInfoVC.swift in Sources */,
 				4C3110182C13904F00B88AC5 /* AppCoordinator.swift in Sources */,

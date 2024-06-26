@@ -59,12 +59,7 @@ class ProductInfoVC: UIViewController{
         
         cosmos.rating = getRandomRating()
         setButtonImage(isFavorited: isFavorited)
-        cartVM.productSoldOut = {
-            Utils.showAlert(title: "Sold Out", message: "Sorry, you can't add this product to your cart.", preferredStyle: .alert, from: self)
-        }
-        cartVM.productAlreadyExist = {
-            Utils.showAlert(title: "Aleary Exist", message: "go to your cart to update the quantity.", preferredStyle: .alert, from: self)
-        }
+        
         cartVM.getCartProductsList()
         setupMenuButton(options: K.Arrays.colorNames, for: setColorOT, isColor: true)
         setupMenuButton(options: K.Arrays.sizes, for: setSizeOT)
@@ -94,55 +89,108 @@ class ProductInfoVC: UIViewController{
         sender.isEnabled = false
         sender.configuration?.showsActivityIndicator = true
         
-        if isFavorited {
-            let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
-                self.favCRUD.deleteItem(favId: self.favId!, itemId: itemId ?? 0) { success in
+        if UserDefaultsHelper.shared.getUserData().email == nil {
+            let okBtn = UIAlertAction(title: "OK", style: .default) { _ in
+                sender.isEnabled = true
+                sender.configuration?.showsActivityIndicator = false
+            }
+            Utils.showAlert(title: "Sorry, you don't have an account",
+                            message: "Please log in first to use this feature.",
+                            preferredStyle: .alert,
+                            from: self, actions: [okBtn])
+        }
+        
+        else{
+            if isFavorited {
+                let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
+                    self.favCRUD.deleteItem(favId: self.favId!, itemId: itemId ?? 0) { success in
+                        DispatchQueue.main.async {
+                            sender.isEnabled = true
+                            sender.configuration?.showsActivityIndicator = false
+                            
+                            if success {
+                                self.setButtonImage(isFavorited: false)
+                                self.isFavorited = false
+                            } else {
+                                // TODO: Handle save failure
+                            }
+                        }
+                    }
+                }
+                
+                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+                    sender.isEnabled = true
+                    sender.configuration?.showsActivityIndicator = false
+                }
+                
+                Utils.showAlert(title: "Confirm Deletion", message: "Are you sure you want to remove this item from favorites?", preferredStyle: .alert, from: self, actions: [deleteAction, cancelAction])
+            } else {
+                // Not favorited, so add it
+                let itemImg = product.images?.first?.src ?? ""
+                let itemName = product.title
+                let itemPrice = Double(product.variants?.first?.price ?? "0.0") ?? 0.0
+                
+                favCRUD.saveItem(favId: favId!, itemId: itemId!, itemImg: itemImg, itemName: itemName!, itemPrice: itemPrice) { success in
                     DispatchQueue.main.async {
                         sender.isEnabled = true
                         sender.configuration?.showsActivityIndicator = false
                         
                         if success {
-                            self.setButtonImage(isFavorited: false)
-                            self.isFavorited = false
+                            self.setButtonImage(isFavorited: true)
+                            self.isFavorited = true
                         } else {
                             // TODO: Handle save failure
                         }
                     }
                 }
             }
-            
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
-                sender.isEnabled = true
-                sender.configuration?.showsActivityIndicator = false
-            }
-            
-            Utils.showAlert(title: "Confirm Deletion", message: "Are you sure you want to remove this item from favorites?", preferredStyle: .alert, from: self, actions: [deleteAction, cancelAction])
-        } else {
-            // Not favorited, so add it
-            let itemImg = product.images?.first?.src ?? ""
-            let itemName = product.title
-            let itemPrice = Double(product.variants?.first?.price ?? "0.0") ?? 0.0
-            
-            favCRUD.saveItem(favId: favId!, itemId: itemId!, itemImg: itemImg, itemName: itemName!, itemPrice: itemPrice) { success in
-                DispatchQueue.main.async {
-                    sender.isEnabled = true
-                    sender.configuration?.showsActivityIndicator = false
-                    
-                    if success {
-                        self.setButtonImage(isFavorited: true)
-                        self.isFavorited = true
-                    } else {
-                        // TODO: Handle save failure
-                    }
-                }
-            }
         }
     }
 
-    @IBAction func addToCartBtn(_ sender: Any) {
-        guard let product = productInfoVM.getProduct() else { return }
-        print("============== \(product)")
-        self.cartVM.addNewItemLine(variantID: product.variants?.first?.id ?? 0, quantity: 1, imageURLString: product.images?.first?.src ?? "", productID: 0, productTitle: product.title ?? "No title", productPrice: product.variants?.first?.price ?? "")
+    @IBAction func addToCartBtn(_ sender: UIButton) {
+        sender.isEnabled = false
+        sender.configuration?.showsActivityIndicator = true
+        
+        guard let product = productInfoVM.getProduct() else { 
+            
+            Utils.showAlert(title: " Check Internet Connection", message: "Sorry, you can't add this product to your cart.", preferredStyle: .alert, from: self)
+            
+            return
+        }
+        let okBtn = UIAlertAction(title: "OK", style: .default) { _ in
+            sender.isEnabled = true
+            sender.configuration?.showsActivityIndicator = false
+        }
+        cartVM.productSoldOut = {
+            Utils.showAlert(title: "Sold Out", message: "Sorry, you can't add this product to your cart.", preferredStyle: .alert, from: self, actions: [okBtn])
+        }
+        
+        cartVM.productAlreadyExist = {
+            Utils.showAlert(title: "Aleary Exist", message: "go to your cart to update the quantity.", preferredStyle: .alert, from: self, actions: [okBtn])
+        }
+        cartVM.bindDoneOperation = {
+            Utils.showAlert(title: "Successfully Added",message: "",preferredStyle: .alert,from: self, actions: [okBtn])
+        }
+        cartVM.bindErrorOperation = {
+            Utils.showAlert(title: "Error", message: "Sorry, you can't add this product to your cart.", preferredStyle: .alert, from: self, actions: [okBtn])
+        }
+       
+        
+        if UserDefaultsHelper.shared.getUserData().email == nil {
+            Utils.showAlert(title: "Sorry, you don't have an account",
+                            message: "Please log in first to use this feature.",
+                            preferredStyle: .alert,
+                            from: self, actions: [okBtn])
+        }
+        else{
+            self.cartVM.addNewItemLine(variantID: product.variants?.first?.id ?? 0, quantity: 1, imageURLString: product.images?.first?.src ?? "", productID: 0, productTitle: product.title ?? "No title", productPrice: product.variants?.first?.price ?? "")
+            
+           
+            
+            print("============== \(product)")
+            
+          
+        }
     }
     
     

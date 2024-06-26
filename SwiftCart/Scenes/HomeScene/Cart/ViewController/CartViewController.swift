@@ -21,6 +21,7 @@ class CartViewController: UIViewController {
     @IBOutlet weak var cartTableView: UITableView!
     @IBOutlet weak var totalPrice: UILabel!
     
+    @IBOutlet weak var checkOutStak: UIStackView!
     var noConnectionCase = TestPojo(img: "No-Internet--Streamline-Bruxelles", title: "Whooops!", dec: "No internet connection found check your connection.", btnTitle: "TRY AGAIN")
     var notLoggedInCase = TestPojo(img: "No-Search-Results-Found-2--Streamline-Bruxelles", title: "Not Logged In", dec: "Please log in to access this feature.", btnTitle: "Log In")
     
@@ -36,7 +37,7 @@ class CartViewController: UIViewController {
         viewModel.bindCartProducts = { [weak self] in
             DispatchQueue.main.async {
                 self?.cartTableView.reloadData()
-                self?.emptylist()
+               
             }
         }
         viewModel.updateTotalPrice = { [weak self] totalPriceText in
@@ -85,7 +86,7 @@ class CartViewController: UIViewController {
         viewModel.bindCartProducts = { [weak self] in
             DispatchQueue.main.async {
                 self?.cartTableView.reloadData()
-                self?.emptylist()
+              
             }
         }
         viewModel.getCartProductsList()
@@ -94,26 +95,20 @@ class CartViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         viewModel.bindCartProducts = { [weak self] in
             DispatchQueue.main.async {
-                self?.emptylist()
+            
                 self?.cartTableView.reloadData()
             }
         }
         viewModel.getCartProductsList()
     }
-    func emptylist(){
-        if viewModel.getCartProductCount() == 0{
-            emptyOrdersListImg.isHidden = false
-        }
-            else{
-                emptyOrdersListImg.isHidden = true
-        }
-    }
+
     @IBAction func checkoutBtn(_ sender: Any) {
+        
         coordinator?.goToShipping()
     }
     
     @IBAction func goToFav(_ sender: Any) {
-        //coordinator?.goToFav()
+        coordinator?.goToFav()
     }
     
 }
@@ -139,7 +134,10 @@ extension CartViewController: UITableViewDataSource, UITableViewDelegate, Produc
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel.getCartProductCount()
+        let count = viewModel.getCartProductCount()
+       emptyOrdersListImg.isHidden = count > 0
+        checkOutStak.isHidden = count == 0
+        return count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

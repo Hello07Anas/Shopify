@@ -128,7 +128,7 @@ class ShippingViewController: UIViewController {
     @IBAction func applePay(_ sender: Any) {
         if checkAddressSelected() {
             if let paymentVC = PKPaymentAuthorizationViewController(paymentRequest: createPaymentRequest()) {
-                createAndAddOrder()
+               
                 paymentVC.delegate = self
                 present(paymentVC, animated: true, completion: nil)
             }
@@ -216,6 +216,7 @@ extension ShippingViewController: PKPaymentAuthorizationViewControllerDelegate {
     
     func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController, didAuthorizePayment payment: PKPayment, handler completion: @escaping (PKPaymentAuthorizationResult) -> Void) {
         completion(PKPaymentAuthorizationResult(status: .success, errors: nil))
+        createAndAddOrder()
         // place order --> Elham Entry Point
         
         viewModel.deleteLineItems()

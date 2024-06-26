@@ -23,9 +23,7 @@ class OrderViewController: UIViewController {
         viewModel?.bindOrder = { [weak self] in
             self?.tableView.reloadData()
         }
-        viewModel?.ordersUpdated = { [weak self] hasOrders in
-            self?.emotyImage.isHidden = hasOrders
-        }
+       
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -50,7 +48,12 @@ extension OrderViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel?.getOrdersCount() ?? 0
+        
+        let count = viewModel?.getOrdersCount() ?? 0
+        
+        self.emotyImage.isHidden = count > 0
+      
+        return count
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

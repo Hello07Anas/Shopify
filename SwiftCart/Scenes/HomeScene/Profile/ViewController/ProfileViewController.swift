@@ -83,7 +83,7 @@ class ProfileViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        print("UserId: \( K.Shopify.userID)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" )
         if(!(Utils.isNetworkReachableTest())){
             checkView.isHidden = false
             imgView.image = UIImage(named: noConnectionCase.img)
@@ -171,6 +171,8 @@ class ProfileViewController: UIViewController {
 extension ProfileViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, ProductCollectionCellDelegate {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        let count =  products.count
+        emptyFavListImg.isHidden = count > 0
         return products.count
     }
     
