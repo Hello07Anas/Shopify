@@ -29,10 +29,6 @@ class Login: UIViewController {
         GIDSignIn.sharedInstance.configuration = config
     }
 
-    @IBAction func backBtn(_ sender: Any) {
-        coordinator?.finish()
-        // TODO: pop from stack "self"
-    }
 
     @IBAction func skipBtn(_ sender: Any) { 
         coordinator?.gotoHome(isThereConnection: true)
@@ -149,9 +145,6 @@ class Login: UIViewController {
                 }
             }
         }
-    }
-    
-    @IBAction func loginWIthX(_ sender: Any) {
     }
     
     // Helper methods

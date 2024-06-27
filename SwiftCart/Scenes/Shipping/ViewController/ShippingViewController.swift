@@ -18,6 +18,9 @@ class ShippingViewController: UIViewController {
     @IBOutlet weak var grandTotalPrice: UILabel!
     @IBOutlet weak var AddressTextField: UITextField!
     @IBOutlet weak var promocodeTextField: UITextField!
+    @IBOutlet weak var subTotal: UILabel!
+    @IBOutlet weak var taxOt: UILabel!
+    
     var coordinator: SettingsCoordinator?
     var selectedAddress: Address?
     var viewModel = ShippingViewModel(network: NetworkManager.shared)
@@ -40,6 +43,8 @@ class ShippingViewController: UIViewController {
         viewModel.bindShipping = { [weak self] in
             DispatchQueue.main.async {
                 self?.grandTotalPrice.text = self?.viewModel.GrandPrice.formatAsCurrency()
+                self?.subTotal.text = self?.viewModel.draftOrder?.singleResult?.subtotalPrice.formatAsCurrency()
+                self?.taxOt.text = self?.viewModel.draftOrder?.singleResult?.totalTax?.formatAsCurrency()
             }
         }
         checkAndSetDefaultAddress()
@@ -69,7 +74,9 @@ class ShippingViewController: UIViewController {
     }
     func createPaymentRequest() -> PKPaymentRequest {
         let request = PKPaymentRequest()
+       // request.merchantIdentifier = K.Shopify.MERCHANT_ID
         request.merchantIdentifier = K.Shopify.MERCHANT_ID
+
         request.supportedNetworks = [.visa, .masterCard, .amex]
         request.merchantCapabilities = .threeDSecure
         request.countryCode = "US"
@@ -86,7 +93,7 @@ class ShippingViewController: UIViewController {
             
             if discount.valueType == "fixed_amount" {
                 type = ""
-                totalPrice = Double(order.singleResult?.totalPrice ?? "0")! - discountValue
+                totalPrice = Double(order.singleResult?.subtotalPrice ?? "0")! - discountValue
                 if totalPrice < 0 { totalPrice = 0 }
                 
             } else {
@@ -97,8 +104,9 @@ class ShippingViewController: UIViewController {
             }
             
             DispatchQueue.main.async {
-                      self.grandTotalPrice.text = String(totalPrice).formatAsCurrency()
+                      self.subTotal.text = String(totalPrice).formatAsCurrency()
                       self.discountPercentage.text = "\(discountValue) \(type)"
+                self.grandTotalPrice.text = "\(totalPrice + (Double(order.singleResult?.totalTax ?? "0") ?? 0))".formatAsCurrency()
                 self.applyBtn.isEnabled = false
                 self.promocodeTextField.isEnabled = false
                 self.promocodeTextField.textColor = .gray
@@ -186,8 +194,9 @@ class ShippingViewController: UIViewController {
             address: selectedAddress,
             date: getCurrentDateString(),
             currency: UserDefaultsHelper.shared.getCurrencyType() ?? "USD",
-            email: UserDefaults.standard.string(forKey: "userEmail") ?? "",
+            email: UserDefaults.standard.string(forKey: UserDefaultsHelper.shared.getUserData().email ?? "hello.anas07@gmail.com") ?? "",
             totalPrice: viewModel.GrandPrice ?? "0.0",
+            
             items: viewModel.draftOrder?.singleResult?.lineItems.dropFirst().map { lineItem in
                 let imageUrl: String? = {
                     if !lineItem.properties.isEmpty, lineItem.properties[0].name == "image" {
@@ -206,7 +215,8 @@ class ShippingViewController: UIViewController {
             } ?? [],
             userID: Int(K.Shopify.userID),
             billingAddress: selectedAddress,
-            customer: UserDefaultsHelper.shared.printUserDefaults()
+            customer: UserDefaultsHelper.shared.printUserDefaults(),
+            send_receipt: true
         )
 
         orderViewModel.addNewOrder(newOrder: newOrder)
@@ -230,6 +240,7 @@ extension ShippingViewController: UITextFieldDelegate {
         return true
     }
 }
+
 extension ShippingViewController: PKPaymentAuthorizationViewControllerDelegate {
     
     func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
@@ -237,15 +248,19 @@ extension ShippingViewController: PKPaymentAuthorizationViewControllerDelegate {
     }
     
     func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController, didAuthorizePayment payment: PKPayment, handler completion: @escaping (PKPaymentAuthorizationResult) -> Void) {
-        completion(PKPaymentAuthorizationResult(status: .success, errors: nil))
-        createAndAddOrder()
-        // place order --> Elham Entry Point
+        // Assuming payment authorization is successful
+        let result = PKPaymentAuthorizationResult(status: .success, errors: nil)
+        completion(result)
         
+        createAndAddOrder()
         viewModel.deleteLineItems()
+        controller.dismiss(animated: true)
+        coordinator?.finish()
     }
     
     
 }
+
 extension ShippingViewController: AddressSelectionDelegate {
     func didSelectAddress(_ address: Address) {
         selectedAddress = address

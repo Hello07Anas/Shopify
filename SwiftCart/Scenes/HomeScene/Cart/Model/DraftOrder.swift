@@ -22,6 +22,7 @@ struct DraftOrderModel: Codable {
     let currency: String
     var lineItems: [LineItem]
     var totalPrice, subtotalPrice: String
+    var totalTax: String?
     var appliedDiscount: AppliedDiscount?
 
     enum CodingKeys: String, CodingKey {
@@ -31,6 +32,7 @@ struct DraftOrderModel: Codable {
         case totalPrice = "total_price"
         case subtotalPrice = "subtotal_price"
         case appliedDiscount = "applied_discount"
+        case totalTax = "total_tax"
 
     }
 }

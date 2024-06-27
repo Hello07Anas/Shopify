@@ -29,10 +29,6 @@ class SginUp: UIViewController { // TODO: fix routation in Sgin UP
         GIDSignIn.sharedInstance.configuration = config
     }
     
-    @IBAction func backBtn(_ sender: Any) {
-        coordinator?.finish()
-    }
-    
     @IBAction func skipBtn(_ sender: Any) {
         coordinator?.gotoHome(isThereConnection: true)
     }

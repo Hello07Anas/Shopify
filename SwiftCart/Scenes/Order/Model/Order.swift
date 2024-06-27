@@ -30,6 +30,7 @@ struct Order: Codable {
     var userID: Int?
     var billingAddress: Address?
     var customer: Customer?
+    var send_receipt: Bool?
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -39,12 +40,13 @@ struct Order: Codable {
         //case phone
         case date = "created_at"
         case currency
-        case email
+        case email = "contact_email"
         case totalPrice = "total_price"
         case items = "line_items"
         case userID = "user_id"
         case billingAddress = "billing_address"
         case customer
+        case send_receipt
     }
 }
 

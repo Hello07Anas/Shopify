@@ -219,7 +219,7 @@
                                 </connections>
                             </button>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Bik-Wo-VIa">
-                                <rect key="frame" x="14" y="204" width="365" height="31"/>
+                                <rect key="frame" x="14" y="237" width="365" height="31"/>
                             </slider>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="kXO-Be-J5Q">
                                 <rect key="frame" x="0.0" y="165" width="393" height="32"/>
@@ -234,8 +234,8 @@
                                     <action selector="SubCategoriesBtn:" destination="vGW-Ch-lQ4" eventType="valueChanged" id="I8l-OS-Wz2"/>
                                 </connections>
                             </segmentedControl>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="r6T-qA-GeN">
-                                <rect key="frame" x="12" y="251" width="369" height="567"/>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="r6T-qA-GeN">
+                                <rect key="frame" x="12" y="318" width="369" height="500"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Mlt-FN-DwM">
                                     <size key="itemSize" width="167" height="132"/>
@@ -265,6 +265,24 @@
                                     <action selector="filter:" destination="9TB-JC-d02" eventType="touchUpInside" id="pAZ-g0-1GY"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Price" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yzh-F7-sic">
+                                <rect key="frame" x="25" y="212" width="41" height="21"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AMC-dB-n8l">
+                                <rect key="frame" x="16" y="271" width="31" height="14.333333333333314"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OhG-aF-Pb4">
+                                <rect key="frame" x="346" y="271" width="31" height="14.333333333333314"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Ltl-rQ-ugp"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -277,14 +295,20 @@
                             <constraint firstItem="aL5-FC-z5N" firstAttribute="leading" secondItem="Ltl-rQ-ugp" secondAttribute="leading" constant="4" id="Ci0-cg-tGX"/>
                             <constraint firstItem="Jht-fb-ekd" firstAttribute="trailing" secondItem="Ltl-rQ-ugp" secondAttribute="trailing" id="Fw8-pZ-EAP"/>
                             <constraint firstItem="kXO-Be-J5Q" firstAttribute="leading" secondItem="Ltl-rQ-ugp" secondAttribute="leading" id="LvF-om-lrd"/>
+                            <constraint firstItem="OhG-aF-Pb4" firstAttribute="centerY" secondItem="AMC-dB-n8l" secondAttribute="centerY" id="O0i-T6-oVV"/>
                             <constraint firstItem="Ltl-rQ-ugp" firstAttribute="trailing" secondItem="r6T-qA-GeN" secondAttribute="trailing" constant="12" id="Q3J-ZT-o38"/>
-                            <constraint firstItem="Bik-Wo-VIa" firstAttribute="top" secondItem="kXO-Be-J5Q" secondAttribute="bottom" constant="8" id="SKQ-wO-rZV"/>
+                            <constraint firstItem="AMC-dB-n8l" firstAttribute="leading" secondItem="Ltl-rQ-ugp" secondAttribute="leading" constant="16" id="SDN-WG-l8I"/>
+                            <constraint firstItem="Bik-Wo-VIa" firstAttribute="top" secondItem="yzh-F7-sic" secondAttribute="bottom" constant="4" id="SKQ-wO-rZV"/>
                             <constraint firstItem="Ltl-rQ-ugp" firstAttribute="trailing" secondItem="Bik-Wo-VIa" secondAttribute="trailing" constant="16" id="Wx4-iK-sS9"/>
+                            <constraint firstItem="yzh-F7-sic" firstAttribute="top" secondItem="kXO-Be-J5Q" secondAttribute="bottom" constant="16" id="YPl-Ue-zh9"/>
+                            <constraint firstItem="Ltl-rQ-ugp" firstAttribute="trailing" secondItem="OhG-aF-Pb4" secondAttribute="trailing" constant="16" id="YsP-Ul-8U0"/>
                             <constraint firstItem="Bik-Wo-VIa" firstAttribute="leading" secondItem="Ltl-rQ-ugp" secondAttribute="leading" constant="16" id="aWe-oR-0qo"/>
+                            <constraint firstItem="yzh-F7-sic" firstAttribute="leading" secondItem="Ltl-rQ-ugp" secondAttribute="leading" constant="25" id="agV-lH-HQg"/>
                             <constraint firstItem="eEk-qb-nlH" firstAttribute="top" secondItem="aL5-FC-z5N" secondAttribute="bottom" constant="8" id="bqp-uf-neM"/>
                             <constraint firstItem="IKM-Me-gPb" firstAttribute="centerY" secondItem="eEk-qb-nlH" secondAttribute="centerY" id="hyY-9q-O0v"/>
                             <constraint firstItem="aL5-FC-z5N" firstAttribute="top" secondItem="Ltl-rQ-ugp" secondAttribute="top" id="l6w-w5-3rK"/>
                             <constraint firstItem="Jht-fb-ekd" firstAttribute="leading" secondItem="IKM-Me-gPb" secondAttribute="trailing" id="pKo-eO-CaK"/>
+                            <constraint firstItem="AMC-dB-n8l" firstAttribute="top" secondItem="Bik-Wo-VIa" secondAttribute="bottom" constant="4" id="rgg-KF-Y4u"/>
                             <constraint firstItem="kXO-Be-J5Q" firstAttribute="top" secondItem="eEk-qb-nlH" secondAttribute="bottom" constant="8" id="shH-P0-m1f"/>
                             <constraint firstItem="eEk-qb-nlH" firstAttribute="leading" secondItem="Ltl-rQ-ugp" secondAttribute="leading" constant="8" id="shK-0T-qsP"/>
                             <constraint firstItem="Jht-fb-ekd" firstAttribute="centerY" secondItem="eEk-qb-nlH" secondAttribute="centerY" id="tTP-tX-ojM"/>
@@ -293,6 +317,9 @@
                     <navigationItem key="navigationItem" id="UW7-2T-MBx"/>
                     <connections>
                         <outlet property="collectionView" destination="r6T-qA-GeN" id="hvL-Q9-03I"/>
+                        <outlet property="maxPriceLabel" destination="OhG-aF-Pb4" id="OF8-Ko-lJS"/>
+                        <outlet property="minPriceLabel" destination="AMC-dB-n8l" id="Iuj-Os-guN"/>
+                        <outlet property="priceLabel" destination="yzh-F7-sic" id="JZl-18-3UZ"/>
                         <outlet property="searchBar" destination="eEk-qb-nlH" id="meY-ZX-xe9"/>
                         <outlet property="sliderPrice" destination="Bik-Wo-VIa" id="zOn-Sd-7xR"/>
                         <outlet property="subCategoriesView" destination="kXO-Be-J5Q" id="g8c-yO-tlq"/>

@@ -17,9 +17,12 @@ class ProductViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     @IBOutlet weak var topconstrensinCollectionView: NSLayoutConstraint!
     
+    @IBOutlet weak var maxPriceLabel: UILabel!
+    @IBOutlet weak var minPriceLabel: UILabel!
+    @IBOutlet weak var priceLabel: UILabel!
     @IBOutlet weak var searchBar: UISearchBar!
     var indecartor: CustomIndicator?
-    
+  
     var isFilterHidden = true
     let favCRUD = FavCRUD()
 
@@ -36,9 +39,12 @@ class ProductViewController: UIViewController, UICollectionViewDelegate, UIColle
         
         indecartor?.start()
         
-        sliderPrice.isHidden = isFilterHidden
-        subCategoriesView.isHidden = isFilterHidden
-        topconstrensinCollectionView.constant = 8
+        priceLabel.isHidden = isFilterHidden
+                minPriceLabel.isHidden = isFilterHidden
+                maxPriceLabel.isHidden = isFilterHidden
+                sliderPrice.isHidden = isFilterHidden
+                subCategoriesView.isHidden = isFilterHidden
+                topconstrensinCollectionView.constant = 8
         setupCollectionViewLayout()
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -73,15 +79,18 @@ class ProductViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     @IBAction func filter(_ sender: Any) {
-        isFilterHidden = !isFilterHidden
-        UIView.animate(withDuration: 0.5) {
-            self.subCategoriesView.isHidden = self.isFilterHidden
-            self.sliderPrice.isHidden = self.isFilterHidden
-            self.topconstrensinCollectionView.constant = self.isFilterHidden ? 8 : (self.subCategoriesView.frame.height + self.sliderPrice.frame.height + 16)
-            self.view.layoutIfNeeded()
+            isFilterHidden = !isFilterHidden
+            UIView.animate(withDuration: 0.3) {
+                self.subCategoriesView.isHidden = self.isFilterHidden
+                self.priceLabel.isHidden = self.isFilterHidden
+                self.sliderPrice.isHidden = self.isFilterHidden
+                self.minPriceLabel.isHidden = self.isFilterHidden
+                self.maxPriceLabel.isHidden = self.isFilterHidden
+                self.topconstrensinCollectionView.constant = self.isFilterHidden ? 8 : (self.subCategoriesView.frame.height + self.sliderPrice.frame.height + self.priceLabel.frame.height + self.maxPriceLabel.frame.height + 32)
+                self.view.layoutIfNeeded()
+            }
+            
         }
-        
-    }
     
     @IBAction func SubCategoriesBtn(_ sender: Any) {
         switch subCategoriesView.selectedSegmentIndex {
@@ -133,6 +142,8 @@ class ProductViewController: UIViewController, UICollectionViewDelegate, UIColle
         if let minPrice = prices.min(), let maxPrice = prices.max() {
             sliderPrice.minimumValue = minPrice - 30
             sliderPrice.maximumValue = maxPrice + 30
+            maxPriceLabel.text = "\(maxPrice + 30)".formatAsCurrency()
+            minPriceLabel.text = "\(minPrice - 30)".formatAsCurrency()
             sliderPrice.value = maxPrice
         }
     }
