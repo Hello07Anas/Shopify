@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ImageZoom" customModule="SwiftCart" customModuleProvider="target">
+            <connections>
+                <outlet property="collectionView" destination="pnL-NO-Kao" id="LJK-QF-DaO"/>
+                <outlet property="pageController" destination="Y0a-Yj-3Wf" id="tQE-Xr-cm3"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="pnL-NO-Kao">
+                    <rect key="frame" x="0.0" y="59" width="393" height="759"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="rVt-Hf-tde">
+                        <size key="itemSize" width="128" height="128"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                </collectionView>
+                <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="Y0a-Yj-3Wf">
+                    <rect key="frame" x="138.66666666666666" y="756" width="116" height="26"/>
+                    <color key="pageIndicatorTintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="currentPageIndicatorTintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </pageControl>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5vJ-mg-rfg">
+                    <rect key="frame" x="15.999999999999996" y="75" width="39.666666666666657" height="34.333333333333343"/>
+                    <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="plain" image="chevron.backward" catalog="system"/>
+                    <connections>
+                        <action selector="backBtn:" destination="-1" eventType="touchUpInside" id="lcM-EE-etT"/>
+                    </connections>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="5vJ-mg-rfg" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="6aV-Gm-EAu"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="Y0a-Yj-3Wf" secondAttribute="bottom" constant="36" id="QQI-ew-S7g"/>
+                <constraint firstItem="Y0a-Yj-3Wf" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="WJa-1G-9Cc"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="pnL-NO-Kao" secondAttribute="bottom" id="cIm-BH-faN"/>
+                <constraint firstItem="pnL-NO-Kao" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="dJP-V5-xoQ"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="pnL-NO-Kao" secondAttribute="trailing" id="iPq-Y8-qGE"/>
+                <constraint firstItem="5vJ-mg-rfg" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="16" id="iW4-oJ-Gzd"/>
+                <constraint firstItem="pnL-NO-Kao" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="xlm-kC-zEm"/>
+            </constraints>
+            <point key="canvasLocation" x="130.53435114503816" y="-11.267605633802818"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="chevron.backward" catalog="system" width="97" height="128"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
