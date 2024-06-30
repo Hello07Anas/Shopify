@@ -24,19 +24,10 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="9Xh-d5-Yue" userLabel="NavBtns">
-                    <rect key="frame" x="16" y="67" width="398" height="38.333333333333343"/>
+                    <rect key="frame" x="357" y="67" width="57" height="38.333333333333343"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gse-5b-zSa">
-                            <rect key="frame" x="0.0" y="0.0" width="39.666666666666664" height="38.333333333333336"/>
-                            <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <state key="normal" title="Button"/>
-                            <buttonConfiguration key="configuration" style="plain" image="chevron.backward" catalog="system"/>
-                            <connections>
-                                <action selector="backBtn:" destination="-1" eventType="touchUpInside" id="NsJ-JH-3tj"/>
-                            </connections>
-                        </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wr1-vh-GpT">
-                            <rect key="frame" x="341" y="0.0" width="57" height="38.333333333333336"/>
+                            <rect key="frame" x="0.0" y="0.0" width="57" height="38.333333333333336"/>
                             <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="filled" title="Skip"/>
@@ -128,22 +119,14 @@
                     </constraints>
                 </view>
                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="97" translatesAutoresizingMaskIntoConstraints="NO" id="O3m-ov-Fg6" userLabel="SginUPWith">
-                    <rect key="frame" x="16" y="653.66666666666663" width="398" height="64"/>
+                    <rect key="frame" x="16" y="653.66666666666663" width="398" height="62"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OTX-ov-p0b" userLabel="Google">
-                            <rect key="frame" x="0.0" y="0.0" width="150.66666666666666" height="64"/>
+                            <rect key="frame" x="0.0" y="0.0" width="398" height="62"/>
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="plain" image="google-icon"/>
                             <connections>
                                 <action selector="sginUpWithGoogle:" destination="-1" eventType="touchUpInside" id="Tir-4R-IO7"/>
-                            </connections>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wAn-u6-fd8" userLabel="X">
-                            <rect key="frame" x="247.66666666666669" y="0.0" width="150.33333333333331" height="64"/>
-                            <state key="normal" title="Button"/>
-                            <buttonConfiguration key="configuration" style="plain" image="x-icon"/>
-                            <connections>
-                                <action selector="sginUpWithX:" destination="-1" eventType="touchUpInside" id="Uyc-a5-VgZ"/>
                             </connections>
                         </button>
                     </subviews>
@@ -168,7 +151,6 @@
                 <constraint firstItem="ULK-8M-0sq" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="eg0-um-NhF"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="O3m-ov-Fg6" secondAttribute="trailing" constant="16" id="il4-be-xog"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="XuT-Tl-vnA" secondAttribute="trailing" constant="16" id="nPh-7H-MJh"/>
-                <constraint firstItem="9Xh-d5-Yue" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="orf-ZU-8Ho"/>
                 <constraint firstItem="upd-7q-qLO" firstAttribute="top" secondItem="9Xh-d5-Yue" secondAttribute="bottom" constant="8" id="pNY-Fq-3ps"/>
                 <constraint firstItem="XuT-Tl-vnA" firstAttribute="top" secondItem="upd-7q-qLO" secondAttribute="bottom" constant="16" id="ztl-eC-GHL"/>
             </constraints>
@@ -176,9 +158,7 @@
         </view>
     </objects>
     <resources>
-        <image name="chevron.backward" catalog="system" width="97" height="128"/>
         <image name="google-icon" width="48" height="48"/>
-        <image name="x-icon" width="50" height="50"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

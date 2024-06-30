@@ -23,6 +23,7 @@ class CategoryViewController: UIViewController, UICollectionViewDataSource, UICo
     
     var isFilterHidden = true
     let favCRUD = FavCRUD()
+    var indecator: CustomIndicator?
     
     weak var coordinator: AppCoordinator?
     private let disposeBag = DisposeBag()
@@ -33,11 +34,16 @@ class CategoryViewController: UIViewController, UICollectionViewDataSource, UICo
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        indecator = CustomIndicator(containerView: view.self)
+        indecator?.start()
         isInternetConnection = Utils.isNetworkReachableTest()
         print(isInternetConnection ?? false)
         if isInternetConnection == true {
             InternetConnectionView.isHidden = true
-            viewModel.getAllProducts()
+            viewModel.getAllProducts(completion: {_ in
+                self.indecator?.stop()
+            })
+            
             fetchFavoriteItems()
         }else {
             InternetConnectionView.isHidden = false
@@ -78,10 +84,13 @@ class CategoryViewController: UIViewController, UICollectionViewDataSource, UICo
     }
     
     @IBAction func tryAgain(_ sender: Any) {
+        indecator?.start()
         isInternetConnection = Utils.isNetworkReachableTest()
         if isInternetConnection == true {
             InternetConnectionView.isHidden = true
-            viewModel.getAllProducts()
+            viewModel.getAllProducts(completion: {_ in
+                self.indecator?.stop()
+            })
             fetchFavoriteItems()
         }else {
             InternetConnectionView.isHidden = false
@@ -161,17 +170,29 @@ class CategoryViewController: UIViewController, UICollectionViewDataSource, UICo
         viewModel.clearFilter()  // Clear any previous filters
         switch sender.selectedSegmentIndex {
         case 0:
-            viewModel.getAllProducts()
+            viewModel.getAllProducts(completion: {_ in
+                self.indecator?.stop()
+            })
         case 1:
-            viewModel.getCategoryProducts(categoryId: K.CategoryID.MEN)
+            viewModel.getCategoryProducts(categoryId: K.CategoryID.MEN, completion: {_ in
+                self.indecator?.stop()
+            })
         case 2:
-            viewModel.getCategoryProducts(categoryId: K.CategoryID.WOMEN)
+            viewModel.getCategoryProducts(categoryId: K.CategoryID.WOMEN, completion: {_ in
+                self.indecator?.stop()
+            })
         case 3:
-            viewModel.getCategoryProducts(categoryId: K.CategoryID.SALE)
+            viewModel.getCategoryProducts(categoryId: K.CategoryID.SALE, completion: {_ in
+                self.indecator?.stop()
+            })
         case 4:
-            viewModel.getCategoryProducts(categoryId: K.CategoryID.KID)
+            viewModel.getCategoryProducts(categoryId: K.CategoryID.KID, completion: {_ in
+                self.indecator?.stop()
+            })
         default:
-            viewModel.getAllProducts()
+            viewModel.getAllProducts(completion: {_ in
+                self.indecator?.stop()
+            })
         }
     }
     @IBAction func SubCategoriesBtn(_ sender: Any) {

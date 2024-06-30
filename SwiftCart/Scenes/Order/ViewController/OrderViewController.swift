@@ -23,9 +23,7 @@ class OrderViewController: UIViewController {
         viewModel?.bindOrder = { [weak self] in
             self?.tableView.reloadData()
         }
-        viewModel?.ordersUpdated = { [weak self] hasOrders in
-            self?.emotyImage.isHidden = hasOrders
-        }
+       
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -50,7 +48,12 @@ extension OrderViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel?.getOrdersCount() ?? 0
+        
+        let count = viewModel?.getOrdersCount() ?? 0
+        
+        self.emotyImage.isHidden = count > 0
+      
+        return count
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -65,10 +68,18 @@ extension OrderViewController: UITableViewDataSource, UITableViewDelegate {
         let order = viewModel?.getOrderByIndex(index: indexPath.section)
         cell?.ProductNum.text = "\(order?.productNumber ?? "")"
         cell?.orderNum.text = "\(order!.orderNumber!)"//"\(order!.orderNumber!)"
-        cell?.address.text = "\(order!.address!.address1!) \(order!.address!.city!)"
+        if let order = order,
+           let address = order.address,
+           let city = address.city {
+            let address1 = address.address1 ?? ""
+            cell?.address.text = "\(address1) \(city)"
+        } else {
+            // Handle the nil case appropriately, for example:
+            cell?.address.text = "" // or some default text
+        }
         cell?.date.text = Utils.extractDate(from: order?.date ?? "2024-05-27T08:25:00-04:00")
         cell?.price.text = "\(order!.totalPrice) \(order!.currency ?? "")"
-        cell?.phone.text = order?.address!.phone
+        cell?.phone.text = order?.address?.phone
         return cell!
     }
 

@@ -28,7 +28,7 @@ class CategoryViewModel {
         self.network = network
     }
 
-    func getAllProducts() {
+    func getAllProducts(completion: @escaping (Bool) -> Void) {
         let url = "https://236f00d0acd3538f6713fd3a323150b6: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@mad44-sv-iost1.myshopify.com/admin/api/2024-04/products.json"
 
         network.getApiData(url: url)
@@ -39,6 +39,7 @@ class CategoryViewModel {
                     self?.productsArray = productsResponse.products ?? []
                     self?.categoriesSubject.onNext(self?.productsArray ?? [])
                   //  print("ViewModel: Number of products: \(self?.productsArray.count ?? 0) image :: \(self?.productsArray.first?.image.src ?? "")")
+                    completion(true)
                 } else {
                     print("loadData else")
                 }
@@ -48,7 +49,7 @@ class CategoryViewModel {
             .disposed(by: disposeBag)
     }
 
-    func getCategoryProducts(categoryId: Int) {
+    func getCategoryProducts(categoryId: Int, completion: @escaping (Bool) -> Void) {
         let url = "https://236f00d0acd3538f6713fd3a323150b6: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@mad44-sv-iost1.myshopify.com/admin/api/2024-04/products.json?collection_id=\(categoryId)"
 
         network.getApiData(url: url)
@@ -59,6 +60,7 @@ class CategoryViewModel {
                     self?.productsArray = productsResponse.products ?? []
                     self?.categoriesSubject.onNext(self?.productsArray ?? [])
                    // print("ViewModel: Number of products: \(self?.productsArray.count ?? 0) image :: \(self?.productsArray.first?.image.src ?? "")")
+                    completion(true)
                 } else {
                     print("loadData else")
                 }

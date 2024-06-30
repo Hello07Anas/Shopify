@@ -20,24 +20,27 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var searchBar: UISearchBar!
     
-    
     var currentCellIndex = 0
     var timer: Timer?
+    var indecator: CustomIndicator?
     
     private let disposeBag = DisposeBag()
     
-    
-    
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+        super.viewWillAppear(animated)
+        indecator = CustomIndicator(containerView: view.self)
+        self.indecator?.start()
+        
         isInternetConnection = Utils.isNetworkReachableTest()
         print(isInternetConnection!)
         if isInternetConnection == true {
             InternetConnectionView.isHidden = true
-            viewModel.loadData()
+            viewModel.loadData(completion: { _ in
+                self.indecator?.stop()
+            })
         }else {
             InternetConnectionView.isHidden = false
-
+            self.indecator?.stop()
         }
        
     }
@@ -59,19 +62,25 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         setupCollectionViewLayout()
         
         bindViewModel()
-        viewModel.loadData()
     }
     
    
     @IBAction func tryAgain(_ sender: Any) {
+        
+        indecator?.start()
+
         isInternetConnection = Utils.isNetworkReachableTest()
         if isInternetConnection == false {
             InternetConnectionView.isHidden = true
-            viewModel.loadData()
+            viewModel.loadData(completion: { _ in
+               // self.indecator?.stop()
+                self.indecator?.start()
+            })
         }else {
             InternetConnectionView.isHidden = false
-
+            indecator?.stop()
         }
+        
     }
     
     @IBAction func favBtn(_ sender: Any) {
@@ -95,16 +104,24 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         if section == 0 {
             return 8
         } else {
+            let count = viewModel.getBrandsCount()
+            if count > 0 {
+                self.indecator?.start()
+            } else {
+                self.indecator?.start()
+            }
             return viewModel.getBrandsCount()
         }
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         if indexPath.section == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "homeCell", for: indexPath) as! HomeCollectionViewCell
             cell.img.image = UIImage(named: "\(indexPath.row)")
             return cell
         } else {
+            self.indecator?.stop()
             let brandCell = collectionView.dequeueReusableCell(withReuseIdentifier: "brandcell", for: indexPath) as! BrandCollectionViewCell
             if let imageUrl = URL(string: viewModel.getBrands()[indexPath.row].image?.src ?? "https://cdn.shopify.com/s/files/1/0624/0239/6207/collections/97a3b1227876bf099d279fd38290e567.jpg?v=1716812402") {
                 brandCell.img.sd_setImage(with: imageUrl, placeholderImage: UIImage(named: "9"))

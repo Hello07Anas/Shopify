@@ -14,8 +14,11 @@ class ProductCartCell: UITableViewCell {
     @IBOutlet weak var productPrice: UILabel!
     @IBOutlet weak var productTitle: UILabel!
     @IBOutlet weak var productImage: UIImageView!
+    @IBOutlet weak var minBtn: UIButton!
+    @IBOutlet weak var addBtn: UIButton!
     
     weak var delegate: ProductCartCellDelegate?
+
     var cellID: Int?
     private var quantity: Int = 1
     
@@ -36,24 +39,45 @@ class ProductCartCell: UITableViewCell {
         self.layer.borderWidth = 1.0
         self.layer.cornerRadius = 10.0
         self.layer.masksToBounds = true
+        minBtn.setImage(UIImage(systemName: "minus.circle"), for: .normal)
+        addBtn.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
+        minBtn.configuration?.showsActivityIndicator = false
+        minBtn.isEnabled = true
+        addBtn.configuration?.showsActivityIndicator = false
+        addBtn.isEnabled = true
     }
     
-    @IBAction func minusBtn(_ sender: Any) {
-            quantity -= 1
-            if let cellID = cellID {
-                print("minus btn \(cellID) & \(quantity)")
-                delegate?.didUpdateProductQuantity(forCellID: cellID, with: quantity)
-            }
-    }
-    
-    @IBAction func plusBtn(_ sender: Any) {
-        quantity += 1
+    @IBAction func minusBtn(_ sender: UIButton) {
+        quantity -= 1
+
         if let cellID = cellID {
-            print("plus btn \(cellID) & \(quantity)")
-            delegate?.didUpdateProductQuantity(forCellID: cellID, with: quantity)
+            sender.isEnabled = false
+            sender.configuration?.showsActivityIndicator = true
+            
+            print("minus btn \(cellID) & \(quantity)")
+            delegate?.didUpdateProductQuantity(forCellID: cellID, with: quantity, completion: { success in
+
+                print("TEST Completion")
+                sender.configuration?.showsActivityIndicator = false
+                sender.isEnabled = true
+            })
         }
     }
     
+    @IBAction func plusBtn(_ sender: UIButton) {
+        
+        quantity += 1
+        if let cellID = cellID {
+            sender.isEnabled = false
+            sender.configuration?.showsActivityIndicator = true
+            print("plus btn \(cellID) & \(quantity)")
+            delegate?.didUpdateProductQuantity(forCellID: cellID, with: quantity, completion: { success in
+                sender.isEnabled = true
+                print("TEST Completion")
+                sender.configuration?.showsActivityIndicator = false
+            })
+        }
+    }
 }
 
 protocol ProductCartCellProtocol {
@@ -63,18 +87,19 @@ protocol ProductCartCellProtocol {
 }
 
 protocol ProductCartCellDelegate: AnyObject {
-    func didUpdateProductQuantity(forCellID id: Int, with quantity: Int)
+    func didUpdateProductQuantity(forCellID id: Int, with quantity: Int, completion:  ((Bool) -> Void)?)
 }
 
-extension ProductCartCell : ProductCartCellProtocol , ProductCartCellDelegate{
-    
-    func didUpdateProductQuantity(forCellID id: Int, with quantity: Int) {}
+extension ProductCartCell : ProductCartCellProtocol {
     
     func setCell(id: Int) {
         cellID = id
     }
     
-    func setProduct(_ product: LineItem) {        
+    func setProduct(_ product: LineItem) {     //plus.circle.fill
+//        minBtn.setImage(UIImage(systemName: "minus.circle"), for: .normal)
+//        addBtn.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
+
         productTitle.text = product.productTitle
         productPrice.text = "\(product.productPrice)".formatAsCurrency()
         productQuantity.text = "\(product.quantity)"

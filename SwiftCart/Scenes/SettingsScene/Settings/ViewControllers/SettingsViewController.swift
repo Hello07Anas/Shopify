@@ -34,9 +34,13 @@ class SettingsViewController: UIViewController {
                 let okBtn = UIAlertAction(title: "OK", style: .default) { _ in
                     self.coordinator?.parentCoordinator?.gotoHome(isThereConnection: Utils.isNetworkReachableTest())
                 }
-                Utils.showAlert(title: "will miss you \(userData.name!)🥹", message: "See you soon!🥲", preferredStyle: .alert, from: self, actions: [okBtn])
+                let cancle = UIAlertAction(title: "CANCLE", style: .default) { _ in
+                    
+                }
+                Utils.showAlert(title: "will miss you \(userData.name!)🥹", message: "See you soon!🥲", preferredStyle: .alert, from: self, actions: [okBtn,cancle])
                 logOutLoginBtn.setTitle("Login", for: .normal)
                 UserDefaultsHelper.shared.clearUserData()
+                UserDefaults.standard.removeObject(forKey: "userUID")
             } catch let signOutError as NSError {
                 print("Error signing out: %@", signOutError)
                 Utils.showAlert(title: "Error!", message: "soory somethign went roung pleas try again later", preferredStyle: .alert, from: self)

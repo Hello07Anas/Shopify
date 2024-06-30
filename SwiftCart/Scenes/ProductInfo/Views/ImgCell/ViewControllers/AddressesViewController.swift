@@ -24,6 +24,10 @@ class AddressesViewController: UIViewController {
         viewModel?.bindAddresses = { [weak self] in
             self?.AddressesTable.reloadData()
         }
+        
+        print(UserDefaultsHelper.shared.getUserData().shopifyCustomerID)
+        
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -22,19 +22,10 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="TOG-DB-zcg" userLabel="NavBtns">
-                    <rect key="frame" x="16" y="67" width="398" height="34.333333333333343"/>
+                    <rect key="frame" x="356.33333333333331" y="67" width="57.666666666666686" height="33.333333333333343"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ca1-tX-efa">
-                            <rect key="frame" x="0.0" y="0.0" width="39.666666666666664" height="34.333333333333336"/>
-                            <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <state key="normal" title="Button"/>
-                            <buttonConfiguration key="configuration" style="plain" image="chevron.backward" catalog="system"/>
-                            <connections>
-                                <action selector="backBtn:" destination="-1" eventType="touchUpInside" id="qvM-iw-AVg"/>
-                            </connections>
-                        </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I5v-b4-JYl">
-                            <rect key="frame" x="340.33333333333331" y="0.0" width="57.666666666666686" height="34.333333333333336"/>
+                            <rect key="frame" x="0.0" y="0.0" width="57.666666666666664" height="33.333333333333336"/>
                             <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="filled" title="Skip">
@@ -47,7 +38,7 @@
                     </subviews>
                 </stackView>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="57G-10-I8M">
-                    <rect key="frame" x="16" y="109.33333333333333" width="398" height="38.333333333333329"/>
+                    <rect key="frame" x="16" y="108.33333333333333" width="398" height="38.333333333333329"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Login" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oOV-Ne-9tU">
                             <rect key="frame" x="0.0" y="0.0" width="398" height="38.333333333333336"/>
@@ -58,14 +49,14 @@
                     </subviews>
                 </stackView>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="i9v-Vd-Rkb" userLabel="TextFileds">
-                    <rect key="frame" x="16" y="163.66666666666666" width="398" height="148.99999999999997"/>
+                    <rect key="frame" x="16" y="162.66666666666666" width="398" height="148.99999999999997"/>
                     <subviews>
-                        <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="xxx123@gmail.com" borderStyle="roundedRect" placeholder="Please Enter Your Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GSD-hM-8Bn">
+                        <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Please Enter Your Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GSD-hM-8Bn">
                             <rect key="frame" x="0.0" y="0.0" width="398" height="66.666666666666671"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
                         </textField>
-                        <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Xxx123@123" borderStyle="roundedRect" placeholder="Pleas Enter your Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="cX7-eM-VRs">
+                        <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Pleas Enter your Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="cX7-eM-VRs">
                             <rect key="frame" x="0.0" y="82.666666666666686" width="398" height="66.333333333333314"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" returnKeyType="go" secureTextEntry="YES"/>
@@ -73,7 +64,7 @@
                     </subviews>
                 </stackView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZvK-9s-plZ" userLabel="SginUp">
-                    <rect key="frame" x="16" y="367" width="398" height="100"/>
+                    <rect key="frame" x="16" y="366" width="398" height="100"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F6k-3V-IhP">
                             <rect key="frame" x="16" y="8" width="366" height="42.666666666666664"/>
@@ -95,13 +86,13 @@
                     </constraints>
                 </view>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="bottom" translatesAutoresizingMaskIntoConstraints="NO" id="Flu-oE-C2Q" userLabel="Don`t have acc">
-                    <rect key="frame" x="16" y="320.66666666666669" width="398" height="38.333333333333314"/>
+                    <rect key="frame" x="16" y="319.66666666666669" width="398" height="38.333333333333314"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pa0-wp-5bI">
-                            <rect key="frame" x="257" y="0.0" width="141" height="38.333333333333336"/>
+                            <rect key="frame" x="222.66666666666663" y="0.0" width="175.33333333333337" height="38.333333333333336"/>
                             <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <state key="normal" title="Button"/>
-                            <buttonConfiguration key="configuration" style="plain" title="Dont have acc?"/>
+                            <buttonConfiguration key="configuration" style="plain" title="Dont have account?"/>
                             <connections>
                                 <action selector="dontHaveAcc:" destination="-1" eventType="touchUpInside" id="7yh-po-Wvt"/>
                             </connections>
@@ -109,22 +100,14 @@
                     </subviews>
                 </stackView>
                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="99" translatesAutoresizingMaskIntoConstraints="NO" id="6xV-iF-Fgh">
-                    <rect key="frame" x="16" y="491" width="398" height="64"/>
+                    <rect key="frame" x="16" y="490" width="398" height="62"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SRe-Vw-ZUC" userLabel="Google">
-                            <rect key="frame" x="0.0" y="0.0" width="149.66666666666666" height="64"/>
+                            <rect key="frame" x="0.0" y="0.0" width="398" height="62"/>
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="plain" image="google-icon"/>
                             <connections>
                                 <action selector="loginWithGoogle:" destination="-1" eventType="touchUpInside" id="VJl-XJ-s9A"/>
-                            </connections>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tQc-fe-Sr2" userLabel="X">
-                            <rect key="frame" x="248.66666666666669" y="0.0" width="149.33333333333331" height="64"/>
-                            <state key="normal" title="Button"/>
-                            <buttonConfiguration key="configuration" style="plain" image="x-icon"/>
-                            <connections>
-                                <action selector="loginWIthX:" destination="-1" eventType="touchUpInside" id="KsU-35-C3T"/>
                             </connections>
                         </button>
                     </subviews>
@@ -139,7 +122,6 @@
                 <constraint firstItem="TOG-DB-zcg" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="8" id="Bzj-CG-cKh"/>
                 <constraint firstItem="ZvK-9s-plZ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="DQz-2p-Fxo"/>
                 <constraint firstAttribute="trailing" secondItem="ZvK-9s-plZ" secondAttribute="trailing" constant="16" id="Ehc-6K-SUT"/>
-                <constraint firstItem="TOG-DB-zcg" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="MAz-Dk-jQv"/>
                 <constraint firstItem="57G-10-I8M" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="O9B-Ff-hmj"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Flu-oE-C2Q" secondAttribute="trailing" constant="16" id="SpQ-5b-769"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="i9v-Vd-Rkb" secondAttribute="trailing" constant="16" id="XlU-e8-aHr"/>
@@ -157,9 +139,7 @@
         </view>
     </objects>
     <resources>
-        <image name="chevron.backward" catalog="system" width="97" height="128"/>
         <image name="google-icon" width="48" height="48"/>
-        <image name="x-icon" width="50" height="50"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

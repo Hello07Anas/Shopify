@@ -29,18 +29,25 @@ class FavVC: UIViewController {
     var products: [ProductDumy] = []
     let favCRUD = FavCRUD()
     var productCount = 0
-    
+    var indecator: CustomIndicator?
     @IBOutlet weak var emptyImage: UIImageView!
     @IBOutlet weak var collectionView: UICollectionView!
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        fetchFavoriteItems()
+        indecator?.start()
+
+        fetchFavoriteItems(completion: { _ in
+            self.indecator?.stop()
+        })
         collectionView.reloadData()
+        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        indecator = CustomIndicator(containerView: view.self)
+        
         
         collectionView.register(UINib(nibName: "ProductCollectionCell", bundle: nil), forCellWithReuseIdentifier: "ProductCell")
         
@@ -54,7 +61,7 @@ class FavVC: UIViewController {
         coordinator?.finish()
     }
 
-    private func fetchFavoriteItems() {
+    private func fetchFavoriteItems(completion: @escaping(Bool) -> Void) {
         let favId = Int(UserDefaultsHelper.shared.getUserData().favID ?? "0")
         favCRUD.readItems(favId: favId!) { [weak self] lineItems in
             DispatchQueue.main.async {
@@ -65,6 +72,7 @@ class FavVC: UIViewController {
                     return ProductDumy(name: lineItem.title, price: lineItem.price, imageName: image, isFavorited: isFavorited, itemId: lineItem.id!)
                 }
                 self?.updateUI()
+                completion(true)
             }
         }
     }
@@ -84,7 +92,9 @@ class FavVC: UIViewController {
 
 extension FavVC: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+       
         return products.count
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

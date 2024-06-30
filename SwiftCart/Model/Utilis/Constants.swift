@@ -47,7 +47,7 @@ public enum K {
         static let Shopify_Shop_Name = "mad44-sv-iost1"
         static let Access_Token = "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"
         static let Base_URL = "https://mad44-sv-iost1.myshopify.com/admin/api/2024-04/"
-        static var userID =  UserDefaultsHelper.shared.getUserData().shopifyCustomerID ?? "6930899632175"
+        static var userID =  UserDefaultsHelper.shared.getUserData().shopifyCustomerID  ?? ""
         static  let CART_LIMIT_PRICE = 1000.0
         static let MERCHANT_ID = "merchant.com.isra.swiftCart"
     }
@@ -92,17 +92,6 @@ public enum K {
         case filled = "circle.inset.filled"
         case unFilled = "circle"
     }
-    
-    enum Arrays {
-        static let colorNames = ["Black", "Red", "Green", "Blue"]
-        static let colors: [String: UIColor] = [
-            "Black": .black,
-            "Red": .red,
-            "Green": .green,
-            "Blue": .blue
-        ]
-        static let sizes = ["M", "S", "L", "XL"]
-    }
-    
+        
     //MARK: Add any Const ants u need in a staruct pleas
 }

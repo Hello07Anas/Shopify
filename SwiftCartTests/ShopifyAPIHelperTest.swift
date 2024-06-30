@@ -38,7 +38,7 @@ final class ShopifyAPIHelperTest: XCTestCase {
         func testCreateingCustomer() {
             let expectation = self.expectation(description: "Waiting for create customer API response")
                     // TODO: have to change email with every run to pass this test
-            ShopifyAPIHelper.shared.createCustomer(email: "test15@gmail.com", firstName: "anas", lastName: "salah") { result in
+            ShopifyAPIHelper.shared.createCustomer(email: "test16@gmail.com", firstName: "anas", lastName: "salah") { result in
                 switch result {
                 case .success(let successMessage):
                     print(successMessage)
@@ -56,7 +56,7 @@ final class ShopifyAPIHelperTest: XCTestCase {
     func testCreateingDraftOrder() {
         let expectation = self.expectation(description: "Waiting for create draft order API response")
         
-        ShopifyAPIHelper.shared.createCustomer(email: "15test@gmail.com", firstName: "anas", lastName: "salah") { customerResult in
+        ShopifyAPIHelper.shared.createCustomer(email: "16test@gmail.com", firstName: "anas", lastName: "salah") { customerResult in
             switch customerResult {
             case .success(let successMessage):
                 guard let customerId = successMessage.split(separator: " ").last else {

@@ -20,7 +20,7 @@
             <rect key="frame" x="0.0" y="0.0" width="430" height="932"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Empty-Order--Streamline-Bruxelles" translatesAutoresizingMaskIntoConstraints="NO" id="Q8I-yK-6EK">
+                <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="empty-box" translatesAutoresizingMaskIntoConstraints="NO" id="Q8I-yK-6EK">
                     <rect key="frame" x="0.0" y="59" width="430" height="873"/>
                 </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O9c-ih-e0N">
@@ -35,8 +35,8 @@
                                 <action selector="backBtn:" destination="-1" eventType="touchUpInside" id="SZT-SP-Mml"/>
                             </connections>
                         </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Favorites" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="40M-Yi-wQJ">
-                            <rect key="frame" x="138.66666666666666" y="9" width="120.99999999999997" height="27"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My WishList" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="40M-Yi-wQJ">
+                            <rect key="frame" x="140.66666666666666" y="9" width="116.66666666666666" height="27"/>
                             <fontDescription key="fontDescription" type="system" pointSize="22"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
@@ -81,8 +81,8 @@
         </view>
     </objects>
     <resources>
-        <image name="Empty-Order--Streamline-Bruxelles" width="400" height="400"/>
         <image name="chevron.backward" catalog="system" width="97" height="128"/>
+        <image name="empty-box" width="194" height="207"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

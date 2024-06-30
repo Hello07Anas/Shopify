@@ -53,6 +53,7 @@ struct UserDefaultsHelper {
        // let cartID = UserDefaults.standard.string(forKey: "cartID") ?? "No Data"
         //let favID = UserDefaults.standard.string(forKey: "favID") ?? "No Data"
         
+        
         //print("UserDefaults - Email: \(userEmail), Name: \(userName), UID: \(userUID), ShopifyCustomerID: \(shopifyCustomerID), CartID: \(cartID), FavID: \(favID)")
         return Customer(id: Int(shopifyCustomerID) ?? 0, email: userEmail, firstName: userName, lastName: "")
     }
@@ -76,5 +77,21 @@ struct UserDefaultsHelper {
             userDefaults.set(currencyType.uppercased(), forKey: "selectedCurrencyType")
         }
     
+        func saveDefaultAddress(firstName: String, lastName: String, address: String, city: String, phone: String) {
+            userDefaults.set(firstName, forKey: "defaultFirstName")
+            userDefaults.set(lastName, forKey: "defaultLastName")
+            userDefaults.set(address, forKey: "defaultAddress")
+            userDefaults.set(city, forKey: "defaultCity")
+            userDefaults.set(phone, forKey: "defaultPhone")
+            userDefaults.synchronize()
+        }
 
+        func getDefaultAddress() -> (firstName: String?, lastName: String?, address: String?, city: String?, phone: String?) {
+            let firstName = userDefaults.string(forKey: "defaultFirstName")
+            let lastName = userDefaults.string(forKey: "defaultLastName")
+            let address = userDefaults.string(forKey: "defaultAddress")
+            let city = userDefaults.string(forKey: "defaultCity")
+            let phone = userDefaults.string(forKey: "defaultPhone")
+            return (firstName, lastName, address, city, phone)
+        }
 }

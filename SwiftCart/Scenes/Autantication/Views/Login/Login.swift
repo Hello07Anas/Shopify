@@ -17,19 +17,18 @@ class Login: UIViewController {
     @IBOutlet weak var emailTF: UITextField!
     
     weak var coordinator: AppCoordinator?
-    
+    var indecator: CustomIndicator? = nil
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        indecator = CustomIndicator(containerView: self.view)
+
         guard let clientID = FirebaseApp.app()?.options.clientID else { return }
         let config = GIDConfiguration(clientID: clientID)
         GIDSignIn.sharedInstance.configuration = config
     }
 
-    @IBAction func backBtn(_ sender: Any) {
-        coordinator?.finish()
-        // TODO: pop from stack "self"
-    }
 
     @IBAction func skipBtn(_ sender: Any) { 
         coordinator?.gotoHome(isThereConnection: true)
@@ -40,21 +39,25 @@ class Login: UIViewController {
     }
 
     @IBAction func loginBtn(_ sender: Any) {
+        indecator?.start()
         guard let email = emailTF.text, !email.isEmpty,
             let password = passwordTF.text, !password.isEmpty else {
 
             Utils.showAlert(title: "Error!", message: "Pleas enter both email and password", preferredStyle: .alert, from: self)
             print("Error")
+            indecator?.stop()
             return
         }
 
         guard AuthHelper.isValidEmail(email) else {
             Utils.showAlert(title: "Invalid email", message: "Please enter a valid email address.", preferredStyle: .alert, from: self)
+            indecator?.stop()
             return
         }
         
         guard AuthHelper.isValidPassword(password: password) else {
             Utils.showAlert(title: "Invalid password", message: "Password must contain one at least uppercase letter, one lowercase letter, one digit, one special character, and be at least 8 characters long.", preferredStyle: .alert, from: self)
+            indecator?.stop()
             return
         }
         
@@ -63,6 +66,7 @@ class Login: UIViewController {
             
             if let error = error {
                 Utils.showAlert(title: "Failed to Login", message: error.localizedDescription, preferredStyle: .alert, from: self)
+                indecator?.stop()
             } else {
                 print("Login Successful")
                 
@@ -80,9 +84,10 @@ class Login: UIViewController {
                         print("========\(String(describing: UserDefaultsHelper.shared.getUserData().cartID))")
                         print("========")
                         self.coordinator?.gotoHome(isThereConnection: true)
-                        
+                        self.indecator?.stop()
                     } else {
                         Utils.showAlert(title: "Account Not Fully Set Up", message: "Your account is not fully set up. Please contact support.", preferredStyle: .alert, from: self)
+                        self.indecator?.stop()
                     }
                 }
             }
@@ -90,14 +95,18 @@ class Login: UIViewController {
     }
     
     @IBAction func loginWithGoogle(_ sender: Any) {
+        indecator?.start()
+
         GIDSignIn.sharedInstance.signIn(withPresenting: self) { [unowned self] result, error in
             guard error == nil else {
                 print("Error signing in with Google: \(error!.localizedDescription)")
+                self.indecator?.stop()
                 return
             }
             
             guard let user = result?.user,
                   let idToken = user.idToken?.tokenString else {
+                self.indecator?.stop()
                 return
             }
             
@@ -105,6 +114,7 @@ class Login: UIViewController {
             Auth.auth().signIn(with: credential) { authResult, error in
                 if let error = error {
                     print("Firebase sign in error: \(error.localizedDescription)")
+                    self.indecator?.stop()
                 } else {
                     guard let uid = authResult?.user.uid else { return }
                     let email = user.profile?.email ?? ""
@@ -125,17 +135,16 @@ class Login: UIViewController {
                             UserDefaultsHelper.shared.printUserDefaults()
                             print("========")
                             self.coordinator?.gotoHome(isThereConnection: true)
-                            
+                            self.indecator?.stop()
                         } else {
                             Utils.showAlert(title: "Error", message: "User data not found. Please sign up first.", preferredStyle: .alert, from: self)
+                            self.indecator?.stop()
+
                         }
                     }
                 }
             }
         }
-    }
-    
-    @IBAction func loginWIthX(_ sender: Any) {
     }
     
     // Helper methods
