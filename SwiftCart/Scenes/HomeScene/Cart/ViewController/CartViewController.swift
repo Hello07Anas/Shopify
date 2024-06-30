@@ -127,7 +127,7 @@ extension CartViewController: UITableViewDataSource, UITableViewDelegate, Produc
     
 
     func didUpdateProductQuantity(forCellID id: Int, with quantity: Int, completion: ((Bool) -> Void)? = nil) {
-        indecator?.start()
+//        indecator?.start()
         print("didUpdateProductQuantity IN")
 
         if quantity < 1 {

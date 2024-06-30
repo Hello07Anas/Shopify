@@ -70,8 +70,11 @@ class ShippingViewController: UIViewController {
         }
         
         viewModel.getPriceRuleDetails(promocode: promocode)
-        self.setPrice(viewModel.draftOrder!)
+        viewModel.bindDiscount = { [weak self] in
+            self?.setPrice()
+        }
     }
+    
     func createPaymentRequest() -> PKPaymentRequest {
         let request = PKPaymentRequest()
        // request.merchantIdentifier = K.Shopify.MERCHANT_ID
@@ -85,28 +88,29 @@ class ShippingViewController: UIViewController {
         return request
     }
     
-    func setPrice(_ order: DraftOrderResponseModel) {
-        if let discount = order.singleResult?.appliedDiscount {
+    func setPrice(){
+        let order = self.viewModel.draftOrder
+        if let discount = order?.singleResult?.appliedDiscount {
             let type: String
             var totalPrice: Double
             let discountValue = Double(discount.value)!
             
             if discount.valueType == "fixed_amount" {
                 type = ""
-                totalPrice = Double(order.singleResult?.subtotalPrice ?? "0")! - discountValue
+                totalPrice = Double(order?.singleResult?.subtotalPrice ?? "0")! - discountValue
                 if totalPrice < 0 { totalPrice = 0 }
                 
             } else {
                 type = "%"
-                let discountAmount = (discountValue / 100) * Double(order.singleResult?.subtotalPrice ?? "0")!
-                totalPrice = Double(order.singleResult?.subtotalPrice ?? "0")! - discountAmount
+                let discountAmount = (discountValue / 100) * Double(order?.singleResult?.subtotalPrice ?? "0")!
+                totalPrice = Double(order?.singleResult?.subtotalPrice ?? "0")! - discountAmount
                 if totalPrice < 0 { totalPrice = 0 }
             }
             
             DispatchQueue.main.async {
                       self.subTotal.text = String(totalPrice).formatAsCurrency()
                       self.discountPercentage.text = "\(discountValue) \(type)"
-                self.grandTotalPrice.text = "\(totalPrice + (Double(order.singleResult?.totalTax ?? "0") ?? 0))".formatAsCurrency()
+                self.grandTotalPrice.text = "\(totalPrice + (Double(order?.singleResult?.totalTax ?? "0") ?? 0))".formatAsCurrency()
                 self.applyBtn.isEnabled = false
                 self.promocodeTextField.isEnabled = false
                 self.promocodeTextField.textColor = .gray

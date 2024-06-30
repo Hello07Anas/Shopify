@@ -14,6 +14,7 @@ class ShippingViewModel {
     var cartProductsList: [LineItem]?
     let disposeBag = DisposeBag()
     var bindShipping: (() -> Void) = {}
+    var bindDiscount: (() -> Void) = {}
     var GrandPrice : String!
     init(network: NetworkManager?) {
         self.network = network
@@ -53,6 +54,7 @@ class ShippingViewModel {
                 for discount in response.priceRules {
                     if promocode == discount .title {
                         self?.applyDiscount(priceRule: discount)
+                        self?.bindDiscount()
                     }
                 }
             }, onError: { (error: Error) in
