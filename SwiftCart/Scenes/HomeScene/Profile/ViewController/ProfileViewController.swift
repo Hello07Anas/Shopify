@@ -46,17 +46,18 @@ class ProfileViewController: UIViewController {
         orderViewModel.getOrdersList(completion: { [self]_ in
             
             let orderDetails = self.orderViewModel.getFirstOrder()
-            
+            emptyOrder.isHidden = true
+
             if orderDetails?.address?.city == "" || orderDetails?.address?.city == nil{
-                emptyOrder.isHidden = false
+                //emptyOrder.isHidden = false
             }
             else{
-                emptyOrder.isHidden = true
+                //emptyOrder.isHidden = true
                 ProductNum.text = "\(orderDetails?.productNumber ?? "")"
                 orderNum.text = "\(orderDetails?.orderNumber! ?? 0)"
-                self.address.text = "\(String(describing: orderDetails?.address!.address1 ?? "")) \(String(describing: orderDetails?.address!.city ?? ""))"
+                self.address.text = "\(String(describing: orderDetails?.address!.address1 ?? "slim el awl")) \(String(describing: orderDetails?.address!.city ?? "Cairo"))"
                 
-                date.text = Utils.extractDate(from:  orderDetails?.date ?? "2024-05-27T08:25:00-04:00")
+                date.text = Utils.extractDate(from: orderDetails?.date ?? getCurrentDateString())
                 //TODO: formatAsCurrency
                 price.text = "\(orderDetails?.totalPrice ?? "")  \(orderDetails?.currency ?? "")"
             }
@@ -111,6 +112,11 @@ class ProfileViewController: UIViewController {
         email.text = UserDefaultsHelper.shared.getUserData().email
         
         
+    }
+    
+    func getCurrentDateString() -> String {
+        let dateFormatter = ISO8601DateFormatter()
+        return dateFormatter.string(from: Date())
     }
 
     private func fetchFavoriteItems() {

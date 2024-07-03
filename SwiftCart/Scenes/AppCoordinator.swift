@@ -20,21 +20,18 @@ class AppCoordinator: Coordinator {
     }
     
     func start() {
-//        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-//        let vc = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as! AuthViewController
-        
-//        let mainViewController = Login(nibName: "Login", bundle: Bundle.main)
-//        mainViewController.coordinator = self
-//        navigationController.pushViewController(mainViewController, animated: false)
         navigationController.navigationBar.isHidden = true
-
-        let storyboard = UIStoryboard(name: K.Home.Home_Storyboard_Name, bundle: Bundle.main)
-        let onBoardingVc = storyboard.instantiateViewController(withIdentifier: K.Home.OnBoarding_View_Name) as! OnBoardingScreenViewController
         
-        onBoardingVc.coordinator = self
-        navigationController.pushViewController(onBoardingVc, animated: true)
-        
-           }
+        if UserDefaultsHelper.shared.getUserData().email == nil {
+            let storyboard = UIStoryboard(name: K.Home.Home_Storyboard_Name, bundle: Bundle.main)
+            let onBoardingVc = storyboard.instantiateViewController(withIdentifier: K.Home.OnBoarding_View_Name) as! OnBoardingScreenViewController
+            
+            onBoardingVc.coordinator = self
+            navigationController.pushViewController(onBoardingVc, animated: true)
+        } else {
+            getStarted()
+        }
+    }
     
     func getStarted(){
        
@@ -176,14 +173,14 @@ class AppCoordinator: Coordinator {
     func goToFav() {
         if Utils.isNetworkReachableTest() {
             if UserDefaultsHelper.shared.getUserData().name == nil {
-                let sginUp = UIAlertAction(title: "Oki, i want creaet acc", style: .default, handler: { _ in self.gotoSignUp(pushToStack: true)
+                let sginUp = UIAlertAction(title: "Create Account", style: .default, handler: { _ in self.gotoSignUp(pushToStack: true)
                 })
-                let login = UIAlertAction(title: "Oki, i want login to my acc", style: .default, handler: { _ in self.gotoLogin(pushToStack: true)
+                let login = UIAlertAction(title: "Login to My Account", style: .default, handler: { _ in self.gotoLogin(pushToStack: true)
                 })
 
-                let destructiveAction = UIAlertAction(title: "Not now", style: .cancel, handler: nil)
+                let destructiveAction = UIAlertAction(title: "Not Now", style: .cancel, handler: nil)
                 
-                Utils.showAlert(title: "Soory :(", message: "in gust mode u dont have a fav, but you can SginUp or Login easly and open this feature", preferredStyle: .alert, from: navigationController, actions: [sginUp, login, destructiveAction])
+                Utils.showAlert(title: "Sorry :(", message: "Please login to open this feature", preferredStyle: .actionSheet, from: navigationController, actions: [sginUp, login, destructiveAction])
             } else {
                 let fav = FavVC(nibName: "FavVC", bundle: nil)
                 fav.coordinator = self
@@ -242,3 +239,11 @@ class AppCoordinator: Coordinator {
         return reachability.connection != .unavailable
     }
 }
+
+
+//        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+//        let vc = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as! AuthViewController
+
+//        let mainViewController = Login(nibName: "Login", bundle: Bundle.main)
+//        mainViewController.coordinator = self
+//        navigationController.pushViewController(mainViewController, animated: false)
