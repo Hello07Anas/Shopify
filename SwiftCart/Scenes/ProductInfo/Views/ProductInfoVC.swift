@@ -117,8 +117,8 @@ class ProductInfoVC: UIViewController{
                 sender.isEnabled = true
                 sender.configuration?.showsActivityIndicator = false
             }
-            Utils.showAlert(title: "Sorry, you don't have an account",
-                            message: "Please log in first to use this feature.",
+            Utils.showAlert(title: "Sorry :(",
+                            message: "Please login to open this feature",
                             preferredStyle: .alert,
                             from: self, actions: [okBtn])
         }
@@ -181,36 +181,40 @@ class ProductInfoVC: UIViewController{
             return
         }
         
-        let okBtn = UIAlertAction(title: "OK", style: .default) { _ in
-            sender.isEnabled = true
-            sender.configuration?.showsActivityIndicator = false
+        if UserDefaultsHelper.shared.getUserData().email == nil {
+            Utils.showAlert(title: "Sorry :(", message: "Please login to open this feature", preferredStyle: .alert, from: self)
+        } else {
+            let okBtn = UIAlertAction(title: "OK", style: .default) { _ in
+                sender.isEnabled = true
+                sender.configuration?.showsActivityIndicator = false
+            }
+            
+            cartVM.productSoldOut = {
+                Utils.showAlert(title: "Sold Out", message: "Sorry, you can't add this product to your cart.", preferredStyle: .alert, from: self, actions: [okBtn])
+            }
+            
+            cartVM.productAlreadyExist = {
+                Utils.showAlert(title: "Already Exist", message: "Go to your cart to update the quantity.", preferredStyle: .alert, from: self, actions: [okBtn])
+            }
+            
+            cartVM.bindDoneOperation = {
+                Utils.showAlert(title: "Successfully Added", message: "", preferredStyle: .alert, from: self, actions: [okBtn])
+            }
+            
+            cartVM.bindErrorOperation = {
+                Utils.showAlert(title: "Error", message: "Sorry, you can't add this product to your cart.", preferredStyle: .alert, from: self, actions: [okBtn])
+            }
+            
+            guard let selectedSize = setSizeOT.title(for: .normal),
+                  let selectedColor = setColorOT.title(for: .normal),
+                  let variantId = getSelectedVariantId(for: selectedSize, color: selectedColor)
+            else {
+                Utils.showAlert(title: "Variant Not Found", message: "Please select a variant.", preferredStyle: .alert, from: self, actions: [okBtn])
+                return
+            }
+            
+            cartVM.addNewItemLine(variantID: variantId, quantity: 1, imageURLString: product.images?.first?.src ?? "", productID: 0, productTitle: product.title ?? "No title", productPrice: product.variants?.first?.price ?? "")
         }
-        
-        cartVM.productSoldOut = {
-            Utils.showAlert(title: "Sold Out", message: "Sorry, you can't add this product to your cart.", preferredStyle: .alert, from: self, actions: [okBtn])
-        }
-        
-        cartVM.productAlreadyExist = {
-            Utils.showAlert(title: "Already Exist", message: "Go to your cart to update the quantity.", preferredStyle: .alert, from: self, actions: [okBtn])
-        }
-        
-        cartVM.bindDoneOperation = {
-            Utils.showAlert(title: "Successfully Added", message: "", preferredStyle: .alert, from: self, actions: [okBtn])
-        }
-        
-        cartVM.bindErrorOperation = {
-            Utils.showAlert(title: "Error", message: "Sorry, you can't add this product to your cart.", preferredStyle: .alert, from: self, actions: [okBtn])
-        }
-        
-        guard let selectedSize = setSizeOT.title(for: .normal),
-              let selectedColor = setColorOT.title(for: .normal),
-              let variantId = getSelectedVariantId(for: selectedSize, color: selectedColor)
-        else {
-            Utils.showAlert(title: "Variant Not Found", message: "Please select a variant.", preferredStyle: .alert, from: self, actions: [okBtn])
-            return
-        }
-        
-        cartVM.addNewItemLine(variantID: variantId, quantity: 1, imageURLString: product.images?.first?.src ?? "", productID: 0, productTitle: product.title ?? "No title", productPrice: product.variants?.first?.price ?? "")
     }
 
     private func getSelectedVariantId(for size: String, color: String) -> Int? {

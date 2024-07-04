@@ -99,20 +99,21 @@ class AddressDetailsViewController: UIViewController {
             Utils.showAlert(title: "Phone number", message: "Invalid phone number", preferredStyle: .alert, from: self)
             return
         }
+        
         if viewModel?.isUpdate == true {
-          viewModel?.updateAddress(firstName: firstName, lastName: lastName, address1: address, city: city, phone: phone)
-            if  defaultSwitch.isOn == true {
-                //viewModel?.setDefaultAddress(firstName: firstName, lastName: lastName, address1: address, city: city, phone: phone)
+            viewModel?.updateAddress(firstName: firstName, lastName: lastName, address1: address, city: city, phone: phone)
+            if defaultSwitch.isOn {
+                viewModel?.setDefaultAddress(firstName: firstName, lastName: lastName, address1: address, city: city, phone: phone)
                 UserDefaultsHelper.shared.saveDefaultAddress(firstName: firstName, lastName: lastName, address: address, city: city, phone: phone)
-
             }
         } else {
             viewModel?.addNewAddress(firstName: firstName, lastName: lastName, address1: address, city: city, phone: phone)
-            if defaultSwitch.isOn == true {
+            if defaultSwitch.isOn {
                 UserDefaultsHelper.shared.saveDefaultAddress(firstName: firstName, lastName: lastName, address: address, city: city, phone: phone)
             }
         }
     }
+
     
     @IBAction func backBtn(_ sender: Any) {
         coordinator?.finish()

@@ -37,17 +37,31 @@ class SettingsViewController: UIViewController {
                 let cancle = UIAlertAction(title: "CANCLE", style: .default) { _ in
                     
                 }
-                Utils.showAlert(title: "will miss you \(userData.name!)🥹", message: "See you soon!🥲", preferredStyle: .alert, from: self, actions: [okBtn,cancle])
+                Utils.showAlert(title: "Will miss you \(userData.name!)🥹", message: "See you soon!🥲", preferredStyle: .alert, from: self, actions: [okBtn,cancle])
                 logOutLoginBtn.setTitle("Login", for: .normal)
+                
                 UserDefaultsHelper.shared.clearUserData()
                 UserDefaults.standard.removeObject(forKey: "userUID")
+                
+                clearAllUserDefaults()
+                print("====UserDefaultsHelper.shared.printAllUserDefaults() ====")
+                UserDefaultsHelper.shared.printAllUserDefaults()
+                print("====UserDefaultsHelper.shared.printAllUserDefaults() ====")
+
             } catch let signOutError as NSError {
                 print("Error signing out: %@", signOutError)
-                Utils.showAlert(title: "Error!", message: "soory somethign went roung pleas try again later", preferredStyle: .alert, from: self)
+                Utils.showAlert(title: "Error!", message: "Sorry, something went wrong. Please try again later.", preferredStyle: .alert, from: self)
             }
         } else {
             coordinator?.parentCoordinator?.gotoLogin(pushToStack: true)
             logOutLoginBtn.setTitle("Logout", for: .normal)
+        }
+    }
+    
+    private func clearAllUserDefaults() { // عشان زهقت بس ياريت ينفع
+        let dictionary = UserDefaults.standard.dictionaryRepresentation()
+        dictionary.keys.forEach { key in
+            UserDefaults.standard.removeObject(forKey: key)
         }
     }
     
@@ -121,3 +135,40 @@ extension SettingsViewController : UITableViewDataSource, UITableViewDelegate {
     }
     
 }
+
+
+/*
+ 
+// Anas77@gmail.com
+
+Home
+ search
+ products
+ add to fav
+ filter
+ 
+Categories
+ add to Fav
+ filter
+ search
+ add to fav
+ goto details
+ 
+ProductINfo
+ zoom
+ add to cart
+ 
+Cart
+ delete from cart
+ 
+ complete buy
+ 
+Profile
+ see orders
+ see whishList
+ 
+Settings
+ Address
+ Currncy
+ ContactUs
+ */

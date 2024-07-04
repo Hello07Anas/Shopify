@@ -100,8 +100,8 @@ class ProductCollectionCell: UICollectionViewCell {
                 }
             }
         } else {
-            Utils.showAlert(title: "Sorry, you don't have an account",
-                            message: "Please log in first to use this feature.",
+            Utils.showAlert(title: "Sorry :(",
+                            message: "Please login to open this feature",
                             preferredStyle: .alert,
                             from: self.parentViewController!)
         }
