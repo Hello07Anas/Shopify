@@ -48,7 +48,7 @@ We employed the Model-View-ViewModel - Coordinator (MVVM-C) architectural design
 - **REST API**
 - **Swift Package Manager**
 
-### Team Members
+### Team Members 
 - **Ahmed Osman**
 - **Anas Salah**
 - **Elham Mohammed**
